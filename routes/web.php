@@ -17,10 +17,21 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('foo', function () {
-    return 'Hello World';
+
+$router->get('index','AuthController@login');
+$router->post('login','UserController@login');
+
+$router->group(['prefix' => 'admin','middleware'=>'auth:api'], function () use ($router) {
+	$router->get('import',[ 'as' => 'admin.import',  'uses'=>'IndexController@import']);
+	$router->get('export',[ 'as' => 'admin.export',  'uses'=>'IndexController@export']);
 });
 
-$router->group(['prefix' => 'admin'], function () use ($router) {
-    $router->get('user',[ 'as' => 'admin.user',  'uses'=>'UserController@show']);
+$router->group(['prefix' => 'api/v1','middleware'=>'auth:api'], function() use ($router) {
+	$router->post('logout','UserController@logout');
+  	$router->post('refresh','UserController@refreshToken');
+    $router->post('upload','MainController@up');
+    $router->get('uplist','MainController@ls');
+    $router->post('generate','MainController@generate');
+    $router->delete('flist/{id}','MainController@delete');
 });
+
