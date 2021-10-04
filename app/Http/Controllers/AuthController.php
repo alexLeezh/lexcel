@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Events\ExampleEvent;
 use App\Jobs\ExampleJob;
+use Illuminate\Support\Facades\View;
+
 class AuthController extends Controller
 {
     /**
@@ -13,9 +15,8 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $results = app('db')->select("SELECT * FROM user");
-
-        return json_encode($results);
+        $data = app('db')->select("SELECT * FROM user");
+        return view('admin.login', ['name' => 'James']);
     }
 
 }
