@@ -15,7 +15,7 @@ class IndexController extends Controller
     {
         $results = app('db')->select("SELECT * FROM user");
 
-        event(new ExampleEvent(['user'=>'zg']));
+        event(new ExampleJob(['user'=>'zg']));
         return json_encode($results);
     }
 

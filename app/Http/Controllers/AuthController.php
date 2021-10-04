@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Events\ExampleEvent;
+use App\Events\UploadEvent;
 use App\Jobs\ExampleJob;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Redis;
 
 class AuthController extends Controller
 {
@@ -15,7 +18,8 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $data = app('db')->select("SELECT * FROM user");
+        // event(new UploadEvent(['u'=>'buynow']));
+        dispatch(new ExampleJob(['user'=>'zg']));
         return view('admin.login', ['name' => 'James']);
     }
 

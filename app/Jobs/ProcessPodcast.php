@@ -1,19 +1,18 @@
 <?php
 
 namespace App\Jobs;
-use Illuminate\Support\Facades\Log;
 
-class ExampleJob extends Job 
+class ProcessPodcast extends Job
 {
-    protected $jobData;
+    public $tries = 5;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($jobData)
+    public function __construct()
     {
-        $this->jobData = $jobData;
+        //
     }
 
     /**
@@ -24,8 +23,5 @@ class ExampleJob extends Job
     public function handle()
     {
         //
-
-        Log::info('ExampleJob'.var_export($this->jobData,true));
-
     }
 }

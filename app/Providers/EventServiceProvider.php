@@ -18,5 +18,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\OrderShipped' => [
             'App\Listeners\SendShipmentNotification',
         ],
+        'App\Events\UploadEvent' => [
+            'App\Listeners\UploadListener',
+        ],
     ];
 }
