@@ -17,5 +17,6 @@ class AppServiceProvider extends ServiceProvider
         //
         Schema::defaultStringLength(191);
         $this->app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+        // $this->app->register(\Laravel\Ui\UiServiceProvider::class);
     }
 }

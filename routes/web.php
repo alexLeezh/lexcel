@@ -20,6 +20,7 @@ $router->get('/', function () use ($router) {
 
 $router->get('index','AuthController@login');
 $router->post('login','UserController@login');
+$router->post('demo','ExampleController@example');
 
 $router->group(['prefix' => 'admin','middleware'=>'auth:api'], function () use ($router) {
 	$router->get('import',[ 'as' => 'admin.import',  'uses'=>'IndexController@import']);
@@ -34,4 +35,3 @@ $router->group(['prefix' => 'api/v1','middleware'=>'auth:api'], function() use (
     $router->post('generate','MainController@generate');
     $router->delete('flist/{id}','MainController@delete');
 });
-

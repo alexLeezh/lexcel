@@ -18,8 +18,11 @@ class AuthController extends Controller
      */
     public function login()
     {
-        // event(new UploadEvent(['u'=>'buynow']));
-        dispatch(new ExampleJob(['user'=>'zg']));
+        // dispatch(new ExampleJob(['user'=>'zg']));
+        
+        // $gotoJob = (new ExampleJob(['user'=>'zg']))->onQueue('high');
+        // app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($gotoJob);
+        // dispatch($gotoJob);
         return view('admin.login', ['name' => 'James']);
     }
 

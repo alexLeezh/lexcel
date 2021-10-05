@@ -61,6 +61,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('auth'); 
+$app->configure('swagger-lume');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -97,8 +98,7 @@ $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
-
-
+$app->register(\SwaggerLume\ServiceProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
