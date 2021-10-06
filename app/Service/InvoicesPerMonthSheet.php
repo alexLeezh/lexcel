@@ -24,10 +24,10 @@ class InvoicesPerMonthSheet implements FromQuery, WithTitle
      */
     public function query()
     {
-        return Invoice
-            ::query()
-            ->whereYear('created_at', $this->year)
-            ->whereMonth('created_at', $this->month);
+        return $sheets = app('db')->select("SELECT * FROM sheet_record");
+        // return Invoice::query()
+        //     ->whereYear('created_at', $this->year)
+        //     ->whereMonth('created_at', $this->month);
     }
 
     /**

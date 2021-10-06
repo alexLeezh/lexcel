@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use App\Service\RecordService;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
+use App\Service\InvoicesExport;
 
 class ReportController extends Controller
 {
@@ -30,7 +33,11 @@ class ReportController extends Controller
      */
     public function generate()
     {
-        $result = $this->recordService->getReports();
-        return $this->responseData('succ',0, $result);
+        Excel::store(new InvoicesExport(2018), 'invoices.xlsx', 's3');
+        // exit;
+        // return Excel::download(new UsersExport, 'users.xlsx');
+
+        // $result = $this->recordService->getReports();
+        // return $this->responseData('succ',0, $result);
     }
 }
