@@ -24,7 +24,7 @@ class UserController extends Controller
                 ->where('password', $request->input('password'))->first();
             if (!$token = Auth::login($user)) {
                 $response['code']     = '5000';
-                $response['errorMsg'] = '系统错误，无法生成令牌';
+                $response['message'] = '系统错误，无法生成令牌';
             } else {
                 $response['data']['user_id']      = strval($user->id);
                 $response['data']['access_token'] = $token;
@@ -32,7 +32,7 @@ class UserController extends Controller
             }
         } catch (QueryException $queryException) {
             $response['code'] = '5002';
-            $response['msg']  = '无法响应请求，服务端异常';
+            $response['message']  = '无法响应请求，服务端异常';
         }
 
         return response()->json($response);
@@ -47,7 +47,7 @@ class UserController extends Controller
      */
     public function logout()
     {
-        $response = array('code' => '0');
+        $response = array('code' => '0','message'=>'succ');
 
         Auth::invalidate(true);
 
@@ -64,11 +64,11 @@ class UserController extends Controller
      */
     public function refreshToken()
     {
-        $response = array('code' => '0');
+        $response = array('code' => '0','message'=>'succ');
 
         if (!$token = Auth::refresh(true, true)) {
             $response['code']     = '5000';
-            $response['errorMsg'] = '系统错误，无法生成令牌';
+            $response['message'] = '系统错误，无法生成令牌';
         } else {
             $response['data']['access_token'] = $token;
             $response['data']['expires_in']   = strval(time() + 86400);
