@@ -11,9 +11,8 @@ class UserController extends Controller
 {
     /**
      * 登录
-     *
-     * @author AdamTyn
-     *
+     * http://localhost:8008/login
+     * @author admin
      * @param \Illuminate\Http\Request;
      * @return \Illuminate\Http\Response;
      */
@@ -41,7 +40,7 @@ class UserController extends Controller
 
     /**
      * 用户登出
-     *
+     * http://localhost:8008/api/v1/logout
      * @author AdamTyn
      *
      * @return \Illuminate\Http\Response;
@@ -57,7 +56,7 @@ class UserController extends Controller
 
     /**
      * 更新用户Token
-     *
+     * http://localhost:8008/api/v1/refreshToken
      * @author AdamTyn
      *
      * @param \Illuminate\Http\Request;

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 use App\Events\ExampleEvent;
+use App\Events\RecordEvent;
 use App\Jobs\ExampleJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use app\Providers\UploadServiceProvider;
 use App\Http\Responses\DemoResp;
-use Illuminate\Http\Request;
 use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Post;
 use OpenApi\Annotations\MediaType;
@@ -15,47 +15,13 @@ use OpenApi\Annotations\Property;
 use OpenApi\Annotations\RequestBody;
 use OpenApi\Annotations\Response;
 use OpenApi\Annotations\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class MainController extends Controller
 {
-    /**
-     * @Post(
-     *     path="/upload",
-     *     tags={"上传表格"},
-     *     summary="上传表格API",
-     *     @RequestBody(
-     *         @MediaType(
-     *             mediaType="application/json",
-     *             @Schema(
-     *                 required={"name", "age"},
-     *                 @Property(property="name", type="string", description="姓名"),
-     *                 @Property(property="age", type="integer", description="年龄"),
-     *                 @Property(property="gender", type="string", description="性别")
-     *             )
-     *         )
-     *     ),
-     *     @Response(
-     *         response="200",
-     *         description="正常操作响应",
-     *         @MediaType(
-     *             mediaType="application/json",
-     *             @Schema(
-     *                 allOf={
-     *                     @Schema(ref="#/components/schemas/ApiResponse"),
-     *                     @Schema(
-     *                         type="object",
-     *                         @Property(property="data", ref="#/components/schemas/DemoResp")
-     *                     )
-     *                 }
-     *             )
-     *         )
-     *     )
-     * )
-     *
-     * @param Request $request
-     *
-     * @return DemoResp
-     */
+    
     public function up(Request $request)
     {
         $uploadFileService = new UploadServiceProvider();
@@ -76,24 +42,49 @@ class MainController extends Controller
         return response()->json($res);
     }
 
+    /**
+     * 返回上传表格记录 Authorization Bearer 
+     * http://localhost:8008/api/v1/uplist
+     * @param  Request $res 
+     * @return        
+     */
     public function ls(Request $res)
     {
-        return response()->json($res);
+        $results = app('db')->select("SELECT * FROM form_record");
+        return $this->responseData('succ',0, $data = $results);
     }
 
+    /**
+     * 上传记录删除 Authorization Bearer 
+     * http://localhost:8008/api/v1/del/1
+     * @param  [int] $id 
+     * @return [boole]
+     */
     public function delete($id)
     {
-        $results = app('db')->select("SELECT * FROM user");
 
-        event(new ExampleEvent(['user'=>'zg']));
-        return json_encode($results);
+        DB::beginTransaction();
+        try {
+            $deleted = DB::table('form_record')->delete(['id' => $id]);
+            event(new RecordEvent(['form_id'=>$id]));
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->responseData('error',1, $data = null);
+        }
+        DB::commit();
+       
+        return $this->responseData('succ',0, $data = null);
     }
 
-    public function generate()
-    {
-        $results = app('db')->select("SELECT * FROM user");
+    /**
+     * 生成报表
+     * http://localhost:8008/api/v1/generate
+     * @return 
+     */
+    // public function generate()
+    // {
+    //     $sheets = app('db')->select("SELECT * FROM sheet_record");
 
-        event(new ExampleEvent(['user'=>'zg']));
-        return json_encode($results);
-    }
+    //     return $this->responseData('succ',0, $data = $sheets);
+    // }
 }

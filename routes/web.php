@@ -32,6 +32,6 @@ $router->group(['prefix' => 'api/v1','middleware'=>'auth:api'], function() use (
   	$router->post('refresh','UserController@refreshToken');
     $router->post('upload','MainController@up');
     $router->get('uplist','MainController@ls');
-    $router->post('generate','MainController@generate');
-    $router->delete('flist/{id}','MainController@delete');
+    $router->get('generate','ReportController@generate');
+    $router->delete('del/{id}','MainController@delete');
 });

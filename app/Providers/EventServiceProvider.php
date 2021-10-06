@@ -21,5 +21,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\UploadEvent' => [
             'App\Listeners\UploadListener',
         ],
+        'App\Events\RecordEvent' => [
+            'App\Listeners\RecordListener',
+        ],
     ];
 }
