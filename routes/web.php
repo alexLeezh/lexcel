@@ -22,12 +22,12 @@ $router->get('index','AuthController@login');
 $router->post('login','UserController@login');
 $router->post('demo','ExampleController@example');
 
-$router->group(['prefix' => 'admin','middleware'=>'auth:api'], function () use ($router) {
+$router->group(['prefix' => 'admin','middleware'=>['auth:api','cross']], function () use ($router) {
 	$router->get('import',[ 'as' => 'admin.import',  'uses'=>'IndexController@import']);
 	$router->get('export',[ 'as' => 'admin.export',  'uses'=>'IndexController@export']);
 });
 
-$router->group(['prefix' => 'api/v1','middleware'=>'auth:api'], function() use ($router) {
+$router->group(['prefix' => 'api/v1','middleware'=>['auth:api','cross']], function() use ($router) {
 	$router->post('logout','UserController@logout');
   	$router->post('refresh','UserController@refreshToken');
     $router->post('upload','MainController@up');

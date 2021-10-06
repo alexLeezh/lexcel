@@ -62,6 +62,7 @@ $app->singleton(
 $app->configure('app');
 $app->configure('auth'); 
 $app->configure('swagger-lume');
+$app->configure('cors');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -79,6 +80,7 @@ $app->configure('swagger-lume');
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
+    'cross' => App\Http\Middleware\CrossRequestMiddleware::class,
 ]);
 
 /*
@@ -100,6 +102,8 @@ $app->register(App\Providers\RecordServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(\SwaggerLume\ServiceProvider::class);
+$app->register(Fruitcake\Cors\CorsServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes

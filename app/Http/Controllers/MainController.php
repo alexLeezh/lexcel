@@ -76,15 +76,4 @@ class MainController extends Controller
         return $this->responseData('succ',0, $data = null);
     }
 
-    /**
-     * 生成报表
-     * http://localhost:8008/api/v1/generate
-     * @return 
-     */
-    // public function generate()
-    // {
-    //     $sheets = app('db')->select("SELECT * FROM sheet_record");
-
-    //     return $this->responseData('succ',0, $data = $sheets);
-    // }
 }
