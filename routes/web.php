@@ -33,5 +33,6 @@ $router->group(['prefix' => 'api/v1','middleware'=>['auth:api','cross']], functi
     $router->post('upload','MainController@up');
     $router->get('uplist','MainController@ls');
     $router->get('generate','ReportController@generate');
+    $router->get('report','ReportController@ls');
     $router->delete('del/{id}','MainController@delete');
 });

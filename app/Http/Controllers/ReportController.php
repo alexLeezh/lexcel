@@ -33,11 +33,18 @@ class ReportController extends Controller
      */
     public function generate()
     {
-        Excel::store(new InvoicesExport(2018), 'invoices.xlsx', 's3');
-        // exit;
-        // return Excel::download(new UsersExport, 'users.xlsx');
+        $result = $this->recordService->getReports();
+        return $this->responseData('succ',0, $result);
+    }
 
-        // $result = $this->recordService->getReports();
-        // return $this->responseData('succ',0, $result);
+    /**
+     * 生成报表
+     * http://localhost:8008/api/v1/report
+     * @return 
+     */
+    public function ls()
+    {
+        $results = app('db')->select("SELECT * FROM download_record");
+        return $this->responseData('succ',0, $data = $results);
     }
 }

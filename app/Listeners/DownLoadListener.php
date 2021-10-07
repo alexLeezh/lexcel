@@ -2,12 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Events\RecordEvent;
+use App\Events\DownLoadEvent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use app\Providers\RecordServiceProvider;
 
-class RecordListener
+class DownLoadListener
 {
     /**
      * Create the event listener.
@@ -21,12 +22,13 @@ class RecordListener
     /**
      * Handle the event.
      *
-     * @param  \App\Events\RecordEvent  $event
+     * @param  \App\Events\DownLoadEvent  $event
      * @return void
      */
-    public function handle(RecordEvent $event)
+    public function handle(DownLoadEvent $event)
     {
-        $recordService = new RecordServiceProvider();
-        $recordService->dependencyDel($event->entities);
+        //保存下载文件路径
+        DB::table('download_record')->delete();
+        DB::table('download_record')->insert($event->entities);
     }
 }

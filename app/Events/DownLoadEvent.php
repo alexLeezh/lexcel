@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-class RecordEvent extends Event
+class DownLoadEvent extends Event
 {
 	public $entities;
     /**

@@ -76,4 +76,5 @@ class MainController extends Controller
         return $this->responseData('succ',0, $data = null);
     }
 
+
 }
