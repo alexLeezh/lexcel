@@ -14,8 +14,8 @@ class IndexController extends Controller
     public function import()
     {
         $results = app('db')->select("SELECT * FROM user");
-
-        event(new ExampleJob(['user'=>'zg']));
+        dispatch(new ExampleJob(['user'=>'zg']));
+        // event(new ExampleJob(['user'=>'zg']));
         return json_encode($results);
     }
 

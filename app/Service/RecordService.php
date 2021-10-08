@@ -29,9 +29,9 @@ class RecordService
         foreach ($this->school_report as $k => $v) {
             $fileNm = date('Y-m-d H:i:s',time()).$v.'.xlsx';
             Excel::store(new SchoolReportExport($k), $fileNm);
-            $downLoadData[] = ['file_name'=>$v,'file_path'=>$fileNm];
+            $downLoadData[] = ['file_name'=>$v,'file_path'=>storage_path('app') .'/'. $fileNm];
         }
-        // event(new DownLoadEvent($downLoadData));
+        event(new DownLoadEvent($downLoadData));
         return true;
     }
 

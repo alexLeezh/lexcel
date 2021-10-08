@@ -42,7 +42,7 @@ class ReportController extends Controller
      * http://localhost:8008/api/v1/report
      * @return 
      */
-    public function ls()
+    public function ls(Request $request)
     {
         $results = app('db')->select("SELECT * FROM download_record");
         return $this->responseData('succ',0, $data = $results);

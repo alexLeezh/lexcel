@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 use App\Events\ExampleEvent;
 use App\Events\RecordEvent;
 use App\Jobs\ExampleJob;
+use App\Jobs\UploadFileJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use app\Providers\UploadServiceProvider;
 use App\Http\Responses\DemoResp;
 use OpenApi\Annotations\Get;
 use OpenApi\Annotations\Post;
@@ -17,29 +17,38 @@ use OpenApi\Annotations\Response;
 use OpenApi\Annotations\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Service\UploadService;
+
 use Exception;
 
 class MainController extends Controller
 {
     
+    /**
+     * 上传文件
+     * http://localhost:8008/api/v1/upload
+     * @param  Request $request 
+     * @return           
+     */
     public function up(Request $request)
     {
-        $uploadFileService = new UploadServiceProvider();
-
-        $companyId = app('auth')->user()->get('user_id');
-        $fileType = $request->input('file_type');
+        
+        //添加队列
         $fileObject = $request->file('file');
-        $shouldQueue = (bool)$request->input("should_queue", 1);
-
-        $distributorId = $request->input('distributor_id', 0);
-        $result = $uploadFileService->uploadFile($companyId, $distributorId, $fileType, $fileObject, $shouldQueue);
-
-        return $this->response->array(['data' => $result]);
-
-        //处理队列
-        event(new ExampleEvent($request));
-
-        return response()->json($res);
+        // Log::info($fileObject);
+        // dispatch(new UploadFileJob(['fileObject'=>$fileObject]));
+        // return $this->responseData('加入处理队列，等待处理',0, $data = null);
+        $uploadFileService = new UploadService();
+        try {
+            $result = $uploadFileService->uploadFile($fileObject, $msg);
+            if (!$result) {
+                return $this->responseData($msg,1, $data = null);
+            }
+        } catch (Exception $e) {
+            return $this->responseData($e->getMessage(),1, $data = null);
+        }
+        
+        return $this->responseData('succ',0, $data = null);
     }
 
     /**

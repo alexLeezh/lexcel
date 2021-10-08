@@ -16,9 +16,10 @@ class CreateFormRecordTable extends Migration
         Schema::create('form_record', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('form_name',100)->comment('表名');
-            $table->string('form_name_ind',100)->comment('表代码');
-            $table->boolean('status')->default(0)->comment('状态，0：失败，1：成功');
-            $table->string('error_msg',200)->comment('失败原因');
+            $table->string('form_size',100)->comment('表大小');
+            $table->string('form_path',200)->comment('表地址');
+            $table->boolean('status')->default(0)->comment('状态，0：失败，1：成功 2：wait 3：processing');
+            $table->string('error_msg',200)->default(null)->comment('失败原因');
             $table->timestamps();
         });
     }

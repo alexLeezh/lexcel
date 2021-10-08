@@ -1,11 +1,12 @@
 <?php
-
 namespace App\Jobs;
+
 use Illuminate\Support\Facades\Log;
-use app\Providers\UploadServiceProvider;
+use App\Service\UploadService;
 class UploadFileJob extends Job 
 {
     protected $uploadFileInfo;
+    protected $errorMsg;
     /**
      * Create a new job instance.
      *
@@ -23,7 +24,8 @@ class UploadFileJob extends Job
      */
     public function handle()
     {
-        $uploadFileService = new UploadServiceProvider();
+
+        $uploadFileService = new UploadService();
         $uploadFileService->handleUploadFile($this->uploadFileInfo);
         Log::info('UploadFileJob'.var_export($this->uploadFileInfo,true));
     }

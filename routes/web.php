@@ -22,7 +22,7 @@ $router->get('index','AuthController@login');
 $router->post('login','UserController@login');
 $router->post('demo','ExampleController@example');
 
-$router->group(['prefix' => 'admin','middleware'=>['auth:api','cross']], function () use ($router) {
+$router->group(['prefix' => 'admin','middleware'=>['cross']], function () use ($router) {
 	$router->get('import',[ 'as' => 'admin.import',  'uses'=>'IndexController@import']);
 	$router->get('export',[ 'as' => 'admin.export',  'uses'=>'IndexController@export']);
 });
@@ -36,3 +36,8 @@ $router->group(['prefix' => 'api/v1','middleware'=>['auth:api','cross']], functi
     $router->get('report','ReportController@ls');
     $router->delete('del/{id}','MainController@delete');
 });
+
+$router->get('resource/{asset}', [
+    'as' => 'storage.resource',
+    'uses' => 'ResourceController@index',
+]);
