@@ -3,7 +3,7 @@ namespace App\Jobs;
 
 use Illuminate\Support\Facades\Log;
 use App\Service\UploadService;
-class UploadFileJob extends Job 
+class UploadFileDataJob extends Job 
 {
     protected $uploadFileInfo;
     /**
@@ -24,7 +24,7 @@ class UploadFileJob extends Job
     public function handle()
     {
         $uploadFileService = new UploadService();
-        $uploadFileService->handleUploadFile($this->uploadFileInfo);
+        $uploadFileService->handleUploadData($this->uploadFileInfo);
         
     }
 }

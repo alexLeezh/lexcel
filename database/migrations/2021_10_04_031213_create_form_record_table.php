@@ -19,7 +19,8 @@ class CreateFormRecordTable extends Migration
             $table->string('form_size',100)->comment('表大小');
             $table->string('form_path',200)->comment('表地址');
             $table->boolean('status')->default(0)->comment('状态，0：失败，1：成功 2：wait 3：processing');
-            $table->string('error_msg',200)->default(null)->comment('失败原因');
+            $table->string('error_msg',200)->comment('失败原因')->nullable();
+            $table->unsignedInteger('created');
             $table->timestamps();
         });
     }

@@ -6,7 +6,7 @@ require_once __DIR__.'/../vendor/autoload.php';
     dirname(__DIR__)
 ))->bootstrap();
 
-date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+date_default_timezone_set(env('APP_TIMEZONE', 'PRC'));
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ $app->configure('auth');
 $app->configure('swagger-lume');
 $app->configure('cors');
 $app->configure('ixport');
-
+$app->configure('session');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -83,6 +83,7 @@ $app->configure('ixport');
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'cross' => App\Http\Middleware\CrossRequestMiddleware::class,
+    'session'=>Illuminate\Session\Middleware\StartSession::class,
 ]);
 
 /*
@@ -106,6 +107,11 @@ $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(\SwaggerLume\ServiceProvider::class);
 $app->register(Fruitcake\Cors\CorsServiceProvider::class);
+$app->register(Illuminate\Session\SessionServiceProvider::class);
+
+
+$app->alias('session', 'Illuminate\Session\SessionManager');
+
 
 /*
 |--------------------------------------------------------------------------

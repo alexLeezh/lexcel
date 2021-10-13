@@ -17,7 +17,8 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\AfterSheet;
 use App\Models\User;
 
-class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, WithEvents, ShouldAutoSize
+//ShouldAutoSize
+class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, WithEvents, ShouldAutoSize, WithColumnWidths
 {
     private $tbNm;
     private $type;
@@ -79,10 +80,12 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                             $event->sheet->getDelegate()->getStyle($v)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                             $event->sheet->getDelegate()->mergeCells($v);
                         }
+
                         $widths = ['A' , 'B', 'C' ,'D' ,'E' ,'F' ,'G' ,'H' ,'J' ,'K' ,'L' ,'M' ,'N' ];
                         foreach ($widths as  $v) {
                             // 设置列宽度
                             $event->sheet->getDelegate()->getColumnDimension($v)->setAutoSize(true);
+                            $event->sheet->getDelegate()->getColumnDimension($v)->setWidth('30');
                         }
                     }
                 ];

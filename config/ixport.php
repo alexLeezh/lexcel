@@ -24,15 +24,15 @@ return [
     //需导出报表
     'SCHOOL_REPORT'         => [
         'modern'  => '现代化监测指标报告',
-        // 'balance' => '优质均衡发展七项指标报告',
+        'balance' => '优质均衡发展七项指标报告',
     ],
     'SCHOOL_MODERN_REPORT'  => [
         'kindergarten'=>'幼儿园',
-        // 'primarySchool'=>'小学',
-        // 'juniorMiddleSchool'=>'初中',
-        // 'highSchool'=>'普高',
-        // 'secondaryVocationalSchool'=>'中职',
-        // 'specialSchool'=>'特殊教育',
+        'primarySchool'=>'小学',
+        'juniorMiddleSchool'=>'初中',
+        'highSchool'=>'普高',
+        'secondaryVocationalSchool'=>'中职',
+        'specialSchool'=>'特殊教育',
     ],
     'SCHOOL_MODERN_CONFIG'  => [
         'kindergarten'=>[
@@ -95,4 +95,84 @@ return [
         ]
     ],
 
+    //import 
+    'SCHOOL_IMPORT_TYPE'  => [
+        'kindergarten'=>'幼儿园',
+        'primarySchool'=>'小学',
+        'juniorMiddleSchool'=>'初中',
+        'highSchool'=>'普高',
+        'secondaryVocationalSchool'=>'中职',
+    ],
+    'SCHOOL_IMPORT_TYPE_CONFIG' =>[
+        'kindergarten'=>[
+            'cover'=>'封面','catalogue'=>'目录','b111'=>'基础基111','b112'=>'基础基112','b112-1'=>'基础基112-1','b213'=>'基础基213','b314'=>'基础基314','b331'=>'基础基331','b332'=>'基础基332','b333'=>'基础基333','b341'=>'基础基341','b412'=>'基础基412','b422'=>'基础基422','b424'=>'基础基424','b431'=>'基础基431','b4411'=>'基础基4411','b4412'=>'基础基4412','b442'=>'基础基442','b512'=>'基础基512','b522'=>'基础基522','b531'=>'基础基531','b532'=>'基础基532'
+        ],
+    ],
+    'SCHOOL_IMPORT_MODERN_FOUND_INDEX'=>[
+        'kindergarten'=>['KCTR'=>'班师比','KSTR'=>'专科以上老师占比'],
+        'primarySchool'=>['PSTR'=>'生师比','PTR'=>'本科以上老师占比','PFCR'=>'四十人及一下班级占比','PHSTR'=>'每百名学生与中高级以上职称教师比','PSBR'=>'生均图书比'],
+        'juniorMiddleSchool'=>['JSTR'=>'生师比','JETR'=>'专科以上老师占比','JFCR'=>'四十五人及一下班级占比','JHSTR'=>'每百名学生与中高级以上职称教师比','JSBR'=>'生均图书比'],
+        'highSchool'=>['HSTR'=>'生师比','HETR'=>'专科以上老师占比','HSMR'=>'生均仪器设备比'],
+        'secondaryVocationalSchool'=>['VSTR'=>'生师比','VETR'=>'中职学校专业教师双师型比例','VSMR'=>'生均仪器设备比'],
+        'specialSchool'=>['SSTR'=>'特殊教育学校生师比'],
+    ],
+    'SCHOOL_IMPORT_BALANCE_FOUND_INDEX'=>[
+        'primarySchool'=>['PHETR'=>'每百生高于规定学历教师数','PHBTR'=>'每百生骨干教师数','PHATR'=>'每百生体育、艺术专任教师数','PSRAR'=>'生均教学及辅助用房面积','PSMAR'=>'生均体育运动场馆面积','PSMR'=>'生均教学仪器设备值','PHIR'=>'每百名学生拥有网络多媒体教室数'],
+        'nineYearCon'=>['NHETR'=>'每百生高于规定学历教师数','NHBTR'=>'每百生骨干教师数','NSATR'=>'每百生体育、艺术专任教师数','NSRAR'=>'生均教学及辅助用房面积','NSMAR'=>'生均体育运动场馆面积','NSMR'=>'生均教学仪器设备值','NHIR'=>'每百名学生拥有网络多媒体教室数'],
+        'juniorMiddleSchool'=>['JHETR'=>'每百生高于规定学历教师数','JHBTR'=>'每百生骨干教师数','JHATR'=>'每百生体育、艺术专任教师数','JSRAR'=>'生均教学及辅助用房面积','JSMAR'=>'生均体育运动场馆面积','JSMR'=>'生均教学仪器设备值','JHIR'=>'每百名学生拥有网络多媒体教室数']
+    ],
+    'SCHOOL_IMPORT_FOUND_INDEX'=>[
+        'KCTR'=>['found_name'=>'班师比','standard_val'=>'2','basic_val'=>'','ratio'=>'default', 'unit'=>''],
+        'KSTR'=>['found_name'=>'专科以上老师占比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+
+        'PSTR'=>['found_name'=>'生师比','standard_val'=>'17:1','basic_val'=>'','ratio'=>'scale', 'unit'=>''],
+        'PTR'=>['found_name'=>'本科以上老师占比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PFCR'=>['found_name'=>'四十人及一下班级占比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PHSTR'=>['found_name'=>'每百名学生与中高级以上职称教师比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PSBR'=>['found_name'=>'生均图书比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JSTR'=>['found_name'=>'生师比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JFCR'=>['found_name'=>'四十五人及一下班级占比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JHSTR'=>['found_name'=>'每百名学生与中高级以上职称教师比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JSBR'=>['found_name'=>'生均图书比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'HSTR'=>['found_name'=>'生师比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'HETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'HSMR'=>['found_name'=>'生均仪器设备比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'VSTR'=>['found_name'=>'生师比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'VETR'=>['found_name'=>'中职学校专业教师双师型比例','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'VSMR'=>['found_name'=>'生均仪器设备比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'SSTR'=>['found_name'=>'特殊教育学校生师比','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+
+        'PHETR'=>['found_name'=>'每百生高于规定学历教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PHBTR'=>['found_name'=>'每百生骨干教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PHATR'=>['found_name'=>'每百生体育、艺术专任教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PSRAR'=>['found_name'=>'生均教学及辅助用房面积','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PSMAR'=>['found_name'=>'生均体育运动场馆面积','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PSMR'=>['found_name'=>'生均教学仪器设备值','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'PHIR'=>['found_name'=>'每百名学生拥有网络多媒体教室数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+
+        'JHETR'=>['found_name'=>'每百生高于规定学历教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JHBTR'=>['found_name'=>'每百生骨干教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JHATR'=>['found_name'=>'每百生体育、艺术专任教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JSRAR'=>['found_name'=>'生均教学及辅助用房面积','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JSMAR'=>['found_name'=>'生均体育运动场馆面积','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JSMR'=>['found_name'=>'生均教学仪器设备值','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JHIR'=>['found_name'=>'每百名学生拥有网络多媒体教室数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+
+        'NHETR'=>['found_name'=>'每百生高于规定学历教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NHBTR'=>['found_name'=>'每百生骨干教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NHATR'=>['found_name'=>'每百生体育、艺术专任教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NSRAR'=>['found_name'=>'生均教学及辅助用房面积','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NSMAR'=>['found_name'=>'生均体育运动场馆面积','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NSMR'=>['found_name'=>'生均教学仪器设备值','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NHIR'=>['found_name'=>'每百名学生拥有网络多媒体教室数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+
+        'NJHETR'=>['found_name'=>'每百生高于规定学历教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NJHBTR'=>['found_name'=>'每百生骨干教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NJHATR'=>['found_name'=>'每百生体育、艺术专任教师数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NJSRAR'=>['found_name'=>'生均教学及辅助用房面积','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NJSMAR'=>['found_name'=>'生均体育运动场馆面积','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NJSMR'=>['found_name'=>'生均教学仪器设备值','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'NNHIR'=>['found_name'=>'每百名学生拥有网络多媒体教室数','standard_val'=>'98%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+    ],
 ];

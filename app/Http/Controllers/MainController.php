@@ -32,7 +32,6 @@ class MainController extends Controller
      */
     public function up(Request $request)
     {
-        
         //添加队列
         $fileObject = $request->file('file');
         // Log::info($fileObject);

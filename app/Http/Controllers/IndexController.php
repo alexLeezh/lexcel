@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Events\ExampleEvent;
 use App\Jobs\ExampleJob;
+use App\Jobs\UploadFileJob;
 class IndexController extends Controller
 {
     /**
@@ -14,7 +15,8 @@ class IndexController extends Controller
     public function import()
     {
         $results = app('db')->select("SELECT * FROM user");
-        dispatch(new ExampleJob(['user'=>'zg']));
+        // dispatch(new UploadFileJob(['id'=>'1','status'=>2]));
+        dispatch(new UploadFileDataJob(['id'=>1,'status'=>2]));
         // event(new ExampleJob(['user'=>'zg']));
         return json_encode($results);
     }
