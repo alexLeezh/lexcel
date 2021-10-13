@@ -48,12 +48,32 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
     public function columnWidths(): array
     {
         return [
-            'A' => 10,
-            'C' => 10,
+            'A' => 20,
+            'B' => 30,
+            'C' => 20,
             'D' => 35,
-            'H' => 10,
-            'I' => 10,
+            'E' => 35,
+            'F' => 35,
+            'G' => 35,
+            'H' => 20,
+            'I' => 20,
             'J' => 25,
+            'K' => 25,
+            'L' => 25,
+            'M' => 25,
+            'N' => 25,
+            'O' => 25,
+            'P' => 25,
+            'Q' => 25,
+            'R' => 25,
+            'S' => 25,
+            'T' => 25,
+            'U' => 25,
+            'V' => 25,
+            'W' => 25,
+            'X' => 25,
+            'Y' => 25,
+            'Z' => 25,
         ];
     }
 
@@ -76,17 +96,44 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                         $event->sheet->getDelegate()->getStyle('A1:H1')->getFont()->setSize(15);
                         $event->sheet->getDelegate()->getStyle('A2:H4')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
+
+                        $styleArray = [
+                            'alignment' => [
+                                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+                            ],
+                            'borders' => [
+                                'top' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                ],
+                                'left' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                ],
+                                'right' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                ],
+                                'bottom' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                ],
+                            ],
+                        ];
+
+                        // $event->sheet->getStyle('A2:H4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('CCCCCC');
+                        // $event->sheet->getStyle('A2:H4')->applyFromArray($styleArray);
+                        
+                        $event->sheet->getDelegate()->getDefaultColumnDimension()->setWidth(50);
+
                         foreach ($cells as $k=>$v) {
                             $event->sheet->getDelegate()->getStyle($v)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                             $event->sheet->getDelegate()->mergeCells($v);
                         }
 
-                        $widths = ['A' , 'B', 'C' ,'D' ,'E' ,'F' ,'G' ,'H' ,'J' ,'K' ,'L' ,'M' ,'N' ];
-                        foreach ($widths as  $v) {
-                            // 设置列宽度
-                            $event->sheet->getDelegate()->getColumnDimension($v)->setAutoSize(true);
-                            $event->sheet->getDelegate()->getColumnDimension($v)->setWidth('30');
-                        }
+                        $event->sheet->getDelegate()->getStyle('C4:H4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+                        // $widths = ['A' , 'B', 'C' ,'D' ,'E' ,'F' ,'G' ,'H' ,'J' ,'K' ,'L' ,'M' ,'N' ];
+                        // foreach ($widths as  $v) {
+                        //     // 设置列宽度
+                        //     $event->sheet->getDelegate()->getColumnDimension($v)->setAutoSize(true);
+                        // }
                     }
                 ];
                 break;
