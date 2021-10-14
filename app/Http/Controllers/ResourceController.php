@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ResourceController extends Controller
 {
@@ -16,6 +17,10 @@ class ResourceController extends Controller
             "Content-Type"=>" application/xls"
         ];
 
+        //下载即可以删除历史数据 truncate 放弃是怕对应问题
+        DB::delete('delete from form_record');
+        DB::delete('delete from pre_sheet_data');
+        DB::delete('delete from sheet_record');
         return response()->download($realPath,$filename,$headers);
     }
 }

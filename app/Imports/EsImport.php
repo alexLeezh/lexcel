@@ -16,6 +16,7 @@ class EsImport implements WithEvents
 
 	public function registerEvents(): array
     {
+        Log::info('EsImport');
     	return [
         	AfterSheet::class => [self::class, 'afterSheet'],
         ];
@@ -26,6 +27,7 @@ class EsImport implements WithEvents
     	$school = $event->sheet->getCell("D7")->getValue();
     	app('session')->put('school',$school);
     	$school_type = $event->sheet->getCell("D14")->getValue();
+        Log::info($school_type);
     	$school_type_code = '';
     	switch ($school_type) {
     		case '幼儿园':
@@ -59,7 +61,5 @@ class EsImport implements WithEvents
     	$batch = date('Ymdhi',time()).md5($school);
     	app('session')->put('report_hash',$batch);
         Redis::set('report_hash', $batch);
-        Log::info(  date( 'Ymdhis' , time() )  . $batch);
-
     }
 }

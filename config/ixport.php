@@ -174,6 +174,6 @@ return [
         'NJSRAR'=>['found_name'=>'生均教学及辅助用房面积','standard_val'=>'5.8','basic_val'=>'4.93','ratio'=>'default', 'unit'=>'平方米'],
         'NJSMAR'=>['found_name'=>'生均体育运动场馆面积','standard_val'=>'10.2','basic_val'=>'8.67','ratio'=>'default', 'unit'=>'平方米'],
         'NJSMR'=>['found_name'=>'生均教学仪器设备值','standard_val'=>'2500','basic_val'=>'2125','ratio'=>'default', 'unit'=>'元'],
-        'NNHIR'=>['found_name'=>'每百名学生拥有网络多媒体教室数','standard_val'=>'2.4','basic_val'=>'2.04','ratio'=>'default', 'unit'=>'间'],
+        'NJHIR'=>['found_name'=>'每百名学生拥有网络多媒体教室数','standard_val'=>'2.4','basic_val'=>'2.04','ratio'=>'default', 'unit'=>'间'],
     ],
 ];

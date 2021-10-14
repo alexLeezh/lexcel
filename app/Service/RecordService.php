@@ -189,6 +189,7 @@ class RecordService
 
     private function __getBalanceQuery($school_type, $sheetData)
     {
+        $res = [];
         switch ($school_type) {
             case 'primarySchool':
                 $index = 1;

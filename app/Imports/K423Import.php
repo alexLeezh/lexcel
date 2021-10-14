@@ -46,11 +46,14 @@ class K423Import implements  WithEvents
 
                 $artteacher = $teacherM8 + $teacherN8 + $teacherP8 + $teacherQ8;
 
+                $teacherD8 = $event->sheet->getCell("D8")->getValue();
+
                 $arr = [
                     ['school_type'=>$school_type,'school'=>$school,'report_type'=>'modern','found_ind'=>'PTR','found_divisor'=>0,'found_divider'=>$teachers,'report_hash'=>$report_hash],
                     ['school_type'=>$school_type,'school'=>$school,'report_type'=>'balance','found_ind'=>'PHETR','found_divisor'=>$bteachers,'found_divider'=>0,'report_hash'=>$report_hash],
                     ['school_type'=>$school_type,'school'=>$school,'report_type'=>'balance','found_ind'=>'PHATR','found_divisor'=>$artteacher,'found_divider'=>0,'report_hash'=>$report_hash],
 
+                    ['school_type'=>$school_type,'school'=>$school,'report_type'=>'modern','found_ind'=>'PTR','found_divisor'=>$teacherD8,'found_divider'=>0,'report_hash'=>$report_hash],
 
                 ];
 

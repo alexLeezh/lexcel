@@ -27,7 +27,7 @@ class Z311Import implements  WithEvents
         $school_type = app('session')->get('school_type');
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
-        $preSheetData = new PreSheetData();
+        Log::info($school_type);
         switch ($school_type) {
             case 'kindergarten':
                 
@@ -52,7 +52,7 @@ class Z311Import implements  WithEvents
                 ];
 
                 foreach ($arr as $key => $value) {
-                    Log::info($value);
+                    
                     $preSheetData = new PreSheetData();
                     //report_type found_ind found_divisor found_divider
                     $preSheetData->school_type = $value['school_type'];

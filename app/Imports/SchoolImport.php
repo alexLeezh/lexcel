@@ -36,7 +36,7 @@ use App\Imports\K112Import;
 use App\Imports\K512Import;
 
 
-class SchoolImport implements WithMultipleSheets 
+class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
 {
     use WithConditionalSheets;
 
@@ -62,6 +62,7 @@ class SchoolImport implements WithMultipleSheets
             '基础基314' => new K314Import(),
             '基础基522' => new K522Import(),
             
+            '中职基111' => new EsImport(),
             '中职基311' => new Z311Import(),
             '中职基411' => new Z411Import(),
             '中职基421' => new Z421Import(),

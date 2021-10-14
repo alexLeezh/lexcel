@@ -78,7 +78,7 @@ class UploadService
         $fileUrl = storage_path('app') . '/' .$filePath;
         //导入
         $import = new SchoolImport();
-        $import->onlySheets('基础基111','基础基211','基础基411','基础基4211','基础基212','基础基312','基础基412','基础基422','基础基423','基础基531','基础基213','基础基313','基础基424','基础基314','基础基522','中职基311','中职基411','中职基421','中职基521','基础基315','基础基413','基础基112','基础基512');
+        $import->onlySheets('基础基111','基础基211','基础基411','基础基4211','基础基212','基础基312','基础基412','基础基422','基础基423','基础基531','基础基213','基础基313','基础基424','基础基314','基础基522','中职基111','中职基311','中职基411','中职基421','中职基521','基础基315','基础基413','基础基112','基础基512');
         Excel::import($import, $fileUrl);
 
         //执行数据清理
@@ -130,13 +130,19 @@ class UploadService
                     if (isset($foundval[0]['found_divisor']) && $foundval[0]['found_divisor'] > 0) {
                         $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[0]['found_divisor'],$foundval[1]['found_divider'],$ind_config['standard_val'],$is_standard);
                     }else{
-                        $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[1]['found_divisor'],$foundval[0]['found_divider'],$ind_config['standard_val'],$is_standard);
+                        if (!isset($foundval[0]['found_divider'])) {
+                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[1]['found_divisor'],0,$ind_config['standard_val'],$is_standard);
+                        }else{
+                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard);
+                        }
+                        Log::info($insert_row);
+                        
                     }
                     $insert_row['is_standard'] = $is_standard;
                 }
 
                 if (count($value) > 2) {
-                    $foundval = array_values($value);
+                    $foundval = $this->Object2Array(array_values($value));
                     $ind_config = $global_config[$foundval[0]['found_ind']];
 
                     $insert_row['school'] = $foundval[0]['school'];
@@ -150,9 +156,11 @@ class UploadService
 
                     $found_divisor = 0;
                     $found_divider = 0;
+
                     foreach ($foundval as $k => $v) {
-                        $found_divisor +=$v['found_divisor'];
-                        $found_divider +=$v['found_divider'];
+                        Log::info($v);
+                        isset($v['found_divisor']) && $found_divisor +=$v['found_divisor'];
+                        isset($v['found_divider']) && $found_divider +=$v['found_divider'];
                     }
                     $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$found_divisor,$found_divider,$ind_config['standard_val'],$is_standard);
                     $insert_row['is_standard'] = $is_standard;
@@ -174,8 +182,11 @@ class UploadService
     //格式化输出
     private function valFormat($format, $unit, $found_divisor, $found_divider, $standard_val,&$is_standard)
     {
-        $res = '';
+        $res = 0;
         $is_standard = 0;
+        if (!$found_divisor || !$found_divider) {
+            return 0;
+        }
         switch ($format) {
             case 'default':
                 $res = round( ($found_divisor/$found_divider), 3). $unit;
@@ -202,7 +213,7 @@ class UploadService
                 break;
         }
 
-        return $res;
+        return $res ?? 0;
     }
 
     private function Object2Array($object) { 
@@ -219,6 +230,9 @@ class UploadService
         }
     }
     private function __ratio($a, $b) {
+        if (!$a || !$b) {
+            return 0;
+        }
         $_a = $a;
         $_b = $b;
         while ($_b != 0) {

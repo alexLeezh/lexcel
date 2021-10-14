@@ -59,6 +59,16 @@ class MainController extends Controller
     public function ls(Request $res)
     {
         $results = app('db')->select("SELECT * FROM form_record");
+        $arr = [];
+        foreach ($results as &$value) {
+            if (in_array($value->form_name, $arr)) {
+                // $value->form_name = $value->form_name;
+                $value->form_name_sign = 1;
+            }else{
+                $value->form_name_sign = 0;
+                array_push($arr, $value->form_name);
+            }
+        }
         return $this->responseData('succ',0, $data = $results);
     }
 
