@@ -61,6 +61,7 @@ class MainController extends Controller
         $results = app('db')->select("SELECT * FROM form_record");
         $arr = [];
         foreach ($results as &$value) {
+            $value->created = date('Y-m-d H:i',$value->created);
             if (in_array($value->form_name, $arr)) {
                 // $value->form_name = $value->form_name;
                 $value->form_name_sign = 1;
