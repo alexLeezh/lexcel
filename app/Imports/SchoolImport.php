@@ -10,6 +10,32 @@ use App\Imports\K211Import;
 use App\Imports\K411Import;
 use App\Imports\K4211Import;
 
+use App\Imports\K212Import;
+use App\Imports\K312Import;
+use App\Imports\K412Import;
+use App\Imports\K422Import;
+use App\Imports\K423Import;
+use App\Imports\K531Import;
+
+use App\Imports\K213Import;
+use App\Imports\K313Import;
+use App\Imports\K424Import;
+
+use App\Imports\K314Import;
+use App\Imports\K522Import;
+
+use App\Imports\Z311Import;
+use App\Imports\Z411Import;
+use App\Imports\Z421Import;
+use App\Imports\Z521Import;
+
+use App\Imports\K315Import;
+use App\Imports\K413Import;
+
+use App\Imports\K112Import;
+use App\Imports\K512Import;
+
+
 class SchoolImport implements WithMultipleSheets 
 {
     use WithConditionalSheets;
