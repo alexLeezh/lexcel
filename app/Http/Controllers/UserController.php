@@ -6,6 +6,7 @@ use App\Jobs\ExampleJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -19,9 +20,17 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $response = array('code' => '0');
+        Log::info($request->input('username'));
         try {
             $user = \App\Models\User::where('name', $request->input('username'))
                 ->where('password', $request->input('password'))->first();
+                Log::info($user);
+            if (!$user) {
+                $response['code']     = '5000';
+                $response['message'] = '账号密码错误';
+                return response()->json($response);
+            }
+                Log::info($user);
             if (!$token = Auth::login($user)) {
                 $response['code']     = '5000';
                 $response['message'] = '系统错误，无法生成令牌';
