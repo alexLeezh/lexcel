@@ -16,7 +16,6 @@ class K411Import implements  WithEvents
 
     public function registerEvents(): array
     {
-        Log::info('K411Import');
     	return [
         	AfterSheet::class => [self::class, 'afterSheet'],
         ];

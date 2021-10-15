@@ -95,18 +95,40 @@ class UploadService
     {
         $batch = app('session')->get('report_hash');
         !$batch && $batch = Redis::get('report_hash');
-        Log::info(  date( 'Ymdhis' , time() )  . $batch);
+        // Log::info(  date( 'Ymdhis' , time() )  . $batch);
+        if (!$batch) {
+            throw new Exception('请联系管理员！');
+        }
+        $preData = app('db')->select("SELECT * FROM pre_sheet_data ");
+
+        foreach ($preData as $value) {
+            $this->handleUploadDataPerBatch($value->report_hash, $data);
+        }
+
+        //更新上传表格状态
+        DB::table('form_record')->where('id',$data['id'])->update(['status' => 1]);
+        return true;
+    }
+
+    /**
+     * 分批次处理
+     * @param  [type] $batch 
+     * @return [type]       
+     */
+    public function handleUploadDataPerBatch($batch, $data)
+    {
         if (!$batch) {
             throw new Exception('请联系管理员！');
         }
         $preData = app('db')->select("SELECT * FROM pre_sheet_data where report_hash = '".$batch."'  ");
-        
         $foundArr = [];
+        $batch_arr = [];
         foreach ($preData as $key => $value) {
             !$value->found_divisor && $value->found_divisor = 0;
             !$value->found_divider && $value->found_divider = 0;
             $foundArr[$value->found_ind][] = $value;
         }
+
         //有需处理的数据
         $insert_row = [];
         $global_config = config('ixport.SCHOOL_IMPORT_FOUND_INDEX');
@@ -117,6 +139,7 @@ class UploadService
                 $ind_config = [];
                 if (count($value) == 2) {
                     $foundval = $this->Object2Array(array_values($value));
+                    Log::info($foundval);
                     $ind_config = $global_config[$key];
                     $insert_row['school'] = $foundval[0]['school'];
                     $insert_row['school_type'] = $foundval[0]['school_type'];
@@ -128,15 +151,18 @@ class UploadService
                     $insert_row['form_id'] = $data['id'];
 
                     if (isset($foundval[0]['found_divisor']) && $foundval[0]['found_divisor'] > 0) {
-                        $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[0]['found_divisor'],$foundval[1]['found_divider'],$ind_config['standard_val'],$is_standard);
+                        if (isset($foundval[1]['found_divider'])) {
+                           $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[0]['found_divisor'],$foundval[1]['found_divider'],$ind_config['standard_val'],$is_standard);
+                        }else{
+                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[0]['found_divisor'],0,$ind_config['standard_val'],$is_standard);
+                        }
+                        
                     }else{
-                        if (!isset($foundval[0]['found_divider'])) {
-                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[1]['found_divisor'],0,$ind_config['standard_val'],$is_standard);
+                        if (isset($foundval[0]['found_divider']) && $foundval[0]['found_divider'] > 0 ) {
+                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,$foundval[0]['found_divider'],$ind_config['standard_val'],$is_standard);
                         }else{
                             $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard);
-                        }
-                        Log::info($insert_row);
-                        
+                        }                        
                     }
                     $insert_row['is_standard'] = $is_standard;
                 }
@@ -158,7 +184,6 @@ class UploadService
                     $found_divider = 0;
 
                     foreach ($foundval as $k => $v) {
-                        Log::info($v);
                         isset($v['found_divisor']) && $found_divisor +=$v['found_divisor'];
                         isset($v['found_divider']) && $found_divider +=$v['found_divider'];
                     }
@@ -167,18 +192,14 @@ class UploadService
                 }
                 //更新导出表
                 DB::table('sheet_record')->insert($insert_row);
+                Log::info($insert_row);
             }
             DB::table('pre_sheet_data')->where('report_hash', $batch)->delete();
             
-            Log::info($insert_row);
-
         }
-        //更新上传表格状态
-        DB::table('form_record')->where('id',$data['id'])->update(['status' => 1]);
-        return $insert_row;
         
+        return $insert_row;
     }
-
     //格式化输出
     private function valFormat($format, $unit, $found_divisor, $found_divider, $standard_val,&$is_standard)
     {
@@ -201,7 +222,8 @@ class UploadService
                 }
                 break;
             case 'scale':
-                $res = $this->__ratio($found_divisor, $found_divider);
+                $res = round( ($found_divisor/$found_divider), 3).':1';
+                // $res = $this->__ratio($found_divisor, $found_divider);
                 $scale = explode(':', $standard_val);
                 if (round( ($found_divisor/$found_divider), 3) > round( ($scale[0]/$scale[1]), 3) ) {
                     $is_standard = 1;

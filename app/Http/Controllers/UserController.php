@@ -26,7 +26,7 @@ class UserController extends Controller
                 ->where('password', $request->input('password'))->first();
                 Log::info($user);
             if (!$user) {
-                $response['code']     = '5000';
+                $response['code']     = '5002';
                 $response['message'] = '账号密码错误';
                 return response()->json($response);
             }

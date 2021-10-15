@@ -44,7 +44,6 @@ class K512Import implements  WithEvents
                 ];
 
                 foreach ($arr as $key => $value) {
-                    Log::info($value);
                     $preSheetData = new PreSheetData();
                     //report_type found_ind found_divisor found_divider
                     $preSheetData->school_type = $value['school_type'];
@@ -70,7 +69,6 @@ class K512Import implements  WithEvents
                 ];
 
                 foreach ($arr as $key => $value) {
-                    Log::info($value);
                     $preSheetData = new PreSheetData();
                     //report_type found_ind found_divisor found_divider
                     $preSheetData->school_type = $value['school_type'];
@@ -106,7 +104,6 @@ class K512Import implements  WithEvents
                 ];
 
                 foreach ($arr as $key => $value) {
-                    Log::info($value);
                     $preSheetData = new PreSheetData();
                     //report_type found_ind found_divisor found_divider
                     $preSheetData->school_type = $value['school_type'];

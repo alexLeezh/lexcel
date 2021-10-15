@@ -27,7 +27,6 @@ class Z311Import implements  WithEvents
         $school_type = app('session')->get('school_type');
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
-        Log::info($school_type);
         switch ($school_type) {
             case 'kindergarten':
                 
