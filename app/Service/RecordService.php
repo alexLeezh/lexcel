@@ -157,6 +157,7 @@ class RecordService
                     $value->found_ind=='VSTR' && $res[$value->school][2] = $value->found_ind=='VSTR' ? $value->found_val:'';
                     $value->found_ind=='VSTR' && $res[$value->school][3] = $value->found_ind=='VSTR' ? $value->standard_val:'';
                     $value->found_ind=='VSTR' && $res[$value->school][4] = $value->found_ind=='VSTR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+
                     $value->found_ind=='VETR' && $res[$value->school][5] = $value->found_ind=='VETR' ? $value->found_val:'';
                     $value->found_ind=='VETR' && $res[$value->school][6] = $value->found_ind=='VETR' ? $value->standard_val:'';
                     $value->found_ind=='VETR' && $res[$value->school][7] = $value->found_ind=='VETR' ? ($value->is_standard == 1?'达标':'不达标'):'';
@@ -165,8 +166,10 @@ class RecordService
                     $value->found_ind=='VSMR' && $res[$value->school][9] = $value->found_ind=='VSMR' ? $value->standard_val:'';
                     $value->found_ind=='VSMR' && $res[$value->school][10] = $value->found_ind=='VSMR' ? ($value->is_standard == 1?'达标':'不达标'):'';
 
+
                     $index++;
                 }
+
                 break;    
             case 'specialSchool':
                 $index = 1;
@@ -184,6 +187,12 @@ class RecordService
                 return [];
                 break;
         }
+        if ($res) {
+            foreach ($res as $key => &$value) {
+                ksort($value);
+            }
+        }
+        Log::info($res);
         return $res;
     }
 
