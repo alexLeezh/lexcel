@@ -48,6 +48,62 @@ class UserController extends Controller
     }
 
     /**
+     * 注册账号
+     * @param  Request $request 
+     * @return [type]          
+     */
+    public function register(Request $request)
+    {
+        $postData = $request->input();
+
+        //去重
+        if (!$postData['username'] || !$request->input('password')) {
+            $response['code']     = '1';
+            $response['message'] = '参数必填！';
+            return response()->json($response);
+        }
+
+        if (\App\Models\User::where('name', $request->input('username'))
+                ->first()) {
+            $response['code']     = '1';
+            $response['message'] = '账号已存在！';
+            return response()->json($response);
+        }
+
+        $postData['name'] = $postData['username'];
+        $postData['created_at'] = date('Y-m-d H:i:s',time());
+        unset($postData['username']);
+        if (!DB::table('user')->insertGetId($postData)) {
+            $response['code']     = '1';
+            $response['message'] = '创建失败，请稍后重试！';
+            return response()->json($response);
+         }
+
+        $response['code']     = 0;
+        $response['message'] = '恭喜你账号创建成功！';
+        return response()->json($response);
+    }
+
+    /**
+     * 获取用户列表
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function ls(Request $request)
+    {
+        $user =  Auth::getUser();
+        if ($user->id !=1) {
+            // $response['code']     = 1;
+            // $response['message'] = '无权限查看！';
+            // return response()->json($response);
+            return $this->responseData('succ',0, null);
+        }
+
+        $results = app('db')->select("SELECT name,email,created_at FROM user");
+        return $this->responseData('succ',0, $data = $results);
+    }
+
+    /**
      * 用户登出
      * http://localhost:8008/api/v1/logout
      * @author AdamTyn

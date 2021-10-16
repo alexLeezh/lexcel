@@ -20,8 +20,23 @@ class AuthController extends Controller
     public function login()
     {
         // Redis::set('name', 'Taylor');
+        $q =  [
+  0 => 3,
+  1 => '慈溪市周巷职业高级中学',
+  2 => '10.323:1',
+  3 => '12:1',
+  4 => '不达标',
+  8 => '0',
+  9 => '7500',
+  10 => '不达标',
+  5 => '0',
+  6 => '90%',
+  7 => '不达标',
+];
         $user = Redis::get('name');
-        var_dump($user);exit;
+        print_r($q);
+        ksort($q);
+        print_r($q);exit;
         // $batch = app('session')->get('report_hash');
         // $school_type = app('session')->get('school_type');
         // var_dump($batch);exit;

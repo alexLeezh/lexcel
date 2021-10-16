@@ -88,11 +88,11 @@ class MainController extends Controller
             event(new RecordEvent(['form_id'=>$id]));
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->responseData('error',1, $data = null);
+            return $this->responseData('error',1, null);
         }
         DB::commit();
        
-        return $this->responseData('succ',0, $data = null);
+        return $this->responseData('succ',0, null);
     }
 
 
