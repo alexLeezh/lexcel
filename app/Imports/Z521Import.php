@@ -10,10 +10,14 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
-
 class Z521Import implements  WithEvents
 {
-
+    private static $user_id;
+    public function __construct(array $importData)
+    {
+        self::$user_id = $importData['user_id'];
+    }
+    
     public function registerEvents(): array
     {
         
@@ -52,6 +56,7 @@ class Z521Import implements  WithEvents
                 $preSheetData->report_type = 'modern';
                 $preSheetData->found_ind = 'VSMR';
                 $preSheetData->found_divisor = $mvalue;//教学仪器设备值
+                $preSheetData->user_id = self::$user_id;
                 $preSheetData->save();
                 break;
             

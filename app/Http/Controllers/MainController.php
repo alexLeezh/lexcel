@@ -58,7 +58,8 @@ class MainController extends Controller
      */
     public function ls(Request $res)
     {
-        $results = app('db')->select("SELECT * FROM form_record");
+        $user =  Auth::getUser();
+        $results = app('db')->select("SELECT * FROM form_record where user_id = ".$user->id);
         $arr = [];
         foreach ($results as &$value) {
             $value->created = date('Y-m-d H:i',$value->created);

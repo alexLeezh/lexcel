@@ -15,6 +15,7 @@ class CreateFormRecordTable extends Migration
     {
         Schema::create('form_record', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->string('form_name',100)->comment('表名');
             $table->string('form_size',100)->comment('表大小');
             $table->string('form_path',200)->comment('表地址');

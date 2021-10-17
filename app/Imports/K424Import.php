@@ -10,10 +10,14 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
-
 class K424Import implements  WithEvents
 {
-
+    private static $user_id;
+    public function __construct(array $importData)
+    {
+        self::$user_id = $importData['user_id'];
+    }
+    
     public function registerEvents(): array
     {
         
@@ -69,6 +73,7 @@ class K424Import implements  WithEvents
                     $preSheetData->found_ind = $value['found_ind'];
                     $preSheetData->found_divisor = $value['found_divisor'];
                     $preSheetData->found_divider = $value['found_divider'];
+                    $preSheetData->user_id = self::$user_id;
                     $preSheetData->save();
                 }
 
@@ -87,6 +92,7 @@ class K424Import implements  WithEvents
                 $preSheetData->report_type = 'modern';
                 $preSheetData->found_ind = 'HETR';
                 $preSheetData->found_divisor = $teachers;//班级数
+                $preSheetData->user_id = self::$user_id;
                 $preSheetData->save();
                 break;
             case 'secondaryVocationalSchool':
@@ -122,6 +128,7 @@ class K424Import implements  WithEvents
                     $preSheetData->found_ind = $value['found_ind'];
                     $preSheetData->found_divisor = $value['found_divisor'];
                     $preSheetData->found_divider = $value['found_divider'];
+                    $preSheetData->user_id = self::$user_id;
                     $preSheetData->save();
                 }
                 break;

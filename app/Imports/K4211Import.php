@@ -13,7 +13,12 @@ use App\Models\PreSheetData;
 
 class K4211Import implements  WithEvents  
 {
-
+    private static $user_id;
+    public function __construct(array $importData)
+    {
+        self::$user_id = $importData['user_id'];
+    }
+    
     public function registerEvents(): array
     {
     	return [
@@ -41,6 +46,7 @@ class K4211Import implements  WithEvents
                 $preSheetData->report_type = 'modern';
                 $preSheetData->found_ind = 'KSTR';
                 $preSheetData->found_divisor = $jteachers+$bteachers+$yteachers;//专科以上教师
+                $preSheetData->user_id = self::$user_id;
                 $preSheetData->save();
 
                 break;

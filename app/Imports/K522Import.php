@@ -10,10 +10,14 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
-
 class K522Import implements  WithEvents
 {
-
+    private static $user_id;
+    public function __construct(array $importData)
+    {
+        self::$user_id = $importData['user_id'];
+    }
+    
     public function registerEvents(): array
     {
         
@@ -58,6 +62,7 @@ class K522Import implements  WithEvents
                     $preSheetData->found_ind = $value['found_ind'];
                     $preSheetData->found_divisor = $value['found_divisor'];
                     $preSheetData->found_divider = $value['found_divider'];
+                    $preSheetData->user_id = self::$user_id;
                     $preSheetData->save();
                 }
 
@@ -87,6 +92,7 @@ class K522Import implements  WithEvents
                     $preSheetData->found_ind = $value['found_ind'];
                     $preSheetData->found_divisor = $value['found_divisor'];
                     $preSheetData->found_divider = $value['found_divider'];
+                    $preSheetData->user_id = self::$user_id;
                     $preSheetData->save();
                 }
                 break;
@@ -100,6 +106,7 @@ class K522Import implements  WithEvents
                 $preSheetData->report_type = 'modern';
                 $preSheetData->found_ind = 'HSMR';
                 $preSheetData->found_divisor = $mvalue;//教学仪器设备值
+                $preSheetData->user_id = self::$user_id;
                 $preSheetData->save();
                 break;
             case 'secondaryVocationalSchool':
@@ -138,6 +145,7 @@ class K522Import implements  WithEvents
                     $preSheetData->found_ind = $value['found_ind'];
                     $preSheetData->found_divisor = $value['found_divisor'];
                     $preSheetData->found_divider = $value['found_divider'];
+                    $preSheetData->user_id = self::$user_id;
                     $preSheetData->save();
                 }
                 break;

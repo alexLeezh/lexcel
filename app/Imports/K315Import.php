@@ -10,9 +10,14 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
-
 class K315Import implements  WithEvents
 {
+
+    private static $user_id;
+    public function __construct(array $importData)
+    {
+        self::$user_id = $importData['user_id'];
+    }
 
     public function registerEvents(): array
     {
@@ -24,6 +29,7 @@ class K315Import implements  WithEvents
 
     public static function afterSheet(AfterSheet $event) 
     {
+        // Log::info($user);
         $school_type = app('session')->get('school_type');
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
@@ -57,6 +63,8 @@ class K315Import implements  WithEvents
                 $preSheetData->report_type = 'modern';
                 $preSheetData->found_ind = 'SSTR';
                 $preSheetData->found_divisor = $students;//特殊学校学生数
+                $preSheetData->user_id = self::$user_id;
+                
                 $preSheetData->save();
                 break;  
                 

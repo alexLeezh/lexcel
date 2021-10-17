@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Redis;
 class EsImport implements WithEvents
 {
     
+    private static $user_id;
+    public function __construct(array $importData)
+    {
+        self::$user_id = $importData['user_id'];
+    }
 
 	public function registerEvents(): array
     {

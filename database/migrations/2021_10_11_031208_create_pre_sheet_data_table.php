@@ -15,6 +15,7 @@ class CreatePreSheetDataTable extends Migration
     {
         Schema::create('pre_sheet_data', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->string('school',100)->comment('学校名');
             $table->enum('school_type',['kindergarten','primarySchool','juniorMiddleSchool','highSchool','secondaryVocationalSchool','specialSchool','nineYearCon'])->default('kindergarten')->comment('学校类型，kindergarten：幼儿园，primarySchool：小学，juniorMiddleSchool：初中，highSchool：普高，SecondaryVocationalSchool：中职，specialSchool：特殊教育');
             $table->string('found_divisor',20)->nullable()->comment('实际值除数');

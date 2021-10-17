@@ -25,6 +25,12 @@ $router->post('demo','ExampleController@example');
 $router->group(['middleware' => 'cross'], function () use ($router) {
     $router->post('login', 'UserController@login');
     $router->post('register', 'UserController@register');
+
+    // $router->get('resource/{asset}',[ 'as' => 'storage.resource',  'uses'=>'ResourceController@index']);
+});
+
+$router->group(['prefix' => '/','middleware'=>['auth:api']], function () use ($router) {
+	// $router->get('resource/{asset}',[ 'as' => 'storage.resource',  'uses'=>'ResourceController@index']);
 });
 
 $router->group(['prefix' => 'admin','middleware'=>['cross']], function () use ($router) {

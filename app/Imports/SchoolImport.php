@@ -39,40 +39,46 @@ use App\Imports\K512Import;
 class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
 {
     use WithConditionalSheets;
+    private $importData;
+    public function __construct(array $importData)
+    {
+        $this->importData = $importData;
+        Log::info($importData);
+    }
 
     public function conditionalSheets(): array
     {
         return [
-            '基础基111' => new EsImport(),
-            '基础基211' => new K211Import(),
-            '基础基411' => new K411Import(),
-            '基础基4211' => new K4211Import(),
+            '基础基111' => new EsImport($this->importData),
+            '基础基211' => new K211Import($this->importData),
+            '基础基411' => new K411Import($this->importData),
+            '基础基4211' => new K4211Import($this->importData),
 
-            '基础基212' => new K212Import(),
-            '基础基312' => new K312Import(),
-            '基础基412' => new K412Import(),//小学，初中 ,高中
-            '基础基422' => new K422Import(),//小学，初中
-            '基础基423' => new K423Import(),
-            '基础基531' => new K531Import(),//小学，初中
+            '基础基212' => new K212Import($this->importData),
+            '基础基312' => new K312Import($this->importData),
+            '基础基412' => new K412Import($this->importData),//小学，初中 ,高中
+            '基础基422' => new K422Import($this->importData),//小学，初中
+            '基础基423' => new K423Import($this->importData),
+            '基础基531' => new K531Import($this->importData),//小学，初中
 
-            '基础基213' => new K213Import(),
-            '基础基313' => new K313Import(),
-            '基础基424' => new K424Import(), //初中，高中
+            '基础基213' => new K213Import($this->importData),
+            '基础基313' => new K313Import($this->importData),
+            '基础基424' => new K424Import($this->importData), //初中，高中
 
-            '基础基314' => new K314Import(),
-            '基础基522' => new K522Import(),
+            '基础基314' => new K314Import($this->importData),
+            '基础基522' => new K522Import($this->importData),
             
-            '中职基111' => new EsImport(),
-            '中职基311' => new Z311Import(),
-            '中职基411' => new Z411Import(),
-            '中职基421' => new Z421Import(),
-            '中职基521' => new Z521Import(),
+            '中职基111' => new EsImport($this->importData),
+            '中职基311' => new Z311Import($this->importData),
+            '中职基411' => new Z411Import($this->importData),
+            '中职基421' => new Z421Import($this->importData),
+            '中职基521' => new Z521Import($this->importData),
 
-            '基础基315' => new K315Import(),
-            '基础基413' => new K413Import(),
+            '基础基315' => new K315Import($this->importData),
+            '基础基413' => new K413Import($this->importData),
 
-            '基础基112' => new K112Import(),
-            '基础基512' => new K512Import(),
+            '基础基112' => new K112Import($this->importData),
+            '基础基512' => new K512Import($this->importData),
 
         ];
     }

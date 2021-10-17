@@ -38,13 +38,14 @@ class ReportController extends Controller
     }
 
     /**
-     * 生成报表
+     * 获取列表
      * http://localhost:8008/api/v1/report
      * @return 
      */
     public function ls(Request $request)
     {
-        $results = app('db')->select("SELECT * FROM download_record");
+        $user =  Auth::getUser();
+        $results = app('db')->select("SELECT * FROM download_record where user_id = ".$user->id);
         return $this->responseData('succ',0, $data = $results);
     }
 }

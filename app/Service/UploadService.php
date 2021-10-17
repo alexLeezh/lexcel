@@ -11,6 +11,7 @@ use App\Jobs\ExampleJob;
 use App\Jobs\UploadFileDataJob;
 use App\Imports\SchoolImport;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class UploadService
@@ -23,11 +24,12 @@ class UploadService
 
     public function uploadFile($fileObject, &$msg)
     {
-
+        $user =  Auth::getUser();
         if ($fileObject->getError() == UPLOAD_ERR_FORM_SIZE) {
             $msg = '上传文件大小超出限制';
             return false;
         }
+
         //check 
         $this->check($fileObject);
 
@@ -45,8 +47,10 @@ class UploadService
             'form_path' => $filePath,
             'created' => $uploadTime,
             'status' => 2, //等待处理
+            'user_id' => $user->id,
         ];
-
+        Log::info('uploadFile');
+        Log::info($data);
         //存库
         $data['id'] = DB::table('form_record')->insertGetId($data);
         //队列
@@ -76,8 +80,10 @@ class UploadService
 
         $filePath = $this->putFilePath($data['created'], $data['form_name']);
         $fileUrl = storage_path('app') . '/' .$filePath;
+        Log::info('handleUploadFile');
+        Log::info($data);
         //导入
-        $import = new SchoolImport();
+        $import = new SchoolImport($data);
         $import->onlySheets('基础基111','基础基211','基础基411','基础基4211','基础基212','基础基312','基础基412','基础基422','基础基423','基础基531','基础基213','基础基313','基础基424','基础基314','基础基522','中职基111','中职基311','中职基411','中职基421','中职基521','基础基315','基础基413','基础基112','基础基512');
         Excel::import($import, $fileUrl);
 
@@ -99,7 +105,7 @@ class UploadService
         if (!$batch) {
             throw new Exception('请联系管理员！');
         }
-        $preData = app('db')->select("SELECT * FROM pre_sheet_data ");
+        $preData = app('db')->select("SELECT * FROM pre_sheet_data where user_id = ".$data['user_id']);
 
         foreach ($preData as $value) {
             $this->handleUploadDataPerBatch($value->report_hash, $data);
@@ -139,7 +145,6 @@ class UploadService
                 $ind_config = [];
                 if (count($value) == 2) {
                     $foundval = $this->Object2Array(array_values($value));
-                    Log::info($foundval);
                     $ind_config = $global_config[$key];
                     $insert_row['school'] = $foundval[0]['school'];
                     $insert_row['school_type'] = $foundval[0]['school_type'];
@@ -149,6 +154,7 @@ class UploadService
                     $insert_row['found_ind'] = $foundval[0]['found_ind'];
                     $insert_row['report_type'] = $foundval[0]['report_type'];
                     $insert_row['form_id'] = $data['id'];
+                    $insert_row['user_id'] = $data['user_id'];
 
                     if (isset($foundval[0]['found_divisor']) && $foundval[0]['found_divisor'] > 0) {
                         if (isset($foundval[1]['found_divider'])) {
@@ -179,6 +185,7 @@ class UploadService
                     $insert_row['found_ind'] = $foundval[0]['found_ind'];
                     $insert_row['report_type'] = $foundval[0]['report_type'];
                     $insert_row['form_id'] = $data['id'];
+                    $insert_row['user_id'] = $data['user_id'];
 
                     $found_divisor = 0;
                     $found_divider = 0;
@@ -192,7 +199,7 @@ class UploadService
                 }
                 //更新导出表
                 DB::table('sheet_record')->insert($insert_row);
-                Log::info($insert_row);
+                // Log::info($insert_row);
             }
             DB::table('pre_sheet_data')->where('report_hash', $batch)->delete();
             

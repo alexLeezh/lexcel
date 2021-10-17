@@ -15,6 +15,7 @@ class CreateDownloadRecordTable extends Migration
     {
         Schema::create('download_record', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->string('file_name',100)->comment('导出表名');
             $table->string('file_path',100)->comment('表路径');
             $table->timestamps();

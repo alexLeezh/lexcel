@@ -13,7 +13,12 @@ use App\Models\PreSheetData;
 
 class K411Import implements  WithEvents  
 {
-
+    private static $user_id;
+    public function __construct(array $importData)
+    {
+        self::$user_id = $importData['user_id'];
+    }
+    
     public function registerEvents(): array
     {
     	return [
@@ -37,7 +42,6 @@ class K411Import implements  WithEvents
                     ['school_type'=>$school_type,'school'=>$school,'report_type'=>'modern','found_ind'=>'KSTR','found_divisor'=>0,'found_divider'=>$teachers,'report_hash'=>$report_hash]
                 ];
                 foreach ($arr as $key => $value) {
-                    Log::info($value);
                     $preSheetData = new PreSheetData();
                     //report_type found_ind found_divisor found_divider
                     $preSheetData->school_type = $value['school_type'];
@@ -48,6 +52,7 @@ class K411Import implements  WithEvents
                     $preSheetData->found_ind = $value['found_ind'];
                     $preSheetData->found_divisor = $value['found_divisor'];
                     $preSheetData->found_divider = $value['found_divider'];
+                    $preSheetData->user_id = self::$user_id;
                     $preSheetData->save();
                 }
 

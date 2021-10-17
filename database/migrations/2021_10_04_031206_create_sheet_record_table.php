@@ -16,6 +16,7 @@ class CreateSheetRecordTable extends Migration
         Schema::create('sheet_record', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('form_id')->comment('关联上传表');
+            $table->unsignedInteger('user_id')->comment('用户ID');
             $table->string('school',100)->comment('学校名');
             $table->enum('school_type',['kindergarten','primarySchool','juniorMiddleSchool','highSchool','secondaryVocationalSchool','specialSchool','nineYearCon'])->default('kindergarten')->comment('学校类型，kindergarten：幼儿园，primarySchool：小学，juniorMiddleSchool：初中，highSchool：普高，SecondaryVocationalSchool：中职，specialSchool：特殊教育');
             $table->string('basic_val',20)->comment('基本值');
