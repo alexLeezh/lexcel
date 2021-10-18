@@ -45,6 +45,7 @@ $router->group(['prefix' => 'api/v1','middleware'=>['auth:api','cross']], functi
     $router->delete('del/{id}','MainController@delete');
     $router->get('userlist', 'UserController@ls');
     $router->post('modfiy', 'UserController@modfiy');
+    $router->post('changepw', 'UserController@changepw');
 });
 
 $router->get('resource/{asset}', [
