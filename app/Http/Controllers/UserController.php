@@ -85,6 +85,37 @@ class UserController extends Controller
     }
 
     /**
+     * 修改密码
+     * @param  Request $request 
+     * @return [type]          
+     */
+    public function modfiy(Request $request)
+    {
+        $postData = $request->input();
+
+        $user = \App\Models\User::where('name', $request->input('username'))
+                ->where('password', $request->input('password'))->first();
+        if (!$user) {
+            $response['code']     = '1';
+            $response['message'] = '账号或密码错误！';
+            return response()->json($response);
+        }
+
+        $updateData['password'] = $postData['newpwd'];
+        $updateData['updated_at'] = date('Y-m-d H:i:s',time());
+
+        if (!DB::table('user')->where('id',$user->id)->update($updateData)) {
+            $response['code']     = '1';
+            $response['message'] = '修改失败，请稍后重试！';
+            return response()->json($response);
+         }
+
+        $response['code']     = 0;
+        $response['message'] = '密码修改成功！';
+        return response()->json($response);
+    }
+
+    /**
      * 获取用户列表
      * @param  Request $request [description]
      * @return [type]           [description]
