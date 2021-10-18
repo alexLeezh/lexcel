@@ -108,7 +108,7 @@ class RecordService
                 $count = count($res);
                 //合计
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
                 $res['合计'][2] = $global_config['KCTR']['ratio']=='default'? $sumKCTR.$global_config['KCTR']['unit']:($global_config['KCTR']['ratio']=='percent'?round( ($sumKCTR/$count), 3).'%':round( ($sumKCTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['KCTR']['standard_val'];
                 $res['合计'][4] = '合计';
@@ -204,7 +204,7 @@ class RecordService
                 $count = count($res);
                 //合计
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
                 $res['合计'][2] = $global_config['PSTR']['ratio']=='default'? $sumPSTR.$global_config['PSTR']['unit']:($global_config['PSTR']['ratio']=='percent'?round( ($sumPSTR/$count), 3).'%':round( ($sumPSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['PSTR']['standard_val'];
                 $res['合计'][4] = '合计';
@@ -312,7 +312,7 @@ class RecordService
                 $count = count($res);
                 //合计
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
                 $res['合计'][2] = $global_config['JSTR']['ratio']=='default'? $sumJSTR.$global_config['JSTR']['unit']:($global_config['JSTR']['ratio']=='percent'?round( ($sumJSTR/$count), 3).'%':round( ($sumJSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['JSTR']['standard_val'];
                 $res['合计'][4] = '合计';
@@ -389,7 +389,7 @@ class RecordService
                 }
                 $count = count($res);
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
                 $res['合计'][2] = $global_config['HSTR']['ratio']=='default'? $sumHSTR.$global_config['HSTR']['unit']:($global_config['HSTR']['ratio']=='percent'?round( ($sumHSTR/$count), 3).'%':round( ($sumHSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['HSTR']['standard_val'];
                 $res['合计'][4] = '合计';
@@ -461,7 +461,7 @@ class RecordService
                 }
                 $count = count($res);
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
                 $res['合计'][2] = $global_config['VSTR']['ratio']=='default'? $sumVSTR.$global_config['VSTR']['unit']:($global_config['VSTR']['ratio']=='percent'?round( ($sumVSTR/$count), 3).'%':round( ($sumVSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['VSTR']['standard_val'];
                 $res['合计'][4] = '合计';
@@ -500,7 +500,7 @@ class RecordService
                 }
                 $count = count($res);
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
                 $res['合计'][2] = $global_config['SSTR']['ratio']=='default'? $sumSSTR.$global_config['SSTR']['unit']:($global_config['SSTR']['ratio']=='percent'?round( ($sumVSMR/$count), 3).'%':round( ($sumVSMR/$count), 3).':1');
                 $res['合计'][3] = $global_config['SSTR']['standard_val'];
                 $res['合计'][4] = '合计';
@@ -644,7 +644,7 @@ class RecordService
                 }
                 $count = count($res);
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
 
                 $res['合计'][2] = $global_config['PHETR']['basic_val'];
                 $res['合计'][3] = $global_config['PHETR']['standard_val'];
@@ -802,7 +802,7 @@ class RecordService
                 }
                 $count = count($res);
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
 
                 $res['合计'][2] = $global_config['JHETR']['basic_val'];
                 $res['合计'][3] = $global_config['JHETR']['standard_val'];
@@ -957,7 +957,7 @@ class RecordService
                 }
                 $count = count($res);
                 $res['合计'][0] = '';
-                $res['合计'][1] = '';
+                $res['合计'][1] = '合计';
 
                 $res['合计'][2] = $global_config['NHETR']['basic_val'];
                 $res['合计'][3] = $global_config['NHETR']['standard_val'];
