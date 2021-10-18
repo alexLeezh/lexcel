@@ -93,9 +93,17 @@ class UserController extends Controller
     {
         $postData = $request->input();
 
-        $user = \App\Models\User::where('name', $request->input('username'))
-                ->where('password', $request->input('password'))->first();
+        $user =  Auth::getUser();
         if (!$user) {
+            $response['code']     = '1';
+            $response['message'] = '登录失效，请重新登录！';
+            return response()->json($response);
+        }
+
+        $userinfo = \App\Models\User::where('id', $user->id)
+                ->first();
+                
+        if (!$userinfo) {
             $response['code']     = '1';
             $response['message'] = '账号或密码错误！';
             return response()->json($response);
@@ -103,7 +111,7 @@ class UserController extends Controller
 
         $updateData['password'] = $postData['newpwd'];
         $updateData['updated_at'] = date('Y-m-d H:i:s',time());
-
+        
         if (!DB::table('user')->where('id',$user->id)->update($updateData)) {
             $response['code']     = '1';
             $response['message'] = '修改失败，请稍后重试！';

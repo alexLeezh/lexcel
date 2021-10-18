@@ -25,7 +25,7 @@ $router->post('demo','ExampleController@example');
 $router->group(['middleware' => 'cross'], function () use ($router) {
     $router->post('login', 'UserController@login');
     $router->post('register', 'UserController@register');
-    $router->post('modfiy', 'UserController@modfiy');
+
 
 });
 
@@ -43,8 +43,8 @@ $router->group(['prefix' => 'api/v1','middleware'=>['auth:api','cross']], functi
     $router->get('generate','ReportController@generate');
     $router->get('report','ReportController@ls');
     $router->delete('del/{id}','MainController@delete');
-
     $router->get('userlist', 'UserController@ls');
+    $router->post('modfiy', 'UserController@modfiy');
 });
 
 $router->get('resource/{asset}', [
