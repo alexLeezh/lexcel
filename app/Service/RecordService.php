@@ -28,6 +28,10 @@ class RecordService
     {
         $downLoadData = [];
         $user =  Auth::getUser();
+        //判断是否还有数据
+        if (!app('db')->select("SELECT * FROM sheet_record where  user_id = '".$user->id." ' ")) {
+            return true;
+        }
         foreach ($this->school_report as $k => $v) {
             $fileNm = date('Y-m-d H:i:s',time()).$v.'.xlsx';
             Excel::store(new SchoolReportExport($k), $fileNm);
@@ -101,14 +105,15 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
-                $res['合计'][2] = $global_config['KCTR']['ratio']=='default'? $sumKCTR.$global_config['KCTR']['unit']:($global_config['KCTR']['ratio']=='percent'?$sumKCTR.'%':$sumKCTR.':1');
+                $res['合计'][2] = $global_config['KCTR']['ratio']=='default'? $sumKCTR.$global_config['KCTR']['unit']:($global_config['KCTR']['ratio']=='percent'?round( ($sumKCTR/$count), 3).'%':round( ($sumKCTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['KCTR']['standard_val'];
                 $res['合计'][4] = '合计';
 
-                $res['合计'][5] = $global_config['KSTR']['ratio']=='default'? $sumKSTR.$global_config['KSTR']['unit']:($global_config['KSTR']['ratio']=='percent'?$sumKSTR.'%':$sumKSTR.':1');;
+                $res['合计'][5] = $global_config['KSTR']['ratio']=='default'? $sumKSTR.$global_config['KSTR']['unit']:($global_config['KSTR']['ratio']=='percent'?round( ($sumKSTR/$count), 3).'%':round( ($sumKSTR/$count), 3).':1');
                 $res['合计'][6] = $global_config['KSTR']['standard_val'];
                 $res['合计'][7] = '合计';
 
@@ -196,26 +201,27 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
-                $res['合计'][2] = $global_config['PSTR']['ratio']=='default'? $sumPSTR.$global_config['PSTR']['unit']:($global_config['PSTR']['ratio']=='percent'?$sumPSTR.'%':$sumPSTR.':1');
+                $res['合计'][2] = $global_config['PSTR']['ratio']=='default'? $sumPSTR.$global_config['PSTR']['unit']:($global_config['PSTR']['ratio']=='percent'?round( ($sumPSTR/$count), 3).'%':round( ($sumPSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['PSTR']['standard_val'];
                 $res['合计'][4] = '合计';
 
-                $res['合计'][5] = $global_config['PTR']['ratio']=='default'? $sumPTR.$global_config['PTR']['unit']:($global_config['PTR']['ratio']=='percent'?$sumPTR.'%':$sumPTR.':1');;
+                $res['合计'][5] = $global_config['PTR']['ratio']=='default'? $sumPTR.$global_config['PTR']['unit']:($global_config['PTR']['ratio']=='percent'?round( ($sumPTR/$count), 3).'%':round( ($sumPTR/$count), 3).':1');;
                 $res['合计'][6] = $global_config['PTR']['standard_val'];
                 $res['合计'][7] = '合计';
 
-                $res['合计'][8] = $global_config['PFCR']['ratio']=='default'? $sumPFCR.$global_config['PFCR']['unit']:($global_config['PFCR']['ratio']=='percent'?$sumPFCR.'%':$sumPFCR.':1');;
+                $res['合计'][8] = $global_config['PFCR']['ratio']=='default'? $sumPFCR.$global_config['PFCR']['unit']:($global_config['PFCR']['ratio']=='percent'?round( ($sumPFCR/$count), 3).'%':round( ($sumPFCR/$count), 3).':1');;
                 $res['合计'][9] = $global_config['PFCR']['standard_val'];
                 $res['合计'][10] = '合计';
 
-                $res['合计'][11] = $global_config['PHSTR']['ratio']=='default'? $sumPHSTR.$global_config['PHSTR']['unit']:($global_config['PHSTR']['ratio']=='percent'?$sumPHSTR.'%':$sumPHSTR.':1');;
+                $res['合计'][11] = $global_config['PHSTR']['ratio']=='default'? $sumPHSTR.$global_config['PHSTR']['unit']:($global_config['PHSTR']['ratio']=='percent'?round( ($sumPHSTR/$count), 3).'%':round( ($sumPHSTR/$count), 3).':1');;
                 $res['合计'][12] = $global_config['PHSTR']['standard_val'];
                 $res['合计'][13] = '合计';
 
-                $res['合计'][14] = $global_config['PSBR']['ratio']=='default'? $sumPSBR.$global_config['PSBR']['unit']:($global_config['PSBR']['ratio']=='percent'?$sumPSBR.'%':$sumPSBR.':1');;
+                $res['合计'][14] = $global_config['PSBR']['ratio']=='default'? $sumPSBR.$global_config['PSBR']['unit']:($global_config['PSBR']['ratio']=='percent'?round( ($sumPSBR/$count), 3).'%':round( ($sumPSBR/$count), 3).':1');;
                 $res['合计'][15] = $global_config['PSBR']['standard_val'];
                 $res['合计'][16] = '合计';
                 
@@ -303,26 +309,27 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
-                $res['合计'][2] = $global_config['JSTR']['ratio']=='default'? $sumJSTR.$global_config['JSTR']['unit']:($global_config['JSTR']['ratio']=='percent'?$sumJSTR.'%':$sumJSTR.':1');
+                $res['合计'][2] = $global_config['JSTR']['ratio']=='default'? $sumJSTR.$global_config['JSTR']['unit']:($global_config['JSTR']['ratio']=='percent'?round( ($sumJSTR/$count), 3).'%':round( ($sumJSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['JSTR']['standard_val'];
                 $res['合计'][4] = '合计';
 
-                $res['合计'][5] = $global_config['JETR']['ratio']=='default'? $sumJETR.$global_config['JETR']['unit']:($global_config['JETR']['ratio']=='percent'?$sumJETR.'%':$sumJETR.':1');;
+                $res['合计'][5] = $global_config['JETR']['ratio']=='default'? $sumJETR.$global_config['JETR']['unit']:($global_config['JETR']['ratio']=='percent'?round( ($sumJETR/$count), 3).'%':round( ($sumJETR/$count), 3).':1');;
                 $res['合计'][6] = $global_config['JETR']['standard_val'];
                 $res['合计'][7] = '合计';
 
-                $res['合计'][8] = $global_config['JFCR']['ratio']=='default'? $sumJFCR.$global_config['JFCR']['unit']:($global_config['JFCR']['ratio']=='percent'?$sumJFCR.'%':$sumJFCR.':1');;
+                $res['合计'][8] = $global_config['JFCR']['ratio']=='default'? $sumJFCR.$global_config['JFCR']['unit']:($global_config['JFCR']['ratio']=='percent'?round( ($sumJFCR/$count), 3).'%':round( ($sumJFCR/$count), 3).':1');;
                 $res['合计'][9] = $global_config['JFCR']['standard_val'];
                 $res['合计'][10] = '合计';
 
-                $res['合计'][11] = $global_config['JHSTR']['ratio']=='default'? $sumJHSTR.$global_config['JHSTR']['unit']:($global_config['JHSTR']['ratio']=='percent'?$sumJHSTR.'%':$sumJHSTR.':1');;
+                $res['合计'][11] = $global_config['JHSTR']['ratio']=='default'? $sumJHSTR.$global_config['JHSTR']['unit']:($global_config['JHSTR']['ratio']=='percent'?round( ($sumJHSTR/$count), 3).'%':round( ($sumJHSTR/$count), 3).':1');;
                 $res['合计'][12] = $global_config['JHSTR']['standard_val'];
                 $res['合计'][13] = '合计';
 
-                $res['合计'][14] = $global_config['JSBR']['ratio']=='default'? $sumJSBR.$global_config['JSBR']['unit']:($global_config['JSBR']['ratio']=='percent'?$sumJSBR.'%':$sumJSBR.':1');;
+                $res['合计'][14] = $global_config['JSBR']['ratio']=='default'? $sumJSBR.$global_config['JSBR']['unit']:($global_config['JSBR']['ratio']=='percent'?round( ($sumJSBR/$count), 3).'%':round( ($sumJSBR/$count), 3).':1');;
                 $res['合计'][15] = $global_config['JSBR']['standard_val'];
                 $res['合计'][16] = '合计';
                 break;
@@ -380,17 +387,18 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
-                $res['合计'][2] = $global_config['HSTR']['ratio']=='default'? $sumHSTR.$global_config['HSTR']['unit']:($global_config['HSTR']['ratio']=='percent'?$sumHSTR.'%':$sumHSTR.':1');
+                $res['合计'][2] = $global_config['HSTR']['ratio']=='default'? $sumHSTR.$global_config['HSTR']['unit']:($global_config['HSTR']['ratio']=='percent'?round( ($sumHSTR/$count), 3).'%':round( ($sumHSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['HSTR']['standard_val'];
                 $res['合计'][4] = '合计';
 
-                $res['合计'][5] = $global_config['HETR']['ratio']=='default'? $sumHETR.$global_config['HETR']['unit']:($global_config['HETR']['ratio']=='percent'?$sumHETR.'%':$sumHETR.':1');;
+                $res['合计'][5] = $global_config['HETR']['ratio']=='default'? $sumHETR.$global_config['HETR']['unit']:($global_config['HETR']['ratio']=='percent'?round( ($sumHETR/$count), 3).'%':round( ($sumHETR/$count), 3).':1');;
                 $res['合计'][6] = $global_config['HETR']['standard_val'];
                 $res['合计'][7] = '合计';
 
-                $res['合计'][8] = $global_config['HSMR']['ratio']=='default'? $sumHSMR.$global_config['HSMR']['unit']:($global_config['HSMR']['ratio']=='percent'?$sumHSMR.'%':$sumHSMR.':1');;
+                $res['合计'][8] = $global_config['HSMR']['ratio']=='default'? $sumHSMR.$global_config['HSMR']['unit']:($global_config['HSMR']['ratio']=='percent'?round( ($sumHSMR/$count), 3).'%':round( ($sumHSMR/$count), 3).':1');;
                 $res['合计'][9] = $global_config['HSMR']['standard_val'];
                 $res['合计'][10] = '合计';
 
@@ -451,17 +459,18 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
-                $res['合计'][2] = $global_config['VSTR']['ratio']=='default'? $sumVSTR.$global_config['VSTR']['unit']:($global_config['VSTR']['ratio']=='percent'?$sumVSTR.'%':$sumVSTR.':1');
+                $res['合计'][2] = $global_config['VSTR']['ratio']=='default'? $sumVSTR.$global_config['VSTR']['unit']:($global_config['VSTR']['ratio']=='percent'?round( ($sumVSTR/$count), 3).'%':round( ($sumVSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['VSTR']['standard_val'];
                 $res['合计'][4] = '合计';
 
-                $res['合计'][5] = $global_config['VETR']['ratio']=='default'? $sumVETR.$global_config['VETR']['unit']:($global_config['VETR']['ratio']=='percent'?$sumVETR.'%':$sumVETR.':1');;
+                $res['合计'][5] = $global_config['VETR']['ratio']=='default'? $sumVETR.$global_config['VETR']['unit']:($global_config['VETR']['ratio']=='percent'?round( ($sumVETR/$count), 3).'%':round( ($sumVETR/$count), 3).':1');;
                 $res['合计'][6] = $global_config['VETR']['standard_val'];
                 $res['合计'][7] = '合计';
 
-                $res['合计'][8] = $global_config['VSMR']['ratio']=='default'? $sumVSMR.$global_config['VSMR']['unit']:($global_config['VSMR']['ratio']=='percent'?$sumVSMR.'%':$sumVSMR.':1');;
+                $res['合计'][8] = $global_config['VSMR']['ratio']=='default'? $sumVSMR.$global_config['VSMR']['unit']:($global_config['VSMR']['ratio']=='percent'?round( ($sumVSMR/$count), 3).'%':round( ($sumVSMR/$count), 3).':1');;
                 $res['合计'][9] = $global_config['VSMR']['standard_val'];
                 $res['合计'][10] = '合计';
                 break;    
@@ -489,9 +498,10 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
-                $res['合计'][2] = $global_config['SSTR']['ratio']=='default'? $sumSSTR.$global_config['SSTR']['unit']:($global_config['SSTR']['ratio']=='percent'?$sumSSTR.'%':$sumSSTR.':1');
+                $res['合计'][2] = $global_config['SSTR']['ratio']=='default'? $sumSSTR.$global_config['SSTR']['unit']:($global_config['SSTR']['ratio']=='percent'?round( ($sumVSMR/$count), 3).'%':round( ($sumVSMR/$count), 3).':1');
                 $res['合计'][3] = $global_config['SSTR']['standard_val'];
                 $res['合计'][4] = '合计';
                 break;
@@ -632,42 +642,43 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
 
                 $res['合计'][2] = $global_config['PHETR']['basic_val'];
                 $res['合计'][3] = $global_config['PHETR']['standard_val'];
-                $res['合计'][4] = $global_config['PHETR']['ratio']=='default'? $sumPHETR.$global_config['PHETR']['unit']:($global_config['PHETR']['ratio']=='percent'?$sumPHETR.'%':$sumPHETR.':1');
+                $res['合计'][4] = $global_config['PHETR']['ratio']=='default'? $sumPHETR.$global_config['PHETR']['unit']:($global_config['PHETR']['ratio']=='percent'?round( ($sumPHETR/$count), 3).'%':round( ($sumPHETR/$count), 3).':1');
                 $res['合计'][5] = '合计';
 
                 $res['合计'][6] = $global_config['PHBTR']['basic_val'];
                 $res['合计'][7] = $global_config['PHBTR']['standard_val'];
-                $res['合计'][8] = $global_config['PHBTR']['ratio']=='default'? $sumPHBTR.$global_config['PHBTR']['unit']:($global_config['PHBTR']['ratio']=='percent'?$sumPHBTR.'%':$sumPHBTR.':1');
+                $res['合计'][8] = $global_config['PHBTR']['ratio']=='default'? $sumPHBTR.$global_config['PHBTR']['unit']:($global_config['PHBTR']['ratio']=='percent'?round( ($sumPHBTR/$count), 3).'%':round( ($sumPHBTR/$count), 3).':1');
                 $res['合计'][9] = '合计';
 
                 $res['合计'][10] = $global_config['PHATR']['basic_val'];
                 $res['合计'][11] = $global_config['PHATR']['standard_val'];
-                $res['合计'][12] = $global_config['PHATR']['ratio']=='default'? $sumPHATR.$global_config['PHATR']['unit']:($global_config['PHATR']['ratio']=='percent'?$sumPHATR.'%':$sumPHATR.':1');
+                $res['合计'][12] = $global_config['PHATR']['ratio']=='default'? $sumPHATR.$global_config['PHATR']['unit']:($global_config['PHATR']['ratio']=='percent'?round( ($sumPHATR/$count), 3).'%':round( ($sumPHATR/$count), 3).':1');
                 $res['合计'][13] = '合计';
 
                 $res['合计'][14] = $global_config['PSRAR']['basic_val'];
                 $res['合计'][15] = $global_config['PSRAR']['standard_val'];
-                $res['合计'][16] = $global_config['PSRAR']['ratio']=='default'? $sumPSRAR.$global_config['PSRAR']['unit']:($global_config['PSRAR']['ratio']=='percent'?$sumPSRAR.'%':$sumPSRAR.':1');
+                $res['合计'][16] = $global_config['PSRAR']['ratio']=='default'? $sumPSRAR.$global_config['PSRAR']['unit']:($global_config['PSRAR']['ratio']=='percent'?round( ($sumPSRAR/$count), 3).'%':round( ($sumPSRAR/$count), 3).':1');
                 $res['合计'][17] = '合计';
 
                 $res['合计'][18] = $global_config['PSMAR']['basic_val'];
                 $res['合计'][19] = $global_config['PSMAR']['standard_val'];
-                $res['合计'][20] = $global_config['PSMAR']['ratio']=='default'? $sumPSMAR.$global_config['PSMAR']['unit']:($global_config['PSMAR']['ratio']=='percent'?$sumPSMAR.'%':$sumPSMAR.':1');
+                $res['合计'][20] = $global_config['PSMAR']['ratio']=='default'? $sumPSMAR.$global_config['PSMAR']['unit']:($global_config['PSMAR']['ratio']=='percent'?round( ($sumPSMAR/$count), 3).'%':round( ($sumPSMAR/$count), 3).':1');
                 $res['合计'][21] = '合计';
 
                 $res['合计'][22] = $global_config['PSMR']['basic_val'];
                 $res['合计'][23] = $global_config['PSMR']['standard_val'];
-                $res['合计'][24] = $global_config['PSMR']['ratio']=='default'? $sumPSMR.$global_config['PSMR']['unit']:($global_config['PSMR']['ratio']=='percent'?$sumPSMR.'%':$sumPSMR.':1');
+                $res['合计'][24] = $global_config['PSMR']['ratio']=='default'? $sumPSMR.$global_config['PSMR']['unit']:($global_config['PSMR']['ratio']=='percent'?round( ($sumPSMR/$count), 3).'%':round( ($sumPSMR/$count), 3).':1');
                 $res['合计'][25] = '合计';
 
                 $res['合计'][26] = $global_config['PHIR']['basic_val'];
                 $res['合计'][27] = $global_config['PHIR']['standard_val'];
-                $res['合计'][28] = $global_config['PHIR']['ratio']=='default'? $sumPHIR.$global_config['PHIR']['unit']:($global_config['PHIR']['ratio']=='percent'?$sumPHIR.'%':$sumPHIR.':1');
+                $res['合计'][28] = $global_config['PHIR']['ratio']=='default'? $sumPHIR.$global_config['PHIR']['unit']:($global_config['PHIR']['ratio']=='percent'?round( ($sumPHIR/$count), 3).'%':round( ($sumPHIR/$count), 3).':1');
                 $res['合计'][29] = '合计';
 
 
@@ -789,42 +800,43 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
 
                 $res['合计'][2] = $global_config['JHETR']['basic_val'];
                 $res['合计'][3] = $global_config['JHETR']['standard_val'];
-                $res['合计'][4] = $global_config['JHETR']['ratio']=='default'? $sumJHETR.$global_config['JHETR']['unit']:($global_config['JHETR']['ratio']=='percent'?$sumJHETR.'%':$sumJHETR.':1');
+                $res['合计'][4] = $global_config['JHETR']['ratio']=='default'? $sumJHETR.$global_config['JHETR']['unit']:($global_config['JHETR']['ratio']=='percent'?round( ($sumJHETR/$count), 3).'%':round( ($sumJHETR/$count), 3).':1');
                 $res['合计'][5] = '合计';
 
                 $res['合计'][6] = $global_config['JHBTR']['basic_val'];
                 $res['合计'][7] = $global_config['JHBTR']['standard_val'];
-                $res['合计'][8] = $global_config['JHBTR']['ratio']=='default'? $sumJHBTR.$global_config['JHBTR']['unit']:($global_config['JHBTR']['ratio']=='percent'?$sumJHBTR.'%':$sumJHBTR.':1');
+                $res['合计'][8] = $global_config['JHBTR']['ratio']=='default'? $sumJHBTR.$global_config['JHBTR']['unit']:($global_config['JHBTR']['ratio']=='percent'?round( ($sumJHBTR/$count), 3).'%':round( ($sumJHBTR/$count), 3).':1');
                 $res['合计'][9] = '合计';
 
                 $res['合计'][10] = $global_config['JHATR']['basic_val'];
                 $res['合计'][11] = $global_config['JHATR']['standard_val'];
-                $res['合计'][12] = $global_config['JHATR']['ratio']=='default'? $sumJHATR.$global_config['JHATR']['unit']:($global_config['JHATR']['ratio']=='percent'?$sumJHATR.'%':$sumJHATR.':1');
+                $res['合计'][12] = $global_config['JHATR']['ratio']=='default'? $sumJHATR.$global_config['JHATR']['unit']:($global_config['JHATR']['ratio']=='percent'?round( ($sumJHATR/$count), 3).'%':round( ($sumJHATR/$count), 3).':1');
                 $res['合计'][13] = '合计';
 
                 $res['合计'][14] = $global_config['JSRAR']['basic_val'];
                 $res['合计'][15] = $global_config['JSRAR']['standard_val'];
-                $res['合计'][16] = $global_config['JSRAR']['ratio']=='default'? $sumJSRAR.$global_config['JSRAR']['unit']:($global_config['JSRAR']['ratio']=='percent'?$sumJSRAR.'%':$sumJSRAR.':1');
+                $res['合计'][16] = $global_config['JSRAR']['ratio']=='default'? $sumJSRAR.$global_config['JSRAR']['unit']:($global_config['JSRAR']['ratio']=='percent'?round( ($sumJSRAR/$count), 3).'%':round( ($sumJSRAR/$count), 3).':1');
                 $res['合计'][17] = '合计';
 
                 $res['合计'][18] = $global_config['JSMAR']['basic_val'];
                 $res['合计'][19] = $global_config['JSMAR']['standard_val'];
-                $res['合计'][20] = $global_config['JSMAR']['ratio']=='default'? $sumJSMAR.$global_config['JSMAR']['unit']:($global_config['JSMAR']['ratio']=='percent'?$sumJSMAR.'%':$sumJSMAR.':1');
+                $res['合计'][20] = $global_config['JSMAR']['ratio']=='default'? $sumJSMAR.$global_config['JSMAR']['unit']:($global_config['JSMAR']['ratio']=='percent'?round( ($sumJSMAR/$count), 3).'%':round( ($sumJSMAR/$count), 3).':1');
                 $res['合计'][21] = '合计';
 
                 $res['合计'][22] = $global_config['JSMR']['basic_val'];
                 $res['合计'][23] = $global_config['JSMR']['standard_val'];
-                $res['合计'][24] = $global_config['JSMR']['ratio']=='default'? $sumJSMR.$global_config['JSMR']['unit']:($global_config['JSMR']['ratio']=='percent'?$sumJSMR.'%':$sumJSMR.':1');
+                $res['合计'][24] = $global_config['JSMR']['ratio']=='default'? $sumJSMR.$global_config['JSMR']['unit']:($global_config['JSMR']['ratio']=='percent'?round( ($sumJSMR/$count), 3).'%':round( ($sumJSMR/$count), 3).':1');
                 $res['合计'][25] = '合计';
 
                 $res['合计'][26] = $global_config['JHIR']['basic_val'];
                 $res['合计'][27] = $global_config['JHIR']['standard_val'];
-                $res['合计'][28] = $global_config['JHIR']['ratio']=='default'? $sumJHIR.$global_config['JHIR']['unit']:($global_config['JHIR']['ratio']=='percent'?$sumJHIR.'%':$sumJHIR.':1');
+                $res['合计'][28] = $global_config['JHIR']['ratio']=='default'? $sumJHIR.$global_config['JHIR']['unit']:($global_config['JHIR']['ratio']=='percent'?round( ($sumJHIR/$count), 3).'%':round( ($sumJHIR/$count), 3).':1');
                 $res['合计'][29] = '合计';
                 break;
             case 'nineYearCon':
@@ -943,42 +955,43 @@ class RecordService
                 if (!$res) {
                     break;
                 }
+                $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '';
 
                 $res['合计'][2] = $global_config['NHETR']['basic_val'];
                 $res['合计'][3] = $global_config['NHETR']['standard_val'];
-                $res['合计'][4] = $global_config['NHETR']['ratio']=='default'? $sumNHETR.$global_config['NHETR']['unit']:($global_config['NHETR']['ratio']=='percent'?$sumNHETR.'%':$sumNHETR.':1');
+                $res['合计'][4] = $global_config['NHETR']['ratio']=='default'? $sumNHETR.$global_config['NHETR']['unit']:($global_config['NHETR']['ratio']=='percent'?round( ($sumNHETR/$count), 3).'%':round( ($sumNHETR/$count), 3).':1');
                 $res['合计'][5] = '合计';
 
                 $res['合计'][6] = $global_config['NHBTR']['basic_val'];
                 $res['合计'][7] = $global_config['NHBTR']['standard_val'];
-                $res['合计'][8] = $global_config['NHBTR']['ratio']=='default'? $sumNHBTR.$global_config['NHBTR']['unit']:($global_config['NHBTR']['ratio']=='percent'?$sumNHBTR.'%':$sumNHBTR.':1');
+                $res['合计'][8] = $global_config['NHBTR']['ratio']=='default'? $sumNHBTR.$global_config['NHBTR']['unit']:($global_config['NHBTR']['ratio']=='percent'?round( ($sumNHBTR/$count), 3).'%':round( ($sumNHBTR/$count), 3).':1');
                 $res['合计'][9] = '合计';
 
                 $res['合计'][10] = $global_config['NHATR']['basic_val'];
                 $res['合计'][11] = $global_config['NHATR']['standard_val'];
-                $res['合计'][12] = $global_config['NHATR']['ratio']=='default'? $sumNHATR.$global_config['NHATR']['unit']:($global_config['NHATR']['ratio']=='percent'?$sumNHATR.'%':$sumNHATR.':1');
+                $res['合计'][12] = $global_config['NHATR']['ratio']=='default'? $sumNHATR.$global_config['NHATR']['unit']:($global_config['NHATR']['ratio']=='percent'?round( ($sumNHATR/$count), 3).'%':round( ($sumNHATR/$count), 3).':1');
                 $res['合计'][13] = '合计';
 
                 $res['合计'][14] = $global_config['NSRAR']['basic_val'];
                 $res['合计'][15] = $global_config['NSRAR']['standard_val'];
-                $res['合计'][16] = $global_config['NSRAR']['ratio']=='default'? $sumNSRAR.$global_config['NSRAR']['unit']:($global_config['NSRAR']['ratio']=='percent'?$sumNSRAR.'%':$sumNSRAR.':1');
+                $res['合计'][16] = $global_config['NSRAR']['ratio']=='default'? $sumNSRAR.$global_config['NSRAR']['unit']:($global_config['NSRAR']['ratio']=='percent'?round( ($sumNSRAR/$count), 3).'%':round( ($sumNSRAR/$count), 3).':1');
                 $res['合计'][17] = '合计';
 
                 $res['合计'][18] = $global_config['NSMAR']['basic_val'];
                 $res['合计'][19] = $global_config['NSMAR']['standard_val'];
-                $res['合计'][20] = $global_config['NSMAR']['ratio']=='default'? $sumNSMAR.$global_config['NSMAR']['unit']:($global_config['NSMAR']['ratio']=='percent'?$sumNSMAR.'%':$sumNSMAR.':1');
+                $res['合计'][20] = $global_config['NSMAR']['ratio']=='default'? $sumNSMAR.$global_config['NSMAR']['unit']:($global_config['NSMAR']['ratio']=='percent'?round( ($sumNSMAR/$count), 3).'%':round( ($sumNSMAR/$count), 3).':1');
                 $res['合计'][21] = '合计';
 
                 $res['合计'][22] = $global_config['NSMR']['basic_val'];
                 $res['合计'][23] = $global_config['NSMR']['standard_val'];
-                $res['合计'][24] = $global_config['NSMR']['ratio']=='default'? $sumNSMR.$global_config['NSMR']['unit']:($global_config['NSMR']['ratio']=='percent'?$sumNSMR.'%':$sumNSMR.':1');
+                $res['合计'][24] = $global_config['NSMR']['ratio']=='default'? $sumNSMR.$global_config['NSMR']['unit']:($global_config['NSMR']['ratio']=='percent'?round( ($sumNSMR/$count), 3).'%':round( ($sumNSMR/$count), 3).':1');
                 $res['合计'][25] = '合计';
 
                 $res['合计'][26] = $global_config['NHIR']['basic_val'];
                 $res['合计'][27] = $global_config['NHIR']['standard_val'];
-                $res['合计'][28] = $global_config['NHIR']['ratio']=='default'? $sumNHIR.$global_config['NHIR']['unit']:($global_config['NHIR']['ratio']=='percent'?$sumNHIR.'%':$sumNHIR.':1');
+                $res['合计'][28] = $global_config['NHIR']['ratio']=='default'? $sumNHIR.$global_config['NHIR']['unit']:($global_config['NHIR']['ratio']=='percent'?round( ($sumNHIR/$count), 3).'%':round( ($sumNHIR/$count), 3).':1');
                 $res['合计'][29] = '合计';
                 break;
             default:

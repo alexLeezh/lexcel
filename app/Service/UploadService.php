@@ -157,15 +157,20 @@ class UploadService
                     $insert_row['user_id'] = $data['user_id'];
 
                     if (isset($foundval[0]['found_divisor']) && $foundval[0]['found_divisor'] > 0) {
-                        if (isset($foundval[1]['found_divider'])) {
+                        if (isset($foundval[1]['found_divider']) &&  $foundval[1]['found_divider'] > 0) {
                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[0]['found_divisor'],$foundval[1]['found_divider'],$ind_config['standard_val'],$is_standard);
                         }else{
-                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[0]['found_divisor'],0,$ind_config['standard_val'],$is_standard);
+                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard);
                         }
                         
                     }else{
                         if (isset($foundval[0]['found_divider']) && $foundval[0]['found_divider'] > 0 ) {
-                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,$foundval[0]['found_divider'],$ind_config['standard_val'],$is_standard);
+                            if (isset($foundval[1]['found_divisor']) &&  $foundval[1]['found_divisor'] > 0) {
+                               $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[1]['found_divisor'],$foundval[0]['found_divider'],$ind_config['standard_val'],$is_standard);
+                            }else{
+                                $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard);
+                            }
+
                         }else{
                             $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard);
                         }                        
