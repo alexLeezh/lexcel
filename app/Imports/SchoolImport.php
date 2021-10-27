@@ -32,8 +32,54 @@ use App\Imports\Z521Import;
 use App\Imports\K315Import;
 use App\Imports\K413Import;
 
-use App\Imports\K112Import;
-use App\Imports\K512Import;
+use App\Imports\JJ1001Import;
+use App\Imports\JJ4148Import;
+use App\Imports\JJ2105Import;
+use App\Imports\JJ4159Import;
+
+use App\Imports\JJP1001Import;
+use App\Imports\JJP3112Import;
+use App\Imports\JJP4155Import;
+use App\Imports\JJP2106Import;
+use App\Imports\JJP4153Import;
+use App\Imports\JJP5176Import;
+use App\Imports\JJ4068Import;
+use App\Imports\JJ5170Import;
+
+use App\Imports\JJJ1001Import;
+use App\Imports\JJJ3115Import;
+use App\Imports\JJJ4149Import;
+use App\Imports\JJJ4156Import;
+use App\Imports\JJJ2107Import;
+use App\Imports\JJJ4153Import;
+use App\Imports\JJJ5176Import;
+use App\Imports\JJJ4068Import;
+use App\Imports\JJJ5170Import;
+
+use App\Imports\JJH1001Import;
+use App\Imports\JJH3118Import;
+use App\Imports\JJH4149Import;
+use App\Imports\JJH4156Import;
+use App\Imports\JJH5176Import;
+
+use App\Imports\JJS1001Import;
+use App\Imports\JJS3120Import;
+use App\Imports\JJS4150Import;
+
+use App\Imports\JJN1001Import;
+use App\Imports\JJN4155Import;
+use App\Imports\JJN3112Import;
+use App\Imports\JJN4156Import;
+use App\Imports\JJN3115Import;
+use App\Imports\JJN4068Import;
+use App\Imports\JJN5176Import;
+use App\Imports\JJN5170Import;
+
+use App\Imports\JJSV1001Import;
+use App\Imports\JJSV3221Import;
+use App\Imports\JJSV4251Import;
+use App\Imports\JJSV4261Import;
+use App\Imports\JJSV5377Import;
 
 
 class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
