@@ -80,11 +80,9 @@ class UploadService
 
         $filePath = $this->putFilePath($data['created'], $data['form_name']);
         $fileUrl = storage_path('app') . '/' .$filePath;
-        Log::info('handleUploadFile');
-        Log::info($data);
         //导入
         $import = new SchoolImport($data);
-        $import->onlySheets('基础基111','基础基211','基础基411','基础基4211','基础基212','基础基312','基础基412','基础基422','基础基423','基础基531','基础基213','基础基313','基础基424','基础基314','基础基522','中职基111','中职基311','中职基411','中职基421','中职基521','基础基315','基础基413','基础基112','基础基512');
+        $import->onlySheets('基础基111','基础基211','基础基411','基础基4211','基础基212','基础基312','基础基412','基础基422','基础基423','基础基531','基础基213','基础基313','基础基424','基础基314','基础基522','中职基111','中职基311','中职基411','中职基421','中职基521','基础基315','基础基413','基础基112','基础基512','教基1001_幼儿园','教基4148_幼儿园','教基2105_幼儿园','教基4159_幼儿园','教基1001_小学','教基3112_小学','教基4155_小学','教基2106_小学','教基4153_小学','教基5176_小学','教基4068_小学','教基5170_小学','教基1001_初级中学','教基3115_初级中学','教基4149_初级中学','教基4156_初级中学','教基2107_初级中学','教基4153_初级中学','教基5176_初级中学','教基4068_初级中学','教基5170_初级中学','教基1001_高级中学','教基3118_高级中学','教基4149_高级中学','教基4156_高级中学','教基5176_高级中学','教基1001_其他特教学校','教基3120_其他特教学校','教基4150_其他特教学校','教基1001_九年一贯制学校','教基4155_九年一贯制学校','教基3112_九年一贯制学校','教基4156_九年一贯制学校','教基3115_九年一贯制学校','教基4068_九年一贯制学校','教基5176_九年一贯制学校','教基5170_九年一贯制学校','教基1001_中等技术学校','教基3221_中等技术学校','教基4251_中等技术学校','教基4261_中等技术学校','教基5377_中等技术学校','教基1001_职业高中学校','教基3221_职业高中学校','教基4251_职业高中学校','教基4261_职业高中学校','教基5377_职业高中学校');
         Excel::import($import, $fileUrl);
 
         //执行数据清理
@@ -99,14 +97,13 @@ class UploadService
      */
     public function handleUploadData($data)
     {
-        $batch = app('session')->get('report_hash');
-        !$batch && $batch = Redis::get('report_hash');
-        // Log::info(  date( 'Ymdhis' , time() )  . $batch);
-        if (!$batch) {
-            throw new Exception('请联系管理员！');
-        }
+        // $batch = app('session')->get('report_hash');
+        // !$batch && $batch = Redis::get('report_hash');
+        // // Log::info(  date( 'Ymdhis' , time() )  . $batch);
+        // if (!$batch) {
+        //     throw new Exception('请联系管理员！');
+        // }
         $preData = app('db')->select("SELECT * FROM pre_sheet_data where user_id = ".$data['user_id']);
-
         foreach ($preData as $value) {
             $this->handleUploadDataPerBatch($value->report_hash, $data);
         }
@@ -204,7 +201,8 @@ class UploadService
                 }
                 //更新导出表
                 DB::table('sheet_record')->insert($insert_row);
-                // Log::info($insert_row);
+                Log::info('sheet_record insert_row');
+                Log::info($insert_row);
             }
             DB::table('pre_sheet_data')->where('report_hash', $batch)->delete();
             
@@ -222,22 +220,22 @@ class UploadService
         }
         switch ($format) {
             case 'default':
-                $res = round( ($found_divisor/$found_divider), 3). $unit;
-                if (round( ($found_divisor/$found_divider), 3) > $standard_val) {
+                $res = round( ($found_divisor/$found_divider), 5). $unit;
+                if (round( ($found_divisor/$found_divider), 5) >= $standard_val) {
                     $is_standard = 1;
                 }
                 break;
             case 'percent':
                 $res = round($found_divisor/$found_divider*100,2)."%";
-                if (round($found_divisor/$found_divider*100,2)> intval($standard_val)) {
+                if (round($found_divisor/$found_divider*100,2)>= intval($standard_val)) {
                     $is_standard = 1;
                 }
                 break;
             case 'scale':
-                $res = round( ($found_divisor/$found_divider), 3).':1';
+                $res = round( ($found_divisor/$found_divider), 5).':1';
                 // $res = $this->__ratio($found_divisor, $found_divider);
                 $scale = explode(':', $standard_val);
-                if (round( ($found_divisor/$found_divider), 3) > round( ($scale[0]/$scale[1]), 3) ) {
+                if (round( ($found_divisor/$found_divider), 5) >= round( ($scale[0]/$scale[1]), 5) ) {
                     $is_standard = 1;
                 }
                 break;

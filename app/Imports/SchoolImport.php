@@ -80,6 +80,68 @@ class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
             '基础基112' => new K112Import($this->importData),
             '基础基512' => new K512Import($this->importData),
 
+            //2021.10.21 新模板逻辑
+            '教基1001_幼儿园' => new JJ1001Import($this->importData),
+            '教基4148_幼儿园' => new JJ4148Import($this->importData),
+            '教基2105_幼儿园' => new JJ2105Import($this->importData),
+            '教基4159_幼儿园' => new JJ4159Import($this->importData),
+
+            //小学P
+            '教基1001_小学' => new JJP1001Import($this->importData),
+            '教基3112_小学' => new JJP3112Import($this->importData),
+            '教基4155_小学' => new JJP4155Import($this->importData),
+            '教基2106_小学' => new JJP2106Import($this->importData),
+            '教基4153_小学' => new JJP4153Import($this->importData),
+            '教基5176_小学' => new JJP5176Import($this->importData),
+            '教基4068_小学' => new JJ4068Import($this->importData),
+            '教基5170_小学' => new JJ5170Import($this->importData),
+
+            //初中J
+            '教基1001_初级中学' => new JJJ1001Import($this->importData),
+            '教基3115_初级中学' => new JJJ3115Import($this->importData),
+            '教基4149_初级中学' => new JJJ4149Import($this->importData),
+            '教基4156_初级中学' => new JJJ4156Import($this->importData),
+            '教基2107_初级中学' => new JJJ2107Import($this->importData),
+            '教基4153_初级中学' => new JJJ4153Import($this->importData),
+            '教基5176_初级中学' => new JJJ5176Import($this->importData),
+            '教基4068_初级中学' => new JJJ4068Import($this->importData),
+            '教基5170_初级中学' => new JJJ5170Import($this->importData),
+
+            //高中 H
+            '教基1001_高级中学' => new JJH1001Import($this->importData),
+            '教基3118_高级中学' => new JJH3118Import($this->importData),
+            '教基4149_高级中学' => new JJH4149Import($this->importData),
+            '教基4156_高级中学' => new JJH4156Import($this->importData),
+            '教基5176_高级中学' => new JJH5176Import($this->importData),
+
+            //特殊 S
+            '教基1001_其他特教学校' => new JJS1001Import($this->importData),
+            '教基3120_其他特教学校' => new JJS3120Import($this->importData),
+            '教基4150_其他特教学校' => new JJS4150Import($this->importData),
+
+            //初中 N
+            '教基1001_九年一贯制学校' => new JJN1001Import($this->importData),
+            '教基4155_九年一贯制学校' => new JJN4155Import($this->importData),
+            '教基3112_九年一贯制学校' => new JJN3112Import($this->importData),
+            '教基4156_九年一贯制学校' => new JJN4156Import($this->importData),
+            '教基3115_九年一贯制学校' => new JJN3115Import($this->importData),
+            '教基4068_九年一贯制学校' => new JJN4068Import($this->importData),
+            '教基5176_九年一贯制学校' => new JJN5176Import($this->importData),
+            '教基5170_九年一贯制学校' => new JJN5170Import($this->importData),
+
+            //中职 SV
+            '教基1001_中等技术学校' => new JJSV1001Import($this->importData),
+            '教基3221_中等技术学校' => new JJSV3221Import($this->importData),
+            '教基4251_中等技术学校' => new JJSV4251Import($this->importData),
+            '教基4261_中等技术学校' => new JJSV4261Import($this->importData),
+            '教基5377_中等技术学校' => new JJSV5377Import($this->importData),
+
+            '教基1001_职业高中学校' => new JJSV1001Import($this->importData),
+            '教基3221_职业高中学校' => new JJSV3221Import($this->importData),
+            '教基4251_职业高中学校' => new JJSV4251Import($this->importData),
+            '教基4261_职业高中学校' => new JJSV4261Import($this->importData),
+            '教基5377_职业高中学校' => new JJSV5377Import($this->importData),
+
         ];
     }
 
