@@ -272,7 +272,7 @@ class RecordService
                     if ($value->found_ind=='JETR' && $global_config['JETR']['ratio']=='scale') {
                         $jetr = explode(':', $value->found_val)[0];
                     }
-                    ($value->found_ind=='JETR'&& $value->found_val) && $sumJETR += $ptr;
+                    ($value->found_ind=='JETR'&& $value->found_val) && $sumJETR += $jetr;
                     //---JETR
                     
                     //---JFCR
