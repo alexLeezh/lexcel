@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
 
-class JJJ4068Import implements  WithEvents
+class JJJ1102Import implements  WithEvents
 {
 
     private static $user_id;
@@ -34,10 +34,7 @@ class JJJ4068Import implements  WithEvents
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
 
-        $teacherD11 = $event->sheet->getCell("D11")->getValue();
-        $teacherD12 = $event->sheet->getCell("D12")->getValue();
-        $teacherD13 = $event->sheet->getCell("D13")->getValue();
-        $teacherD14 = $event->sheet->getCell("D14")->getValue();
+        $teacher = $event->sheet->getCell("D12")->getValue();
 
         $preSheetData = new PreSheetData();
         //report_type found_ind found_divisor found_divider
@@ -47,7 +44,7 @@ class JJJ4068Import implements  WithEvents
 
         $preSheetData->report_type = 'balance';
         $preSheetData->found_ind = 'JHBTR';
-        $preSheetData->found_divisor = $teacherD11+$teacherD12+$teacherD13+$teacherD14;
+        $preSheetData->found_divisor = $teacher*100;
         $preSheetData->user_id = self::$user_id;
         $preSheetData->save();
     	

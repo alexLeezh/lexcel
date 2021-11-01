@@ -43,7 +43,7 @@ use App\Imports\JJP4155Import;
 use App\Imports\JJP2106Import;
 use App\Imports\JJP4153Import;
 use App\Imports\JJP5176Import;
-use App\Imports\JJ4068Import;
+use App\Imports\JJ1102Import;
 use App\Imports\JJ5170Import;
 
 use App\Imports\JJJ1001Import;
@@ -139,8 +139,9 @@ class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
             '教基2106_小学' => new JJP2106Import($this->importData),
             '教基4153_小学' => new JJP4153Import($this->importData),
             '教基5176_小学' => new JJP5176Import($this->importData),
-            '教基4068_小学' => new JJ4068Import($this->importData),
+            // '教基4068_小学' => new JJ4068Import($this->importData),
             '教基5170_小学' => new JJ5170Import($this->importData),
+            '教基1102续_小学' => new JJ1102Import($this->importData),
 
             //初中J
             '教基1001_初级中学' => new JJJ1001Import($this->importData),
@@ -150,8 +151,9 @@ class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
             '教基2107_初级中学' => new JJJ2107Import($this->importData),
             '教基4153_初级中学' => new JJJ4153Import($this->importData),
             '教基5176_初级中学' => new JJJ5176Import($this->importData),
-            '教基4068_初级中学' => new JJJ4068Import($this->importData),
+            // '教基4068_初级中学' => new JJJ4068Import($this->importData),
             '教基5170_初级中学' => new JJJ5170Import($this->importData),
+            '教基1102续_初级中学' => new JJJ1102Import($this->importData),
 
             //高中 H
             '教基1001_高级中学' => new JJH1001Import($this->importData),
@@ -171,9 +173,11 @@ class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
             '教基3112_九年一贯制学校' => new JJN3112Import($this->importData),
             '教基4156_九年一贯制学校' => new JJN4156Import($this->importData),
             '教基3115_九年一贯制学校' => new JJN3115Import($this->importData),
-            '教基4068_九年一贯制学校' => new JJN4068Import($this->importData),
+            // '教基4068_九年一贯制学校' => new JJN4068Import($this->importData),
             '教基5176_九年一贯制学校' => new JJN5176Import($this->importData),
             '教基5170_九年一贯制学校' => new JJN5170Import($this->importData),
+
+            '教基1102续_九年一贯制学校' => new JJN1102Import($this->importData),
 
             //中职 SV
             '教基1001_中等技术学校' => new JJSV1001Import($this->importData),

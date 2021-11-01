@@ -35,12 +35,12 @@ class JJSV4261Import implements  WithEvents
         $report_hash = app('session')->get('report_hash');
 
         $teacherG7 = $event->sheet->getCell("G7")->getValue();
-        $teacherC7 = $event->sheet->getCell("C7")->getValue();
+        $teacherF7 = $event->sheet->getCell("F7")->getValue();
 
         $arr = [
 
             ['school_type'=>'secondaryVocationalSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'VETR','found_divisor'=>$teacherG7,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'secondaryVocationalSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'VETR','found_divisor'=>0,'found_divider'=>$teacherC7,'report_hash'=>$report_hash],
+            ['school_type'=>'secondaryVocationalSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'VETR','found_divisor'=>0,'found_divider'=>$teacherF7,'report_hash'=>$report_hash],
 
         ];
         foreach ($arr as $key => $value) {
