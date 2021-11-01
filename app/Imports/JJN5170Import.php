@@ -43,10 +43,10 @@ class JJN5170Import implements  WithEvents
         $arr = [
 
             ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSRAR','found_divisor'=>$areas,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSRAR','found_divisor'=>$areas,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSRAR','found_divisor'=>$areas*1.1,'found_divider'=>0,'report_hash'=>$report_hash],
     
             ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSMAR','found_divisor'=>$areaC17,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSMAR','found_divisor'=>$areaC17,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSMAR','found_divisor'=>$areaC17*1.1,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
         ];

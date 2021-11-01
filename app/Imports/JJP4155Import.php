@@ -39,7 +39,7 @@ class JJP4155Import implements  WithEvents
         $teachersC9 = $event->sheet->getCell("C9")->getValue();
         $teachersC10 = $event->sheet->getCell("C10")->getValue();
         $teachersC11 = $event->sheet->getCell("C11")->getValue();
-        $teachersPTR = $teachersC9 +$teachersC10+$teachersC11;
+        $teachersPTR = $teachersC9 + $teachersC10 + $teachersC11;
 
         $teachersL6 = $event->sheet->getCell("L6")->getValue();
         $teachersN6 = $event->sheet->getCell("N6")->getValue();

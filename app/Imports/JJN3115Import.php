@@ -38,20 +38,20 @@ class JJN3115Import implements  WithEvents
 
         $arr = [
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHETR','found_divisor'=>0,'found_divider'=>$students*100,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHBTR','found_divisor'=>0,'found_divider'=>$students*100,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHATR','found_divisor'=>0,'found_divider'=>$students*100,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHETR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHBTR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHATR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSRAR','found_divisor'=>0,'found_divider'=>$students*1.1*100,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSRAR','found_divisor'=>0,'found_divider'=>$students*1.1*100,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSRAR','found_divisor'=>0,'found_divider'=>$students*1.1,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSRAR','found_divisor'=>0,'found_divider'=>$students*1.1,'report_hash'=>$report_hash],
             
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSMAR','found_divisor'=>0,'found_divider'=>$students*1.1*100,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSMAR','found_divisor'=>0,'found_divider'=>$students*1.1*100,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSMAR','found_divisor'=>0,'found_divider'=>$students*1.1,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSMAR','found_divisor'=>0,'found_divider'=>$students*1.1,'report_hash'=>$report_hash],
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSMR','found_divisor'=>0,'found_divider'=>$students*1.1*100,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSMR','found_divisor'=>0,'found_divider'=>$students*1.1*100,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHIR','found_divisor'=>0,'found_divider'=>$students*1.1*100,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHIR','found_divisor'=>0,'found_divider'=>$students*1.1*100,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSMR','found_divisor'=>0,'found_divider'=>$students*1.1,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSMR','found_divisor'=>0,'found_divider'=>$students*1.1,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHIR','found_divisor'=>0,'found_divider'=>$students*1.1*0.01,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHIR','found_divisor'=>0,'found_divider'=>$students*1.1*0.01,'report_hash'=>$report_hash],
 
 
         ];

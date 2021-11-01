@@ -47,7 +47,7 @@ class JJJ5176Import implements  WithEvents
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'JSBR','found_divisor'=>$books,'found_divider'=>0,'report_hash'=>$report_hash],
 
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JSMAR','found_divisor'=>$JSMAR,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JSMR','found_divisor'=>$JSMR,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JSMR','found_divisor'=>$JSMR*10000,'found_divider'=>0,'report_hash'=>$report_hash],
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHIR','found_divisor'=>$JHIR,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
