@@ -43,7 +43,7 @@ class JJ1102Import implements  WithEvents
 
         $preSheetData->report_type = 'balance';
         $preSheetData->found_ind = 'PHBTR';
-        $preSheetData->found_divisor = $teachers * 100;
+        $preSheetData->found_divisor = intval($teachers);
         $preSheetData->user_id = self::$user_id;
         $preSheetData->save();
     	

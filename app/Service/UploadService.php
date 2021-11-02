@@ -52,9 +52,12 @@ class UploadService
         Log::info('uploadFile');
         Log::info($data);
         //存库
+        $__is =  DB::table('form_record')->where('form_name', $fileName)->first();
         $data['id'] = DB::table('form_record')->insertGetId($data);
         //队列
-        dispatch(new UploadFileJob($data));
+        if (!$__is) {
+            dispatch(new UploadFileJob($data));
+        }
         // $gotoJob = (new UploadFileJob($data))->onQueue('slow');
         // app('Illuminate\Contracts\Bus\Dispatcher')->dispatch($gotoJob);
 
