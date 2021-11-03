@@ -34,10 +34,10 @@ class JJ4159Import implements  WithEvents
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
 
-        $teacherD6 = $event->sheet->getCell("D6")->getValue();
-        $teacherE6 = $event->sheet->getCell("E6")->getValue();
-        $teacherF6 = $event->sheet->getCell("F6")->getValue();
-        $teacherG6 = $event->sheet->getCell("G6")->getValue();
+        $teacherD6 = $event->sheet->getCell("D9")->getValue();
+        $teacherE6 = $event->sheet->getCell("E9")->getValue();
+        $teacherF6 = $event->sheet->getCell("F9")->getValue();
+        $teacherG6 = $event->sheet->getCell("G9")->getValue();
 
         $preSheetData = new PreSheetData();
         //report_type found_ind found_divisor found_divider

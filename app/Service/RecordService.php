@@ -75,6 +75,7 @@ class RecordService
                 $index = 1;
                 $sumKCTR = 0;
                 $sumKSTR = 0;
+                $res = [];
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -119,6 +120,7 @@ class RecordService
 
                 break;
             case 'primarySchool':
+                $res = [];
                 $index = 1;
                 $sumPSTR = 0;
                 $sumPTR = 0;
@@ -227,6 +229,7 @@ class RecordService
                 
                 break;
             case 'juniorMiddleSchool':
+                $res = [];
                 $index = 1;
                 $sumJSTR = 0;
                 $sumJETR = 0;
@@ -334,6 +337,7 @@ class RecordService
                 $res['合计'][16] = '合计';
                 break;
             case 'highSchool':
+                $res = [];
                 $index = 1;
                 $sumHSTR = 0;
                 $sumHETR = 0;
@@ -404,6 +408,7 @@ class RecordService
 
                 break;
             case 'secondaryVocationalSchool':
+                $res = [];
                 $index = 1;
                 $sumVETR = 0;
                 $sumVSTR = 0;
@@ -475,6 +480,7 @@ class RecordService
                 $res['合计'][10] = '合计';
                 break;    
             case 'specialSchool':
+                $res = [];
                 $index = 1;
                 $sumSSTR = 0;
                 foreach ($sheetData as $value) {
@@ -525,6 +531,7 @@ class RecordService
         $global_config = config('ixport.SCHOOL_IMPORT_FOUND_INDEX');
         switch ($school_type) {
             case 'primarySchool':
+                $res = [];
                 $index = 1;
                 $sumPHETR = 0;
                 $sumPHBTR = 0;
@@ -684,6 +691,7 @@ class RecordService
 
                 break;
             case 'juniorMiddleSchool':
+                $res = [];
                 $index = 1;
                 $sumJHETR = 0;
                 $sumJHBTR = 0;
@@ -840,6 +848,7 @@ class RecordService
                 $res['合计'][29] = '合计';
                 break;
             case 'nineYearCon':
+                $res = [];
                 $index = 1;
                 $sumNHETR = 0;
                 $sumNHBTR = 0;
