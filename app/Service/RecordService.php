@@ -501,7 +501,7 @@ class RecordService
                 $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['SSTR']['ratio']=='default'? $sumSSTR.$global_config['SSTR']['unit']:($global_config['SSTR']['ratio']=='percent'?round( ($sumVSMR/$count), 3).'%':round( ($sumVSMR/$count), 3).':1');
+                $res['合计'][2] = $global_config['SSTR']['ratio']=='default'? $sumSSTR.$global_config['SSTR']['unit']:($global_config['SSTR']['ratio']=='percent'?round( ($sumSSTR/$count), 3).'%':round( ($sumSSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['SSTR']['standard_val'];
                 $res['合计'][4] = '合计';
                 break;
