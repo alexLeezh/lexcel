@@ -520,8 +520,8 @@ class RecordService
                 ksort($value);
             }
         }
-        Log::info('__getModernQuery');
-        Log::info($res);
+        // Log::info('__getModernQuery');
+        // Log::info($res);
         return $res;
     }
 
@@ -860,105 +860,147 @@ class RecordService
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
+                    //小学
                     $value->found_ind=='NHETR' && $res[$value->school][2] = $value->found_ind=='NHETR' ? $value->basic_val:'';
                     $value->found_ind=='NHETR' && $res[$value->school][3] = $value->found_ind=='NHETR' ? $value->standard_val:'';
                     $value->found_ind=='NHETR' && $res[$value->school][4] = $value->found_ind=='NHETR' ? $value->found_val:'';
                     $value->found_ind=='NHETR' && $res[$value->school][5] = $value->found_ind=='NHETR' ? ($value->is_standard == 1?'达标':'不达标'):'';
-
+                    //初中
+                    $value->found_ind=='NJHETR' && $res[$value->school][2] = $value->found_ind=='NJHETR' ? $value->basic_val:'';
+                    $value->found_ind=='NJHETR' && $res[$value->school][3] = $value->found_ind=='NJHETR' ? $value->standard_val:'';
+                    $value->found_ind=='NJHETR' && $res[$value->school][4] = $value->found_ind=='NJHETR' ? $value->found_val:'';
+                    $value->found_ind=='NJHETR' && $res[$value->school][5] = $value->found_ind=='NJHETR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+                    
+                    //小学
                     $value->found_ind=='NHBTR' && $res[$value->school][6] = $value->found_ind=='NHBTR' ? $value->basic_val:'';
                     $value->found_ind=='NHBTR' && $res[$value->school][7] = $value->found_ind=='NHBTR' ? $value->standard_val:'';
                     $value->found_ind=='NHBTR' && $res[$value->school][8] = $value->found_ind=='NHBTR' ? $value->found_val:'';
                     $value->found_ind=='NHBTR' && $res[$value->school][9] = $value->found_ind=='NHBTR' ? ($value->is_standard == 1?'达标':'不达标'):'';
-
+                    //初中
+                    $value->found_ind=='NJHBTR' && $res[$value->school][6] = $value->found_ind=='NJHBTR' ? $value->basic_val:'';
+                    $value->found_ind=='NJHBTR' && $res[$value->school][7] = $value->found_ind=='NJHBTR' ? $value->standard_val:'';
+                    $value->found_ind=='NJHBTR' && $res[$value->school][8] = $value->found_ind=='NJHBTR' ? $value->found_val:'';
+                    $value->found_ind=='NJHBTR' && $res[$value->school][9] = $value->found_ind=='NJHBTR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+                    
+                    //小学
                     $value->found_ind=='NHATR' && $res[$value->school][10] = $value->found_ind=='NHATR' ? $value->basic_val:'';
                     $value->found_ind=='NHATR' && $res[$value->school][11] = $value->found_ind=='NHATR' ? $value->standard_val:'';
                     $value->found_ind=='NHATR' && $res[$value->school][12] = $value->found_ind=='NHATR' ? $value->found_val:'';
                     $value->found_ind=='NHATR' && $res[$value->school][13] = $value->found_ind=='NHATR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+                    //初中
+                    $value->found_ind=='NJHATR' && $res[$value->school][10] = $value->found_ind=='NJHATR' ? $value->basic_val:'';
+                    $value->found_ind=='NJHATR' && $res[$value->school][11] = $value->found_ind=='NJHATR' ? $value->standard_val:'';
+                    $value->found_ind=='NJHATR' && $res[$value->school][12] = $value->found_ind=='NJHATR' ? $value->found_val:'';
+                    $value->found_ind=='NJHATR' && $res[$value->school][13] = $value->found_ind=='NJHATR' ? ($value->is_standard == 1?'达标':'不达标'):'';
 
+                    //小学
                     $value->found_ind=='NSRAR' && $res[$value->school][14] = $value->found_ind=='NSRAR' ? $value->basic_val:'';
                     $value->found_ind=='NSRAR' && $res[$value->school][15] = $value->found_ind=='NSRAR' ? $value->standard_val:'';
                     $value->found_ind=='NSRAR' && $res[$value->school][16] = $value->found_ind=='NSRAR' ? $value->found_val:'';
                     $value->found_ind=='NSRAR' && $res[$value->school][17] = $value->found_ind=='NSRAR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+                    //初中
+                    $value->found_ind=='NJSRAR' && $res[$value->school][14] = $value->found_ind=='NJSRAR' ? $value->basic_val:'';
+                    $value->found_ind=='NJSRAR' && $res[$value->school][15] = $value->found_ind=='NJSRAR' ? $value->standard_val:'';
+                    $value->found_ind=='NJSRAR' && $res[$value->school][16] = $value->found_ind=='NJSRAR' ? $value->found_val:'';
+                    $value->found_ind=='NJSRAR' && $res[$value->school][17] = $value->found_ind=='NJSRAR' ? ($value->is_standard == 1?'达标':'不达标'):'';
 
+                    //小学
                     $value->found_ind=='NSMAR' && $res[$value->school][18] = $value->found_ind=='NSMAR' ? $value->basic_val:'';
                     $value->found_ind=='NSMAR' && $res[$value->school][19] = $value->found_ind=='NSMAR' ? $value->standard_val:'';
                     $value->found_ind=='NSMAR' && $res[$value->school][20] = $value->found_ind=='NSMAR' ? $value->found_val:'';
                     $value->found_ind=='NSMAR' && $res[$value->school][21] = $value->found_ind=='NSMAR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+                    //初中
+                    $value->found_ind=='NJSMAR' && $res[$value->school][18] = $value->found_ind=='NJSMAR' ? $value->basic_val:'';
+                    $value->found_ind=='NJSMAR' && $res[$value->school][19] = $value->found_ind=='NJSMAR' ? $value->standard_val:'';
+                    $value->found_ind=='NJSMAR' && $res[$value->school][20] = $value->found_ind=='NJSMAR' ? $value->found_val:'';
+                    $value->found_ind=='NJSMAR' && $res[$value->school][21] = $value->found_ind=='NJSMAR' ? ($value->is_standard == 1?'达标':'不达标'):'';
 
+                    //小学
                     $value->found_ind=='NSMR' && $res[$value->school][22] = $value->found_ind=='NSMR' ? $value->basic_val:'';
                     $value->found_ind=='NSMR' && $res[$value->school][23] = $value->found_ind=='NSMR' ? $value->standard_val:'';
                     $value->found_ind=='NSMR' && $res[$value->school][24] = $value->found_ind=='NSMR' ? $value->found_val:'';
                     $value->found_ind=='NSMR' && $res[$value->school][25] = $value->found_ind=='NSMR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+                    //初中
+                    $value->found_ind=='NJSMR' && $res[$value->school][22] = $value->found_ind=='NJSMR' ? $value->basic_val:'';
+                    $value->found_ind=='NJSMR' && $res[$value->school][23] = $value->found_ind=='NJSMR' ? $value->standard_val:'';
+                    $value->found_ind=='NJSMR' && $res[$value->school][24] = $value->found_ind=='NJSMR' ? $value->found_val:'';
+                    $value->found_ind=='NJSMR' && $res[$value->school][25] = $value->found_ind=='NJSMR' ? ($value->is_standard == 1?'达标':'不达标'):'';
 
+                    //小学
                     $value->found_ind=='NHIR' && $res[$value->school][26] = $value->found_ind=='NHIR' ? $value->basic_val:'';
                     $value->found_ind=='NHIR' && $res[$value->school][27] = $value->found_ind=='NHIR' ? $value->standard_val:'';
                     $value->found_ind=='NHIR' && $res[$value->school][28] = $value->found_ind=='NHIR' ? $value->found_val:'';
                     $value->found_ind=='NHIR' && $res[$value->school][29] = $value->found_ind=='NHIR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+                    //初中
+                    $value->found_ind=='NJHIR' && $res[$value->school][26] = $value->found_ind=='NJHIR' ? $value->basic_val:'';
+                    $value->found_ind=='NJHIR' && $res[$value->school][27] = $value->found_ind=='NJHIR' ? $value->standard_val:'';
+                    $value->found_ind=='NJHIR' && $res[$value->school][28] = $value->found_ind=='NJHIR' ? $value->found_val:'';
+                    $value->found_ind=='NJHIR' && $res[$value->school][29] = $value->found_ind=='NJHIR' ? ($value->is_standard == 1?'达标':'不达标'):'';
 
                     
-                    //---NHETR
-                    if ($value->found_ind=='NHETR' && ($global_config['NHETR']['ratio']=='default' || $global_config['NHETR']['ratio']=='percent')) {
+                    //---NHETR \NJHETR
+                    if ( ($value->found_ind=='NHETR'||$value->found_ind=='NJHETR') && ($global_config['NHETR']['ratio']=='default' || $global_config['NHETR']['ratio']=='percent')) {
                         $nhetr = intval($value->found_val);
                     }
-                    if ($value->found_ind=='NHETR' && $global_config['NHETR']['ratio']=='scale') {
+                    if ( ($value->found_ind=='NHETR'||$value->found_ind=='NJHETR') && $global_config['NHETR']['ratio']=='scale') {
                         $nhetr = explode(':', $value->found_val)[0];
                     }
-                    ($value->found_ind=='NHETR'&& $value->found_val) && $sumNHETR += $nhetr;
-                    //-----NHETR
-                    //---NHBTR
-                    if ($value->found_ind=='NHBTR' && ($global_config['NHBTR']['ratio']=='default' || $global_config['NHBTR']['ratio']=='percent')) {
+                    ( ($value->found_ind=='NHETR'||$value->found_ind=='NJHETR') && $value->found_val) && $sumNHETR += $nhetr;
+                    //-----NHETR \NJHETR
+                    //---NHBTR \NJHBTR
+                    if ( ($value->found_ind=='NHBTR'||$value->found_ind=='NJHBTR') && ($global_config['NHBTR']['ratio']=='default' || $global_config['NHBTR']['ratio']=='percent')) {
                         $nhbtr = intval($value->found_val);
                     }
-                    if ($value->found_ind=='NHBTR' && $global_config['NHBTR']['ratio']=='scale') {
+                    if ( ($value->found_ind=='NHBTR'||$value->found_ind=='NJHBTR') && $global_config['NHBTR']['ratio']=='scale') {
                         $nhbtr = explode(':', $value->found_val)[0];
                     }
-                    ($value->found_ind=='NHBTR'&& $value->found_val) && $sumNHBTR += $nhbtr;
-                    //-----NHBTR
-                    //---NHATR
-                    if ($value->found_ind=='NHATR' && ($global_config['NHATR']['ratio']=='default' || $global_config['NHATR']['ratio']=='percent')) {
+                    ( ($value->found_ind=='NHBTR'||$value->found_ind=='NJHBTR')&& $value->found_val) && $sumNHBTR += $nhbtr;
+                    //-----NHBTR \NJHBTR
+                    //---NHATR \NJHATR
+                    if ( ($value->found_ind=='NHATR'||$value->found_ind=='NJHATR') && ($global_config['NHATR']['ratio']=='default' || $global_config['NHATR']['ratio']=='percent')) {
                         $nhatr = intval($value->found_val);
                     }
-                    if ($value->found_ind=='NHATR' && $global_config['NHATR']['ratio']=='scale') {
+                    if ( ($value->found_ind=='NHATR'||$value->found_ind=='NJHATR') && $global_config['NHATR']['ratio']=='scale') {
                         $nhatr = explode(':', $value->found_val)[0];
                     }
-                    ($value->found_ind=='NHATR'&& $value->found_val) && $sumNHATR+= $nhatr;
-                    //-----NHATR
-                    //---NSRAR
-                    if ($value->found_ind=='NSRAR' && ($global_config['NSRAR']['ratio']=='default' || $global_config['NSRAR']['ratio']=='percent')) {
+                    ( ($value->found_ind=='NHATR'||$value->found_ind=='NJHATR')&& $value->found_val) && $sumNHATR+= $nhatr;
+                    //-----NHATR \NJHATR
+                    //---NSRAR \NJSRAR
+                    if ( ($value->found_ind=='NSRAR'||$value->found_ind=='NJSRAR') && ($global_config['NSRAR']['ratio']=='default' || $global_config['NSRAR']['ratio']=='percent')) {
                         $nsrar = intval($value->found_val);
                     }
-                    if ($value->found_ind=='NSRAR' && $global_config['NSRAR']['ratio']=='scale') {
+                    if ( ($value->found_ind=='NSRAR'||$value->found_ind=='NJSRAR') && $global_config['NSRAR']['ratio']=='scale') {
                         $nsrar = explode(':', $value->found_val)[0];
                     }
-                    ($value->found_ind=='NSRAR'&& $value->found_val) && $sumNSRAR += $nsrar;
-                    //-----NSRAR
-                    //---NSMAR
-                    if ($value->found_ind=='NSMAR' && ($global_config['NSMAR']['ratio']=='default' || $global_config['NSMAR']['ratio']=='percent')) {
+                    ( ($value->found_ind=='NSRAR'||$value->found_ind=='NJSRAR')&& $value->found_val) && $sumNSRAR += $nsrar;
+                    //-----NSRAR \NJSRAR
+                    //---NSMAR \NJSMAR
+                    if ( ($value->found_ind=='NSMAR'||$value->found_ind=='NJSMAR') && ($global_config['NSMAR']['ratio']=='default' || $global_config['NSMAR']['ratio']=='percent')) {
                         $nsmar = intval($value->found_val);
                     }
-                    if ($value->found_ind=='NSMAR' && $global_config['NSMAR']['ratio']=='scale') {
+                    if ( ($value->found_ind=='NSMAR'||$value->found_ind=='NJSMAR') && $global_config['NSMAR']['ratio']=='scale') {
                         $nsmar = explode(':', $value->found_val)[0];
                     }
-                    ($value->found_ind=='NSMAR'&& $value->found_val) && $sumNSMAR += $nsmar;
-                    //-----NSMAR
-                    //---NSMR
-                    if ($value->found_ind=='NSMR' && ($global_config['NSMR']['ratio']=='default' || $global_config['NSMR']['ratio']=='percent')) {
+                    ( ($value->found_ind=='NSMAR'||$value->found_ind=='NJSMAR')&& $value->found_val) && $sumNSMAR += $nsmar;
+                    //-----NSMAR \NJSMAR
+                    //---NSMR \NJSMR
+                    if ( ($value->found_ind=='NSMR'||$value->found_ind=='NJSMR') && ($global_config['NSMR']['ratio']=='default' || $global_config['NSMR']['ratio']=='percent')) {
                         $nsmr = intval($value->found_val);
                     }
-                    if ($value->found_ind=='NSMR' && $global_config['NSMR']['ratio']=='scale') {
+                    if ( ($value->found_ind=='NSMR'||$value->found_ind=='NJSMR') && $global_config['NSMR']['ratio']=='scale') {
                         $nsmr = explode(':', $value->found_val)[0];
                     }
-                    ($value->found_ind=='NSMR'&& $value->found_val) && $sumNSMR += $nsmr;
-                    //-----NSMR
-                    //---NHIR
-                    if ($value->found_ind=='NHIR' && ($global_config['NHIR']['ratio']=='default' || $global_config['NHIR']['ratio']=='percent')) {
+                    ( ($value->found_ind=='NSMR'||$value->found_ind=='NJSMR')&& $value->found_val) && $sumNSMR += $nsmr;
+                    //-----NSMR \NJSMR
+                    //---NHIR\NJHIR
+                    if ( ($value->found_ind=='NHIR'||$value->found_ind=='NJHIR') && ($global_config['NHIR']['ratio']=='default' || $global_config['NHIR']['ratio']=='percent')) {
                         $nhir = intval($value->found_val);
                     }
-                    if ($value->found_ind=='NHIR' && $global_config['NHIR']['ratio']=='scale') {
+                    if ( ($value->found_ind=='NHIR'||$value->found_ind=='NJHIR') && $global_config['NHIR']['ratio']=='scale') {
                         $nhir = explode(':', $value->found_val)[0];
                     }
-                    ($value->found_ind=='NHIR'&& $value->found_val) && $sumNHIR += $nhir;
-                    //-----NHIR
+                    ( ($value->found_ind=='NHIR'||$value->found_ind=='NJHIR')&& $value->found_val) && $sumNHIR += $nhir;
+                    //-----NHIR\NJHIR
                     $index++;
                 }
                 if (!$res) {
@@ -1002,6 +1044,9 @@ class RecordService
                 $res['合计'][27] = $global_config['NHIR']['standard_val'];
                 $res['合计'][28] = $global_config['NHIR']['ratio']=='default'? $sumNHIR.$global_config['NHIR']['unit']:($global_config['NHIR']['ratio']=='percent'?round( ($sumNHIR/$count), 3).'%':round( ($sumNHIR/$count), 3).':1');
                 $res['合计'][29] = '合计';
+
+                Log::info('nineYearCon res');
+                Log::info($res);
                 break;
             default:
                 return [];

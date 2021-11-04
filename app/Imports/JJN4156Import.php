@@ -47,9 +47,9 @@ class JJN4156Import implements  WithEvents
         $teacherNJHATR = $teacherU6 + $teacherV6 + $teacherW6 + $teacherX6;
         $arr = [
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHETR','found_divisor'=>$teacherNJHETR,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHETR','found_divisor'=>$teacherNJHETR,'found_divider'=>0,'report_hash'=>$report_hash],
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHATR','found_divisor'=>$teacherNJHATR,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHATR','found_divisor'=>$teacherNJHATR,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
         ];

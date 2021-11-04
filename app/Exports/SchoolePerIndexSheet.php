@@ -157,7 +157,7 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                 }
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:Z1','A2:A4','B2:B4','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
+                        $cells = ['A1:Z1','A2:A3','B2:B3','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
 
                         $event->sheet->getDelegate()->getStyle('A1:Z1')->getFont()->setSize(15);
                         $event->sheet->getDelegate()->getStyle('A2:Z3')->getFont()->setSize(12);
@@ -190,7 +190,7 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                 }
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:Z1','A2:A4','B2:B4','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
+                        $cells = ['A1:Z1','A2:A3','B2:B3','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
 
                         $event->sheet->getDelegate()->getStyle('A1:Z1')->getFont()->setSize(15);
                         $event->sheet->getDelegate()->getStyle('A2:Z3')->getFont()->setSize(12);
@@ -254,7 +254,7 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             case 'nineYearCon':
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:Z1','A2:A4','B2:B4','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
+                        $cells = ['A1:Z1','A2:A3','B2:B3','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
 
                         $event->sheet->getDelegate()->getStyle('A1:Z1')->getFont()->setSize(15);
                         $event->sheet->getDelegate()->getStyle('A2:Z3')->getFont()->setSize(12);

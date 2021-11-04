@@ -43,13 +43,13 @@ class JJN5176Import implements  WithEvents
         $arr = [
 
             ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSMAR','found_divisor'=>$areaD7,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSMAR','found_divisor'=>$areaD7*1.1,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJSMAR','found_divisor'=>$areaD7*1.1,'found_divider'=>0,'report_hash'=>$report_hash],
     
             ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSMR','found_divisor'=>$areaD19*10000,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJSMR','found_divisor'=>$areaD19*10000*1.1,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJSMR','found_divisor'=>$areaD19*10000*1.1,'found_divider'=>0,'report_hash'=>$report_hash],
 
             ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHIR','found_divisor'=>$areaD17,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHIR','found_divisor'=>$areaD17*1.1,'found_divider'=>0,'report_hash'=>$report_hash],            
+            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHIR','found_divisor'=>$areaD17*1.1,'found_divider'=>0,'report_hash'=>$report_hash],            
 
         ];
         foreach ($arr as $key => $value) {

@@ -43,7 +43,7 @@ class JJN1102Import implements  WithEvents
 
             ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHBTR','found_divisor'=>$teachersD12,'found_divider'=>0,'report_hash'=>$report_hash],
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NJHBTR','found_divisor'=>$teachersD13,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHBTR','found_divisor'=>$teachersD13,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
         ];
