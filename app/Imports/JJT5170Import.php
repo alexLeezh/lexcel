@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
 
-class JJN1102Import implements  WithEvents
+class JJT5170Import implements  WithEvents
 {
 
     private static $user_id;
@@ -23,8 +23,8 @@ class JJN1102Import implements  WithEvents
     public function registerEvents(): array
     {
         
-        return [
-            AfterSheet::class => [self::class, 'afterSheet'],
+    	return [
+        	AfterSheet::class => [self::class, 'afterSheet'],
         ];
     }
 
@@ -34,16 +34,19 @@ class JJN1102Import implements  WithEvents
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
 
+        $areaC10 = $event->sheet->getCell("C10")->getValue();
 
-        $teachersD12 = $event->sheet->getCell("D12")->getValue();
-        $teachersD13 = $event->sheet->getCell("D13")->getValue();
+        $areaC17 = $event->sheet->getCell("C17")->getValue();
 
+        $areas = $areaC10 - $areaC17;
 
         $arr = [
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHBTR','found_divisor'=>$teachersD12*100,'found_divider'=>0,'report_hash'=>$report_hash],
-
-            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHBTR','found_divisor'=>$teachersD13*100,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'twelveYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'TNSRAR','found_divisor'=>$areas,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'twelveYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'TNJSRAR','found_divisor'=>$areas*1.1,'found_divider'=>0,'report_hash'=>$report_hash],
+    
+            ['school_type'=>'twelveYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'TNSMAR','found_divisor'=>$areaC17,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'twelveYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'TNJSMAR','found_divisor'=>$areaC17*1.1,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
         ];
@@ -61,7 +64,6 @@ class JJN1102Import implements  WithEvents
             $preSheetData->user_id = self::$user_id;
             $preSheetData->save();
         }
-
-        
+    	
     }
 }

@@ -71,9 +71,11 @@ use App\Imports\JJN4155Import;
 use App\Imports\JJN3112Import;
 use App\Imports\JJN4156Import;
 use App\Imports\JJN3115Import;
-use App\Imports\JJN4068Import;
+use App\Imports\JJN4149Import;
 use App\Imports\JJN5176Import;
 use App\Imports\JJN5170Import;
+use App\Imports\JJN4153Import;
+
 
 use App\Imports\JJSV1001Import;
 use App\Imports\JJSV3221Import;
@@ -81,6 +83,14 @@ use App\Imports\JJSV4251Import;
 use App\Imports\JJSV4261Import;
 use App\Imports\JJSV5377Import;
 
+use App\Imports\JJT1001Import;
+use App\Imports\JJT1102Import;
+use App\Imports\JJT4155Import;
+use App\Imports\JJT3112Import;
+use App\Imports\JJT4156Import;
+use App\Imports\JJT3115Import;
+use App\Imports\JJT5176Import;
+use App\Imports\JJT5170Import;
 
 class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
 {
@@ -173,11 +183,13 @@ class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
             '教基3112_九年一贯制学校' => new JJN3112Import($this->importData),
             '教基4156_九年一贯制学校' => new JJN4156Import($this->importData),
             '教基3115_九年一贯制学校' => new JJN3115Import($this->importData),
-            // '教基4068_九年一贯制学校' => new JJN4068Import($this->importData),
             '教基5176_九年一贯制学校' => new JJN5176Import($this->importData),
             '教基5170_九年一贯制学校' => new JJN5170Import($this->importData),
-
             '教基1102续_九年一贯制学校' => new JJN1102Import($this->importData),
+            '教基2106_九年一贯制学校' => new JJN2106Import($this->importData),
+            '教基4153_九年一贯制学校' => new JJN4153Import($this->importData),
+            '教基4149_九年一贯制学校' => new JJN4149Import($this->importData),
+            '教基2107_九年一贯制学校' => new JJN2107Import($this->importData),
 
             //中职 SV
             '教基1001_中等技术学校' => new JJSV1001Import($this->importData),
@@ -192,6 +204,20 @@ class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
             '教基4261_职业高中学校' => new JJSV4261Import($this->importData),
             '教基5377_职业高中学校' => new JJSV5377Import($this->importData),
 
+            //十二年 小学和初中
+            '教基1001_十二年一贯制学校' => new JJT1001Import($this->importData),
+            '教基4155_十二年一贯制学校' => new JJT4155Import($this->importData),
+            '教基3112_十二年一贯制学校' => new JJT3112Import($this->importData),
+            '教基4156_十二年一贯制学校' => new JJT4156Import($this->importData),
+            '教基3115_十二年一贯制学校' => new JJT3115Import($this->importData),
+            '教基5176_十二年一贯制学校' => new JJT5176Import($this->importData),
+            '教基5170_十二年一贯制学校' => new JJT5170Import($this->importData),
+            '教基1102续_十二年一贯制学校' => new JJT1102Import($this->importData),
+            '教基2106_十二年一贯制学校' => new JJT2106Import($this->importData),
+            '教基4153_十二年一贯制学校' => new JJT4153Import($this->importData),
+            '教基4149_十二年一贯制学校' => new JJT4149Import($this->importData),
+            '教基2107_十二年一贯制学校' => new JJT2107Import($this->importData),
+            '教基3118_十二年一贯制学校' => new JJT3118Import($this->importData),
         ];
     }
 

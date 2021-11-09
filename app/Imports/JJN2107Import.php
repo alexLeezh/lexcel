@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
 
-class JJN1102Import implements  WithEvents
+class JJN2107Import implements  WithEvents
 {
 
     private static $user_id;
@@ -23,8 +23,8 @@ class JJN1102Import implements  WithEvents
     public function registerEvents(): array
     {
         
-        return [
-            AfterSheet::class => [self::class, 'afterSheet'],
+    	return [
+        	AfterSheet::class => [self::class, 'afterSheet'],
         ];
     }
 
@@ -34,17 +34,19 @@ class JJN1102Import implements  WithEvents
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
 
+        $classC5 = $event->sheet->getCell("C5")->getValue();
 
-        $teachersD12 = $event->sheet->getCell("D12")->getValue();
-        $teachersD13 = $event->sheet->getCell("D13")->getValue();
-
+        $classC6 = $event->sheet->getCell("C6")->getValue();
+        $classC7 = $event->sheet->getCell("C7")->getValue();
+        $classC8 = $event->sheet->getCell("C8")->getValue();
+        $classC9 = $event->sheet->getCell("C9")->getValue();
+        $classC10 = $event->sheet->getCell("C10")->getValue();
+        $classnum = $classC6+$classC7+$classC8+$classC9+$classC10;
 
         $arr = [
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHBTR','found_divisor'=>$teachersD12*100,'found_divider'=>0,'report_hash'=>$report_hash],
-
-            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHBTR','found_divisor'=>$teachersD13*100,'found_divider'=>0,'report_hash'=>$report_hash],
-
+            ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNJFCR','found_divisor'=>0,'found_divider'=>$classC5,'report_hash'=>$report_hash],      
+            ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNJFCR','found_divisor'=>$classnum,'found_divider'=>0,'report_hash'=>$report_hash],      
 
         ];
         foreach ($arr as $key => $value) {
@@ -61,7 +63,6 @@ class JJN1102Import implements  WithEvents
             $preSheetData->user_id = self::$user_id;
             $preSheetData->save();
         }
-
-        
+    	
     }
 }

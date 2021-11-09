@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
 
-class JJN4155Import implements  WithEvents
+class JJT4155Import implements  WithEvents
 {
 
     private static $user_id;
     public function __construct(array $importData)
     {
         self::$user_id = $importData['user_id'];
+        Log::info('JJT4155Import'.$importData['user_id']);
     }
     
     public function registerEvents(): array
@@ -37,12 +38,14 @@ class JJN4155Import implements  WithEvents
         $teachersC6 = $event->sheet->getCell("C6")->getValue();
 
         $teachersC9 = $event->sheet->getCell("C9")->getValue();
+
         $teachersC10 = $event->sheet->getCell("C10")->getValue();
         $teachersC11 = $event->sheet->getCell("C11")->getValue();
         $teachersC12 = $event->sheet->getCell("C12")->getValue();
 
         $teachersNHETR = $teachersC10+ $teachersC11 +$teachersC12;
-        $teachersMNPTR = $teachersC10+ $teachersC11 +$teachersC9;//MNPTR MTPTR
+
+        $teachersMTPTR = $teachersC10+ $teachersC11 +$teachersC9;
 
         $teachersL6 = $event->sheet->getCell("L6")->getValue();
         $teachersN6 = $event->sheet->getCell("N6")->getValue();
@@ -53,13 +56,13 @@ class JJN4155Import implements  WithEvents
 
         $arr = [
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHETR','found_divisor'=>$teachersNHETR*100,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'twelveYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'TNHETR','found_divisor'=>$teachersNHETR*100,'found_divider'=>0,'report_hash'=>$report_hash],
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHATR','found_divisor'=>$teachersNHATR*100,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'twelveYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'TNHATR','found_divisor'=>$teachersNHATR*100,'found_divider'=>0,'report_hash'=>$report_hash],
 
-            ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNPSTR','found_divisor'=>0,'found_divider'=>$teachersC6,'report_hash'=>$report_hash],
-            ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNPTR','found_divisor'=>0,'found_divider'=>$teachersC6,'report_hash'=>$report_hash],
-            ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNPTR','found_divisor'=>$teachersMNPTR,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTPSTR','found_divisor'=>0,'found_divider'=>$teachersC6,'report_hash'=>$report_hash],
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTPTR','found_divisor'=>$teachersMTPTR,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTPTR','found_divisor'=>0,'found_divider'=>$teachersC6,'report_hash'=>$report_hash],
 
 
         ];

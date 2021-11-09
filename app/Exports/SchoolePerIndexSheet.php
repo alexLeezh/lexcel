@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 //ShouldAutoSize
@@ -28,7 +29,7 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
     public function __construct(string $tbNm, string $type, array $heads, string $school_type, $qureyData)
     {
         $this->tbNm  = $tbNm;
-        $this->$type = $type;
+        $this->type = $type;
         $this->heads = array_values($heads);
         $this->school_type = $school_type;
         $this->qureyData = $qureyData;
@@ -48,32 +49,58 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
     public function columnWidths(): array
     {
         return [
-            'A' => 20,
+            'A' => 10,
             'B' => 30,
             'C' => 20,
-            'D' => 35,
-            'E' => 35,
-            'F' => 35,
-            'G' => 35,
+            'D' => 20,
+            'E' => 20,
+            'F' => 20,
+            'G' => 20,
             'H' => 20,
             'I' => 20,
-            'J' => 25,
-            'K' => 25,
-            'L' => 25,
-            'M' => 25,
-            'N' => 25,
-            'O' => 25,
-            'P' => 25,
-            'Q' => 25,
-            'R' => 25,
-            'S' => 25,
-            'T' => 25,
-            'U' => 25,
-            'V' => 25,
-            'W' => 25,
-            'X' => 25,
-            'Y' => 25,
-            'Z' => 25,
+            'J' => 20,
+            'K' => 20,
+            'L' => 20,
+            'M' => 20,
+            'N' => 20,
+            'O' => 20,
+            'P' => 20,
+            'Q' => 20,
+            'R' => 20,
+            'S' => 20,
+            'T' => 20,
+            'U' => 20,
+            'V' => 20,
+            'W' => 20,
+            'X' => 20,
+            'Y' => 20,
+            'Z' => 20,
+            'AA' => 20,
+            'AB' => 20,
+            'AC' => 20,
+            'AD' => 20,
+            'AE' => 20,
+            'AF' => 20,
+            'AG' => 20,
+            'AH' => 20,
+            'AI' => 20,
+            'AJ' => 20,
+            'AK' => 20,
+            'AL' => 20,
+            'AM' => 20,
+            'AN' => 20,
+            'AO' => 20,
+            'AP' => 20,
+            'AQ' => 20,
+            'AR' => 20,
+            'AS' => 20,
+            'AT' => 20,
+            'AU' => 20,
+            'AV' => 20,
+            'AW' => 20,
+            'AX' => 20,
+            'AY' => 20,
+            'AZ' => 20,
         ];
     }
 
@@ -91,35 +118,22 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             case 'kindergarten':
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:H1','A2:A4','B2:B4','C2:E2','F2:H2','C3:E3','F3:H3'];
+                        $cells = ['A1:L1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3'];
 
-                        $event->sheet->getDelegate()->getStyle('A1:H1')->getFont()->setSize(15);
-                        $event->sheet->getDelegate()->getStyle('A2:H4')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getStyle('A1:L1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:L4')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
-                        $styleArray = [
-                            'alignment' => [
-                                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
-                            ],
-                            'borders' => [
-                                'top' => [
-                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                ],
-                                'left' => [
-                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                ],
-                                'right' => [
-                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                ],
-                                'bottom' => [
-                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                ],
-                            ],
-                        ];
+                        // $styleArray = [
+                        //     'allborders' => [
+                        //         'outline' => [
+                        //             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                        //             'color' => ['argb' => '#0C0C0C'],
+                        //         ],
+                        //     ],
+                        // ];
 
-                        // $event->sheet->getStyle('A2:H4')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('CCCCCC');
-                        // $event->sheet->getStyle('A2:H4')->applyFromArray($styleArray);
-                        
+                        // $event->sheet->getStyle('A1:L4')->applyFromArray($styleArray);
                         $event->sheet->getDelegate()->getDefaultColumnDimension()->setWidth(50);
 
                         foreach ($cells as $k=>$v) {
@@ -127,24 +141,20 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                             $event->sheet->getDelegate()->mergeCells($v);
                         }
 
-                        $event->sheet->getDelegate()->getStyle('C4:H4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-                        // $widths = ['A' , 'B', 'C' ,'D' ,'E' ,'F' ,'G' ,'H' ,'J' ,'K' ,'L' ,'M' ,'N' ];
-                        // foreach ($widths as  $v) {
-                        //     // 设置列宽度
-                        //     $event->sheet->getDelegate()->getColumnDimension($v)->setAutoSize(true);
-                        // }
+                        $event->sheet->getDelegate()->getStyle('C4:L4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                     }
                 ];
                 break;
             case 'primarySchool':
+                Log::info('SchoolePerIndexSheet'.$this->type);
                 if ($this->type == 'modern') {
+                    Log::info('SchoolePerIndexSheet modern');
                     return [
                         AfterSheet::class  => function(AfterSheet $event) {
-                            $cells = ['A1:Q1','A2:A4','B2:B4','C2:E2','F2:H2','C3:E3','F3:H3','I2:K2','L2:N2','O2:Q2','I3:K3','L3:N3','O3:Q3'];
+                            $cells = ['A1:AA1','A2:A4','B2:B4','C2:G2','H2:L2','C3:G3','H3:L3','M2:Q2','R2:V2','W2:AA2','M3:Q3','R3:V3','W3:AA3'];
 
-                            $event->sheet->getDelegate()->getStyle('A1:Q1')->getFont()->setSize(15);
-                            $event->sheet->getDelegate()->getStyle('A2:Q4')->getFont()->setSize(12);
+                            $event->sheet->getDelegate()->getStyle('A1:AA1')->getFont()->setSize(15);
+                            $event->sheet->getDelegate()->getStyle('A2:AA4')->getFont()->setSize(12);
                             $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                             foreach ($cells as $k=>$v) {
@@ -155,12 +165,12 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                     ];
                     break;
                 }
+                 Log::info('SchoolePerIndexSheet  outline');
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:Z1','A2:A3','B2:B3','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
-
-                        $event->sheet->getDelegate()->getStyle('A1:Z1')->getFont()->setSize(15);
-                        $event->sheet->getDelegate()->getStyle('A2:Z3')->getFont()->setSize(12);
+                        $cells = ['A1:AR1','A2:A3','B2:B3','C2:H2','I2:N2','O2:T2','U2:Z2','AA2:AF2','AG2:AL2','AM2:AR2'];
+                        $event->sheet->getDelegate()->getStyle('A1:AR1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:AR3')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                         foreach ($cells as $k=>$v) {
@@ -174,10 +184,10 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                 if ($this->type == 'modern') {
                     return [
                         AfterSheet::class  => function(AfterSheet $event) {
-                            $cells = ['A1:Q1','A2:A4','B2:B4','C2:E2','F2:H2','C3:E3','F3:H3','I2:K2','L2:N2','O2:Q2','I3:K3','L3:N3','O3:Q3'];
+                            $cells = ['A1:AA1','A2:A4','B2:B4','C2:G2','H2:L2','C3:G3','H3:L3','M2:Q2','R2:V2','W2:AA2','M3:Q3','R3:V3','W3:AA3'];
 
-                            $event->sheet->getDelegate()->getStyle('A1:Q1')->getFont()->setSize(15);
-                            $event->sheet->getDelegate()->getStyle('A2:Q4')->getFont()->setSize(12);
+                            $event->sheet->getDelegate()->getStyle('A1:AA1')->getFont()->setSize(15);
+                            $event->sheet->getDelegate()->getStyle('A2:AA4')->getFont()->setSize(12);
                             $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                             foreach ($cells as $k=>$v) {
@@ -190,10 +200,9 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                 }
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:Z1','A2:A3','B2:B3','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
-
-                        $event->sheet->getDelegate()->getStyle('A1:Z1')->getFont()->setSize(15);
-                        $event->sheet->getDelegate()->getStyle('A2:Z3')->getFont()->setSize(12);
+                        $cells = ['A1:AR1','A2:A3','B2:B3','C2:H2','I2:N2','O2:T2','U2:Z2','AA2:AF2','AG2:AL2','AM2:AR2'];
+                        $event->sheet->getDelegate()->getStyle('A1:AR1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:AR3')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                         foreach ($cells as $k=>$v) {
@@ -206,10 +215,10 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             case 'highSchool':
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:K1','A2:A4','B2:B4','C2:E2','F2:H2','I2:K2','C3:E3','F3:H3','I3:K3'];
+                        $cells = ['A1:Q1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3','M2:Q2','M3:Q3'];
 
-                        $event->sheet->getDelegate()->getStyle('A1:K1')->getFont()->setSize(15);
-                        $event->sheet->getDelegate()->getStyle('A2:K4')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getStyle('A1:Q1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:Q4')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                         foreach ($cells as $k=>$v) {
@@ -222,10 +231,10 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             case 'secondaryVocationalSchool':
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                         $cells = ['A1:K1','A2:A4','B2:B4','C2:E2','F2:H2','I2:K2','C3:E3','F3:H3','I3:K3'];
+                         $cells = ['A1:Q1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3','M2:Q2','M3:Q3'];
 
-                        $event->sheet->getDelegate()->getStyle('A1:K1')->getFont()->setSize(15);
-                        $event->sheet->getDelegate()->getStyle('A2:K4')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getStyle('A1:Q1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:Q4')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                         foreach ($cells as $k=>$v) {
@@ -238,10 +247,10 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             case 'specialSchool':
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:E1','A2:A4','B2:B4','C2:E2','C3:E3'];
+                        $cells = ['A1:G1','A2:A4','B2:B4','C2:G2','C3:G3'];
 
-                        $event->sheet->getDelegate()->getStyle('A1:E1')->getFont()->setSize(15);
-                        $event->sheet->getDelegate()->getStyle('A2:E4')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getStyle('A1:G1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:G4')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                         foreach ($cells as $k=>$v) {
@@ -254,10 +263,59 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             case 'nineYearCon':
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:Z1','A2:A3','B2:B3','C2:F2','G2:J2','K2:N2','O2:R2','S2:V2','W2:Z2'];
+                        $cells = ['A1:AR1','A2:A3','B2:B3','C2:H2','I2:N2','O2:T2','U2:Z2','AA2:AF2','AG2:AL2','AM2:AR2'];
 
-                        $event->sheet->getDelegate()->getStyle('A1:Z1')->getFont()->setSize(15);
-                        $event->sheet->getDelegate()->getStyle('A2:Z3')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getStyle('A1:AR1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:AR3')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
+
+                        foreach ($cells as $k=>$v) {
+                            $event->sheet->getDelegate()->getStyle($v)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getDelegate()->mergeCells($v);
+                        }
+                    }
+                ];
+                break;
+
+            case 'twelveYearCon':
+                return [
+                    AfterSheet::class  => function(AfterSheet $event) {
+                        $cells = ['A1:AR1','A2:A3','B2:B3','C2:H2','I2:N2','O2:T2','U2:Z2','AA2:AF2','AG2:AL2','AM2:AR2'];
+
+                        $event->sheet->getDelegate()->getStyle('A1:AR1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:AR3')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
+
+                        foreach ($cells as $k=>$v) {
+                            $event->sheet->getDelegate()->getStyle($v)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getDelegate()->mergeCells($v);
+                        }
+                    }
+                ];
+                break;
+            case 'mnineYearCon':
+                return [
+                    AfterSheet::class  => function(AfterSheet $event) {
+                        $cells = ['A1:AZ1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3','M2:Q2','M3:Q3','R2:V2','R3:V3','W2:AA2','W3:AA3','AB2:AF2','AB3:AF3','AG2:AK2','AG3:AK3','AL2:AP2','AL3:AP3','AQ2:AU2','AQ3:AU3','AV2:AZ2','AV3:AZ3',];
+
+                        $event->sheet->getDelegate()->getStyle('A1:AZ1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:AZ4')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
+
+                        foreach ($cells as $k=>$v) {
+                            $event->sheet->getDelegate()->getStyle($v)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getDelegate()->mergeCells($v);
+                        }
+                    }
+                ];
+                break;
+            case 'mtwelveYearCon':
+                return [
+                    AfterSheet::class  => function(AfterSheet $event) {
+                        $cells = ['A1:AZ1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3','M2:Q2','M3:Q3','R2:V2','R3:V3','W2:AA2','W3:AA3','AB2:AF2','AB3:AF3','AG2:AK2','AG3:AK3','AL2:AP2','AL3:AP3','AQ2:AU2','AQ3:AU3','AV2:AZ2','AV3:AZ3',];
+
+                        $event->sheet->getDelegate()->getStyle('A1:AZ1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:AZ4')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                         foreach ($cells as $k=>$v) {

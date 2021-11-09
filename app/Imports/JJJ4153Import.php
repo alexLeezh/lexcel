@@ -46,7 +46,7 @@ class JJJ4153Import implements  WithEvents
 
         $preSheetData->report_type = 'modern';
         $preSheetData->found_ind = 'JHSTR';
-        $preSheetData->found_divisor = $teachersC10+$teachersC8+$teachersC9;
+        $preSheetData->found_divisor = ($teachersC10+$teachersC8+$teachersC9)*100;
         $preSheetData->user_id = self::$user_id;
         $preSheetData->save();
         

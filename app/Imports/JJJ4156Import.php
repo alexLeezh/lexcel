@@ -54,9 +54,9 @@ class JJJ4156Import implements  WithEvents
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'JETR','found_divisor'=>0,'found_divider'=>$teachersC6,'report_hash'=>$report_hash],
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'JETR','found_divisor'=>$teachersJETR,'found_divider'=>0,'report_hash'=>$report_hash],
 
-            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHETR','found_divisor'=>$teachersJHETR,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHETR','found_divisor'=>$teachersJHETR*100,'found_divider'=>0,'report_hash'=>$report_hash],
 
-            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHATR','found_divisor'=>$teachersJHATR,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHATR','found_divisor'=>$teachersJHATR*100,'found_divider'=>0,'report_hash'=>$report_hash],
 
         ];
         foreach ($arr as $key => $value) {

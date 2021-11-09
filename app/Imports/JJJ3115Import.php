@@ -38,16 +38,16 @@ class JJJ3115Import implements  WithEvents
         $arr = [
 
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'JSTR','found_divisor'=>$students,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'JHSTR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
+            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'JHSTR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'modern','found_ind'=>'JSBR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
 
-            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHETR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
-            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHBTR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
-            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHATR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
+            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHETR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
+            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHBTR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
+            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHATR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JSRAR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JSMAR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JSMR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
-            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHIR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
+            ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JHIR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
 
 
         ];

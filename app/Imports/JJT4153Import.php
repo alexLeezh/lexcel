@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
 
-class JJN1102Import implements  WithEvents
+class JJT4153Import implements  WithEvents
 {
 
     private static $user_id;
@@ -35,16 +35,22 @@ class JJN1102Import implements  WithEvents
         $report_hash = app('session')->get('report_hash');
 
 
-        $teachersD12 = $event->sheet->getCell("D12")->getValue();
-        $teachersD13 = $event->sheet->getCell("D13")->getValue();
+        $teachersC10 = $event->sheet->getCell("C10")->getValue();
+        $teachersC8 = $event->sheet->getCell("C8")->getValue();
+        $teachersC9 = $event->sheet->getCell("C9")->getValue();
 
+        $teachersMTPHSTR = $teachersC10+$teachersC8+$teachersC9;//MTPHSTR   
+
+        $teachersC17 = $event->sheet->getCell("C17")->getValue();
+        $teachersC18 = $event->sheet->getCell("C18")->getValue();
+        $teachersC19 = $event->sheet->getCell("C19")->getValue();
+
+        $teachersMTJHSTR = $teachersC17+$teachersC18+$teachersC19;// MTJHSTR  
 
         $arr = [
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHBTR','found_divisor'=>$teachersD12*100,'found_divider'=>0,'report_hash'=>$report_hash],
-
-            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHBTR','found_divisor'=>$teachersD13*100,'found_divider'=>0,'report_hash'=>$report_hash],
-
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTPHSTR','found_divisor'=>$teachersMTPHSTR*100,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTJHSTR','found_divisor'=>$teachersMTJHSTR*100,'found_divider'=>0,'report_hash'=>$report_hash],
 
         ];
         foreach ($arr as $key => $value) {

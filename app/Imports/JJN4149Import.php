@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\PreSheetData;
 
 
-class JJN1102Import implements  WithEvents
+class JJN4149Import implements  WithEvents
 {
 
     private static $user_id;
@@ -23,8 +23,8 @@ class JJN1102Import implements  WithEvents
     public function registerEvents(): array
     {
         
-        return [
-            AfterSheet::class => [self::class, 'afterSheet'],
+    	return [
+        	AfterSheet::class => [self::class, 'afterSheet'],
         ];
     }
 
@@ -34,17 +34,11 @@ class JJN1102Import implements  WithEvents
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
 
-
-        $teachersD12 = $event->sheet->getCell("D12")->getValue();
-        $teachersD13 = $event->sheet->getCell("D13")->getValue();
-
+        $teacherD6 = $event->sheet->getCell("D6")->getValue();
 
         $arr = [
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHBTR','found_divisor'=>$teachersD12*100,'found_divider'=>0,'report_hash'=>$report_hash],
-
-            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHBTR','found_divisor'=>$teachersD13*100,'found_divider'=>0,'report_hash'=>$report_hash],
-
+            ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNJSTR','found_divisor'=>0,'found_divider'=>$teacherD6,'report_hash'=>$report_hash],      
 
         ];
         foreach ($arr as $key => $value) {
@@ -61,7 +55,6 @@ class JJN1102Import implements  WithEvents
             $preSheetData->user_id = self::$user_id;
             $preSheetData->save();
         }
-
-        
+    	
     }
 }

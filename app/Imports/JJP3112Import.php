@@ -37,16 +37,16 @@ class JJP3112Import implements  WithEvents
         $students = $event->sheet->getCell("I6")->getValue();
         $arr = [
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PSTR','found_divisor'=>$students,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PHSTR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
+            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PHSTR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PSBR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
 
-            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHETR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
-            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHBTR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
-            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHATR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash],
+            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHETR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
+            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHBTR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
+            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHATR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSRAR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSMAR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSMR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
-            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHIR','found_divisor'=>0,'found_divider'=>$students*0.01,'report_hash'=>$report_hash]
+            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHIR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash]
 
         ];
         foreach ($arr as $key => $value) {

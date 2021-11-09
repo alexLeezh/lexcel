@@ -46,6 +46,8 @@ class JJP4155Import implements  WithEvents
         $teachersO6 = $event->sheet->getCell("O6")->getValue();
         $teachersP6 = $event->sheet->getCell("P6")->getValue();
         $teachersPHATR = $teachersL6+$teachersN6+$teachersO6+$teachersP6;
+
+        Log::info('JJP4155Import'.$teachersPTR);
         $arr = [
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PSTR','found_divisor'=>0,'found_divider'=>$teachers,'report_hash'=>$report_hash],
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PTR','found_divisor'=>0,'found_divider'=>$teachers,'report_hash'=>$report_hash],
@@ -53,8 +55,8 @@ class JJP4155Import implements  WithEvents
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PTR','found_divisor'=>$teachersPTR,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
-            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHETR','found_divisor'=>$teachersPTR,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHATR','found_divisor'=>$teachersPHATR,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHETR','found_divisor'=>$teachersPTR*100,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHATR','found_divisor'=>$teachersPHATR*100,'found_divider'=>0,'report_hash'=>$report_hash],
 
         ];
         foreach ($arr as $key => $value) {
