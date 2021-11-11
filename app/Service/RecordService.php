@@ -75,6 +75,8 @@ class RecordService
                 $index = 1;
                 $sumKCTR = 0;
                 $sumKSTR = 0;
+                $kctr = 0;
+                $kstr = 0;
                 $res = [];
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
@@ -139,6 +141,11 @@ class RecordService
                 $sumPHSTR = 0;
                 $sumPFCR = 0;
                 $sumPSBR = 0;
+                $pstr = 0;
+                $ptr = 0;
+                $pfcr = 0;
+                $phstr = 0;
+                $psbr = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -269,6 +276,11 @@ class RecordService
                 $sumJFCR = 0;
                 $sumJHSTR = 0;
                 $sumJSBR = 0;
+                $jstr = 0;
+                $jetr = 0;
+                $jfcr = 0;
+                $jhstr = 0;
+                $jsbr = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -403,6 +415,16 @@ class RecordService
                 $sumMNJFCR = 0;
                 $sumMNJHSTR = 0;
                 $sumMNJSBR = 0;
+                $mnpstr = 0;
+                $mnptr = 0;
+                $mnpfcr = 0;
+                $mnphstr = 0;
+                $mnjstr = 0;
+                $mnpsbr = 0;
+                $mnjetr = 0;
+                $mnjfcr = 0;
+                $mnjhstr = 0;
+                $mnjsbr = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -649,6 +671,19 @@ class RecordService
                 $sumMTHSTR = 0;
                 $sumMTHETR = 0;
                 $sumMTHSMR = 0;
+                $mtpstr = 0;
+                $mtptr = 0;
+                $mtpfcr = 0;
+                $mtphstr = 0;
+                $mtpsbr = 0;
+                $mtjstr = 0;
+                $mtjetr = 0;
+                $mtjfcr = 0;
+                $mtjhstr = 0;
+                $mtjsbr = 0;
+                $mthstr = 0;
+                $mthetr = 0;
+                $mthsmr = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -953,6 +988,9 @@ class RecordService
                 $sumHSTR = 0;
                 $sumHETR = 0;
                 $sumHSMR = 0;
+                $hstr = 0;
+                $hetr = 0;
+                $hsmr = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -1036,6 +1074,9 @@ class RecordService
                 $sumVETR = 0;
                 $sumVSTR = 0;
                 $sumVSMR = 0;
+                $vstr = 0;
+                $vetr = 0;
+                $vsmr = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -1118,6 +1159,7 @@ class RecordService
                 $res = [];
                 $index = 1;
                 $sumSSTR = 0;
+                $sstr = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -1179,6 +1221,13 @@ class RecordService
                 $sumPSMAR = 0;
                 $sumPSMR = 0;
                 $sumPHIR = 0;
+                $phetr = 0;
+                $phbtr = 0;
+                $phatr = 0;
+                $psrar = 0;
+                $psmar = 0;
+                $psmr = 0;
+                $phir = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -1367,6 +1416,13 @@ class RecordService
                 $sumJSMAR = 0;
                 $sumJSMR = 0;
                 $sumJHIR = 0;
+                $jhetr = 0;
+                $jhbtr = 0;
+                $jhatr = 0;
+                $jsrar = 0;
+                $jsmar = 0;
+                $jsmr = 0;
+                $jhir = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -1552,6 +1608,13 @@ class RecordService
                 $sumNSMAR = 0;
                 $sumNSMR = 0;
                 $sumNHIR = 0;
+                $nhetr = 0;
+                $nhbtr = 0;
+                $nhatr = 0;
+                $nsrar = 0;
+                $nsmar = 0;
+                $nsmr = 0;
+                $nhir = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
@@ -1796,6 +1859,13 @@ class RecordService
                 $sumTNSMAR = 0;
                 $sumTNSMR = 0;
                 $sumTNHIR = 0;
+                $tnhetr = 0;
+                $tnhbtr = 0;
+                $tnhatr = 0;
+                $tnsrar = 0;
+                $tnsmar = 0;
+                $tnsmr = 0;
+                $tnhir = 0;
                 foreach ($sheetData as $value) {
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
