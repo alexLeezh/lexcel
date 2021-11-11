@@ -69,6 +69,7 @@ class RecordService
     private function __getModernQuery($school_type, $sheetData)
     {
         $res = [];
+        $repeat = [];
         $global_config = config('ixport.SCHOOL_IMPORT_FOUND_INDEX');
         switch ($school_type) {
             case 'kindergarten':
@@ -78,7 +79,14 @@ class RecordService
                 $kctr = 0;
                 $kstr = 0;
                 $res = [];
+                
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
+
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='KCTR'&& $res[$value->school][2] = $value->found_ind=='KCTR' ? $value->found_val : '';
@@ -147,6 +155,11 @@ class RecordService
                 $phstr = 0;
                 $psbr = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='PSTR' && $res[$value->school][2] = $value->found_ind=='PSTR' ? $value->found_val:'';
@@ -282,6 +295,11 @@ class RecordService
                 $jhstr = 0;
                 $jsbr = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='JSTR' && $res[$value->school][2] = $value->found_ind=='JSTR' ? $value->found_val:'';
@@ -426,6 +444,11 @@ class RecordService
                 $mnjhstr = 0;
                 $mnjsbr = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='MNPSTR' && $res[$value->school][2] = $value->found_ind=='MNPSTR' ? $value->found_val:'';
@@ -685,6 +708,12 @@ class RecordService
                 $mthetr = 0;
                 $mthsmr = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
+
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='MTPSTR' && $res[$value->school][2] = $value->found_ind=='MTPSTR' ? $value->found_val:'';
@@ -765,9 +794,11 @@ class RecordService
                     //------MTPSTR
                     if ($value->found_ind=='MTPSTR' && ($global_config['MTPSTR']['ratio']=='default' || $global_config['MTPSTR']['ratio']=='percent')) {
                         $mtpstr = intval($value->found_val);
+                        Log::info('mtwelveYearCon mtpstr 1'.$mtpstr);
                     }
                     if ($value->found_ind=='MTPSTR' && $global_config['MTPSTR']['ratio']=='scale') {
                         $mtpstr = explode(':', $value->found_val)[0];
+                        Log::info('mtwelveYearCon mtpstr 2'.$mtpstr);
                     }
                     ($value->found_ind=='MTPSTR'&& $value->found_val) && $sumMTPSTR += $mtpstr;
                     //---MTPSTR
@@ -897,7 +928,9 @@ class RecordService
                     break;
                 }
                 $count = count($res);
-                Log::info('mtwelveYearCon count'.$count);
+                // Log::info('mtwelveYearCon sumMTPSTR'.$sumMTPSTR);
+                // Log::info('mtwelveYearCon count'.$count);
+                // Log::info($sheetData);
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
@@ -978,8 +1011,8 @@ class RecordService
                 $res['合计'][65] = '/';
                 $res['合计'][66] = '合计';
 
-                Log::info('mtwelveYearCon res');
-                Log::info($res);
+                // Log::info('mtwelveYearCon res');
+                // Log::info($res);
 
                 break;
             case 'highSchool':
@@ -992,6 +1025,11 @@ class RecordService
                 $hetr = 0;
                 $hsmr = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='HSTR' && $res[$value->school][2] = $value->found_ind=='HSTR' ? $value->found_val:'';
@@ -1078,6 +1116,11 @@ class RecordService
                 $vetr = 0;
                 $vsmr = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
 
@@ -1161,6 +1204,11 @@ class RecordService
                 $sumSSTR = 0;
                 $sstr = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='SSTR' && $res[$value->school][2] = $value->found_ind=='SSTR' ? $value->found_val:'';
@@ -1209,6 +1257,7 @@ class RecordService
     private function __getBalanceQuery($school_type, $sheetData)
     {
         $res = [];
+        $repeat = [];
         $global_config = config('ixport.SCHOOL_IMPORT_FOUND_INDEX');
         switch ($school_type) {
             case 'primarySchool':
@@ -1229,6 +1278,11 @@ class RecordService
                 $psmr = 0;
                 $phir = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='PHETR' && $res[$value->school][2] = $value->found_ind=='PHETR' ? $value->basic_val:'';
@@ -1424,6 +1478,11 @@ class RecordService
                 $jsmr = 0;
                 $jhir = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     $value->found_ind=='JHETR' && $res[$value->school][2] = $value->found_ind=='JHETR' ? $value->basic_val:'';
@@ -1616,6 +1675,11 @@ class RecordService
                 $nsmr = 0;
                 $nhir = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     //小学
@@ -1867,6 +1931,11 @@ class RecordService
                 $tnsmr = 0;
                 $tnhir = 0;
                 foreach ($sheetData as $value) {
+                    if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
+                        continue;
+                    }
+                    //并发重复数据处理
+                    $repeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
                     $res[$value->school][0] = $index;
                     $res[$value->school][1] = $value->school;
                     //小学
