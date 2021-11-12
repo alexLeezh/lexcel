@@ -48,8 +48,8 @@ class JJN3112Import implements  WithEvents
             ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NSMR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
             ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJSMR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
 
-            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'NHIR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
-            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'modern','found_ind'=>'NJHIR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school,'report_type'=>'balance','found_ind'=>'NHIR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
+            ['school_type'=>'nineYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'NJHIR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],
 
             ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNPSTR','found_divisor'=>$students,'found_divider'=>0,'report_hash'=>$report_hash],
             ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNPHSTR','found_divisor'=>0,'found_divider'=>$students,'report_hash'=>$report_hash],

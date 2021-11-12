@@ -105,36 +105,65 @@ class SchoolImport implements WithMultipleSheets ,SkipsUnknownSheets
     public function conditionalSheets(): array
     {
         return [
-            '基础基111' => new EsImport($this->importData),
-            '基础基211' => new K211Import($this->importData),
-            '基础基411' => new K411Import($this->importData),
-            '基础基4211' => new K4211Import($this->importData),
+            '教基1001' => new EsImport($this->importData),
+            '教基4148' => new bs4148Import($this->importData),//幼儿园
+            '教基2105' => new bs2105Import($this->importData),//幼儿园
+            '教基4159' => new bs4159Import($this->importData),//幼儿园
 
-            '基础基212' => new K212Import($this->importData),
-            '基础基312' => new K312Import($this->importData),
-            '基础基412' => new K412Import($this->importData),//小学，初中 ,高中
-            '基础基422' => new K422Import($this->importData),//小学，初中
-            '基础基423' => new K423Import($this->importData),
-            '基础基531' => new K531Import($this->importData),//小学，初中
+            '教基3112' => new bs3112Import($this->importData),//小学\九年一贯制学校\十二年一贯制学校
+            '教基4155' => new bs4155Import($this->importData),//小学\九年一贯制学校\十二年一贯制学校
+            '教基2106' => new bs2106Import($this->importData),//小学\九年一贯制学校\十二年一贯制学校
+            '教基4153' => new bs4153Import($this->importData),//小学\初中\九年一贯制学校\十二年一贯制学校
+            '教基5176' => new bs5176Import($this->importData),//小学\初中\高中\九年一贯制学校\十二年一贯制学校
+            '教基5170' => new bs5170Import($this->importData),//小学\初中\九年一贯制学校\十二年一贯制学校
 
-            '基础基213' => new K213Import($this->importData),
-            '基础基313' => new K313Import($this->importData),
-            '基础基424' => new K424Import($this->importData), //初中，高中
+            '教基3115' => new bs3115Import($this->importData),//初中\九年一贯制学校\十二年一贯制学校
+            '教基4149' => new bs4149Import($this->importData),//初中\高中\九年一贯制学校\十二年一贯制学校
+            '教基4156' => new bs4156Import($this->importData),//初中\高中\九年一贯制学校\十二年一贯制学校
+            '教基2107' => new bs2107Import($this->importData),//初中\九年一贯制学校\十二年一贯制学校
 
-            '基础基314' => new K314Import($this->importData),
-            '基础基522' => new K522Import($this->importData),
+            '教基3118' => new bs3118Import($this->importData),//高中\十二年一贯制学校
+
+            '教基3120' => new bs3120Import($this->importData),//其他特教学校
+            '教基4150' => new bs4150Import($this->importData),//其他特教学校
+
+            '教基3221' => new bs3221Import($this->importData),//中等技术学校\职业高中学校
+            '教基4251' => new bs4251Import($this->importData),//中等技术学校\职业高中学校
+            '教基4261' => new bs4261Import($this->importData),//中等技术学校\职业高中学校
+            '教基5377' => new bs5377Import($this->importData),//中等技术学校\职业高中学校
+
+            '教基1102续' => new bs1102Import($this->importData),//小学\初中\高中\九年一贯制学校\十二年一贯制学校
+
+            // '基础基111' => new EsImport($this->importData),
+            // '基础基211' => new K211Import($this->importData),
+            // '基础基411' => new K411Import($this->importData),
+            // '基础基4211' => new K4211Import($this->importData),
+
+            // '基础基212' => new K212Import($this->importData),
+            // '基础基312' => new K312Import($this->importData),
+            // '基础基412' => new K412Import($this->importData),//小学，初中 ,高中
+            // '基础基422' => new K422Import($this->importData),//小学，初中
+            // '基础基423' => new K423Import($this->importData),
+            // '基础基531' => new K531Import($this->importData),//小学，初中
+
+            // '基础基213' => new K213Import($this->importData),
+            // '基础基313' => new K313Import($this->importData),
+            // '基础基424' => new K424Import($this->importData), //初中，高中
+
+            // '基础基314' => new K314Import($this->importData),
+            // '基础基522' => new K522Import($this->importData),
             
-            '中职基111' => new EsImport($this->importData),
-            '中职基311' => new Z311Import($this->importData),
-            '中职基411' => new Z411Import($this->importData),
-            '中职基421' => new Z421Import($this->importData),
-            '中职基521' => new Z521Import($this->importData),
+            // '中职基111' => new EsImport($this->importData),
+            // '中职基311' => new Z311Import($this->importData),
+            // '中职基411' => new Z411Import($this->importData),
+            // '中职基421' => new Z421Import($this->importData),
+            // '中职基521' => new Z521Import($this->importData),
 
-            '基础基315' => new K315Import($this->importData),
-            '基础基413' => new K413Import($this->importData),
+            // '基础基315' => new K315Import($this->importData),
+            // '基础基413' => new K413Import($this->importData),
 
-            '基础基112' => new K112Import($this->importData),
-            '基础基512' => new K512Import($this->importData),
+            // '基础基112' => new K112Import($this->importData),
+            // '基础基512' => new K512Import($this->importData),
 
             //2021.10.21 新模板逻辑
             '教基1001_幼儿园' => new JJ1001Import($this->importData),

@@ -51,6 +51,7 @@ class RecordService
         $user_id = $user->id;
         $sheetData = app('db')->select("SELECT * FROM sheet_record where report_type = '".$report_type."' and school_type = '".$school_type." ' and user_id = '".$user_id." ' ");
 
+    
         switch ($report_type) {
             case 'modern':
                     $res = $this->__getModernQuery($school_type, $sheetData);
@@ -58,7 +59,11 @@ class RecordService
             case 'balance':
                     $res = $this->__getBalanceQuery($school_type, $sheetData);
                 break;
-            
+            case 'situation':
+                //特殊处理 【全国义务教育优质均衡县校际均衡情况】
+                $sheetData = app('db')->select("SELECT * FROM sheet_record where report_type = 'balance'  and user_id = '".$user_id." ' ");
+                $res = $this->__getSituationQuery($sheetData);
+                break;
             default:
                 return [];
                 break;
@@ -103,20 +108,24 @@ class RecordService
                     $value->found_ind=='KSTR'&& $res[$value->school][10] = $value->found_ind=='KSTR' ? $value->found_divider : '';
 
                     $value->found_ind=='KSTR'&& $res[$value->school][11] = $value->found_ind=='KSTR' ? ($value->is_standard == 1?'达标':'不达标'):'';
+
+                    //KCTR
                     if ($value->found_ind=='KCTR' && ($global_config['KCTR']['ratio']=='default' || $global_config['KCTR']['ratio']=='percent')) {
-                        $kctr = intval($value->found_val);
+                        $kctr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='KCTR' && $global_config['KCTR']['ratio']=='scale') {
                         $kctr = explode(':', $value->found_val)[0];
                     }
-
+                    //KCTR
+                    
+                    //KSTR
                     if ($value->found_ind=='KSTR' && ($global_config['KSTR']['ratio']=='default' || $global_config['KSTR']['ratio']=='percent')) {
-                        $kstr = intval($value->found_val);
+                        $kstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='KSTR' && $global_config['KSTR']['ratio']=='scale') {
                         $kstr = explode(':', $value->found_val)[0];
                     }
-
+                    //KSTR
                     ($value->found_ind=='KCTR'&& $value->found_val) && $sumKCTR += $kctr;
                     ($value->found_ind=='KSTR'&& $value->found_val) && $sumKSTR += $kstr;
                     $index++;
@@ -128,13 +137,13 @@ class RecordService
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['KCTR']['ratio']=='default'? $sumKCTR.$global_config['KCTR']['unit']:($global_config['KCTR']['ratio']=='percent'?round( ($sumKCTR/$count), 3).'%':round( ($sumKCTR/$count), 3).':1');
+                $res['合计'][2] = $global_config['KCTR']['ratio']=='default'? round( ($sumKCTR/$count), 3).$global_config['KCTR']['unit']:($global_config['KCTR']['ratio']=='percent'?round( ($sumKCTR/$count), 3).'%':round( ($sumKCTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['KCTR']['standard_val'];
                 $res['合计'][4] = '/';
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '合计';
 
-                $res['合计'][7] = $global_config['KSTR']['ratio']=='default'? $sumKSTR.$global_config['KSTR']['unit']:($global_config['KSTR']['ratio']=='percent'?round( ($sumKSTR/$count), 3).'%':round( ($sumKSTR/$count), 3).':1');
+                $res['合计'][7] = $global_config['KSTR']['ratio']=='default'? round( ($sumKSTR/$count), 3).$global_config['KSTR']['unit']:($global_config['KSTR']['ratio']=='percent'?round( ($sumKSTR/$count), 3).'%':round( ($sumKSTR/$count), 3).':1');
                 $res['合计'][8] = $global_config['KSTR']['standard_val'];
                 $res['合计'][9] = '/';
                 $res['合计'][10] = '/';
@@ -194,7 +203,7 @@ class RecordService
 
                     //------PSTR
                     if ($value->found_ind=='PSTR' && ($global_config['PSTR']['ratio']=='default' || $global_config['PSTR']['ratio']=='percent')) {
-                        $pstr = intval($value->found_val);
+                        $pstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PSTR' && $global_config['PSTR']['ratio']=='scale') {
                         $pstr = explode(':', $value->found_val)[0];
@@ -204,7 +213,7 @@ class RecordService
                     //
                     //PTR
                     if ($value->found_ind=='PTR' && ($global_config['PTR']['ratio']=='default' || $global_config['PTR']['ratio']=='percent')) {
-                        $ptr = intval($value->found_val);
+                        $ptr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PTR' && $global_config['PTR']['ratio']=='scale') {
                         $ptr = explode(':', $value->found_val)[0];
@@ -214,7 +223,7 @@ class RecordService
                     
                     //---PFCR
                     if ($value->found_ind=='PFCR' && ($global_config['PFCR']['ratio']=='default' || $global_config['PFCR']['ratio']=='percent')) {
-                        $pfcr = intval($value->found_val);
+                        $pfcr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PFCR' && $global_config['PFCR']['ratio']=='scale') {
                         $pfcr = explode(':', $value->found_val)[0];
@@ -224,7 +233,7 @@ class RecordService
 
                     //-------PHSTR
                     if ($value->found_ind=='PHSTR' && ($global_config['PHSTR']['ratio']=='default' || $global_config['PHSTR']['ratio']=='percent')) {
-                        $phstr = intval($value->found_val);
+                        $phstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PHSTR' && $global_config['PHSTR']['ratio']=='scale') {
                         $phstr = explode(':', $value->found_val)[0];
@@ -234,7 +243,7 @@ class RecordService
                     
                     //-------PSBR
                     if ($value->found_ind=='PSBR' && ($global_config['PSBR']['ratio']=='default' || $global_config['PSBR']['ratio']=='percent')) {
-                        $psbr = intval($value->found_val);
+                        $psbr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PSBR' && $global_config['PSBR']['ratio']=='scale') {
                         $psbr = explode(':', $value->found_val)[0];
@@ -250,31 +259,31 @@ class RecordService
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['PSTR']['ratio']=='default'? $sumPSTR.$global_config['PSTR']['unit']:($global_config['PSTR']['ratio']=='percent'?round( ($sumPSTR/$count), 3).'%':round( ($sumPSTR/$count), 3).':1');
+                $res['合计'][2] = $global_config['PSTR']['ratio']=='default'? round( ($sumPSTR/$count), 3).$global_config['PSTR']['unit']:($global_config['PSTR']['ratio']=='percent'?round( ($sumPSTR/$count), 3).'%':round( ($sumPSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['PSTR']['standard_val'];
                 $res['合计'][4] = '/';
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '合计';
 
-                $res['合计'][7] = $global_config['PTR']['ratio']=='default'? $sumPTR.$global_config['PTR']['unit']:($global_config['PTR']['ratio']=='percent'?round( ($sumPTR/$count), 3).'%':round( ($sumPTR/$count), 3).':1');;
+                $res['合计'][7] = $global_config['PTR']['ratio']=='default'? round( ($sumPTR/$count), 3).$global_config['PTR']['unit']:($global_config['PTR']['ratio']=='percent'?round( ($sumPTR/$count), 3).'%':round( ($sumPTR/$count), 3).':1');;
                 $res['合计'][8] = $global_config['PTR']['standard_val'];
                 $res['合计'][9] = '/';
                 $res['合计'][10] = '/';
                 $res['合计'][11] = '合计';
 
-                $res['合计'][12] = $global_config['PFCR']['ratio']=='default'? $sumPFCR.$global_config['PFCR']['unit']:($global_config['PFCR']['ratio']=='percent'?round( ($sumPFCR/$count), 3).'%':round( ($sumPFCR/$count), 3).':1');;
+                $res['合计'][12] = $global_config['PFCR']['ratio']=='default'? round( ($sumPFCR/$count), 3).$global_config['PFCR']['unit']:($global_config['PFCR']['ratio']=='percent'?round( ($sumPFCR/$count), 3).'%':round( ($sumPFCR/$count), 3).':1');;
                 $res['合计'][13] = $global_config['PFCR']['standard_val'];
                 $res['合计'][14] = '/';
                 $res['合计'][15] = '/';
                 $res['合计'][16] = '合计';
 
-                $res['合计'][17] = $global_config['PHSTR']['ratio']=='default'? $sumPHSTR.$global_config['PHSTR']['unit']:($global_config['PHSTR']['ratio']=='percent'?round( ($sumPHSTR/$count), 3).'%':round( ($sumPHSTR/$count), 3).':1');;
+                $res['合计'][17] = $global_config['PHSTR']['ratio']=='default'? round( ($sumPHSTR/$count), 3).$global_config['PHSTR']['unit']:($global_config['PHSTR']['ratio']=='percent'?round( ($sumPHSTR/$count), 3).'%':round( ($sumPHSTR/$count), 3).':1');;
                 $res['合计'][18] = $global_config['PHSTR']['standard_val'];
                 $res['合计'][19] = '/';
                 $res['合计'][20] = '/';
                 $res['合计'][21] = '合计';
 
-                $res['合计'][22] = $global_config['PSBR']['ratio']=='default'? $sumPSBR.$global_config['PSBR']['unit']:($global_config['PSBR']['ratio']=='percent'?round( ($sumPSBR/$count), 3).'%':round( ($sumPSBR/$count), 3).':1');;
+                $res['合计'][22] = $global_config['PSBR']['ratio']=='default'? round( ($sumPSBR/$count), 3).$global_config['PSBR']['unit']:($global_config['PSBR']['ratio']=='percent'?round( ($sumPSBR/$count), 3).'%':round( ($sumPSBR/$count), 3).':1');;
                 $res['合计'][23] = $global_config['PSBR']['standard_val'];
                 $res['合计'][24] = '/';
                 $res['合计'][25] = '/';
@@ -334,7 +343,7 @@ class RecordService
 
                     //------JSTR
                     if ($value->found_ind=='JSTR' && ($global_config['JSTR']['ratio']=='default' || $global_config['JSTR']['ratio']=='percent')) {
-                        $jstr = intval($value->found_val);
+                        $jstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JSTR' && $global_config['JSTR']['ratio']=='scale') {
                         $jstr = explode(':', $value->found_val)[0];
@@ -344,7 +353,7 @@ class RecordService
                     //
                     //JETR
                     if ($value->found_ind=='JETR' && ($global_config['JETR']['ratio']=='default' || $global_config['JETR']['ratio']=='percent')) {
-                        $jetr = intval($value->found_val);
+                        $jetr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JETR' && $global_config['JETR']['ratio']=='scale') {
                         $jetr = explode(':', $value->found_val)[0];
@@ -354,7 +363,7 @@ class RecordService
                     
                     //---JFCR
                     if ($value->found_ind=='JFCR' && ($global_config['JFCR']['ratio']=='default' || $global_config['JFCR']['ratio']=='percent')) {
-                        $jfcr = intval($value->found_val);
+                        $jfcr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JFCR' && $global_config['JFCR']['ratio']=='scale') {
                         $jfcr = explode(':', $value->found_val)[0];
@@ -364,7 +373,7 @@ class RecordService
 
                     //-------JHSTR
                     if ($value->found_ind=='JHSTR' && ($global_config['JHSTR']['ratio']=='default' || $global_config['JHSTR']['ratio']=='percent')) {
-                        $jhstr = intval($value->found_val);
+                        $jhstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JHSTR' && $global_config['JHSTR']['ratio']=='scale') {
                         $jhstr = explode(':', $value->found_val)[0];
@@ -374,7 +383,7 @@ class RecordService
                     
                     //-------JSBR
                     if ($value->found_ind=='JSBR' && ($global_config['JSBR']['ratio']=='default' || $global_config['JSBR']['ratio']=='percent')) {
-                        $jsbr = intval($value->found_val);
+                        $jsbr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JSBR' && $global_config['JSBR']['ratio']=='scale') {
                         $jsbr = explode(':', $value->found_val)[0];
@@ -390,31 +399,31 @@ class RecordService
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['JSTR']['ratio']=='default'? $sumJSTR.$global_config['JSTR']['unit']:($global_config['JSTR']['ratio']=='percent'?round( ($sumJSTR/$count), 3).'%':round( ($sumJSTR/$count), 3).':1');
+                $res['合计'][2] = $global_config['JSTR']['ratio']=='default'? round( ($sumJSTR/$count), 3).$global_config['JSTR']['unit']:($global_config['JSTR']['ratio']=='percent'?round( ($sumJSTR/$count), 3).'%':round( ($sumJSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['JSTR']['standard_val'];
                 $res['合计'][4] = '/';
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '合计';
 
-                $res['合计'][7] = $global_config['JETR']['ratio']=='default'? $sumJETR.$global_config['JETR']['unit']:($global_config['JETR']['ratio']=='percent'?round( ($sumJETR/$count), 3).'%':round( ($sumJETR/$count), 3).':1');;
+                $res['合计'][7] = $global_config['JETR']['ratio']=='default'? round( ($sumJETR/$count), 3).$global_config['JETR']['unit']:($global_config['JETR']['ratio']=='percent'?round( ($sumJETR/$count), 3).'%':round( ($sumJETR/$count), 3).':1');;
                 $res['合计'][8] = $global_config['JETR']['standard_val'];
                 $res['合计'][9] = '/';
                 $res['合计'][10] = '/';
                 $res['合计'][11] = '合计';
 
-                $res['合计'][12] = $global_config['JFCR']['ratio']=='default'? $sumJFCR.$global_config['JFCR']['unit']:($global_config['JFCR']['ratio']=='percent'?round( ($sumJFCR/$count), 3).'%':round( ($sumJFCR/$count), 3).':1');;
+                $res['合计'][12] = $global_config['JFCR']['ratio']=='default'? round( ($sumJFCR/$count), 3).$global_config['JFCR']['unit']:($global_config['JFCR']['ratio']=='percent'?round( ($sumJFCR/$count), 3).'%':round( ($sumJFCR/$count), 3).':1');;
                 $res['合计'][13] = $global_config['JFCR']['standard_val'];
                 $res['合计'][14] = '/';
                 $res['合计'][15] = '/';
                 $res['合计'][16] = '合计';
 
-                $res['合计'][17] = $global_config['JHSTR']['ratio']=='default'? $sumJHSTR.$global_config['JHSTR']['unit']:($global_config['JHSTR']['ratio']=='percent'?round( ($sumJHSTR/$count), 3).'%':round( ($sumJHSTR/$count), 3).':1');;
+                $res['合计'][17] = $global_config['JHSTR']['ratio']=='default'? round( ($sumJHSTR/$count), 3).$global_config['JHSTR']['unit']:($global_config['JHSTR']['ratio']=='percent'?round( ($sumJHSTR/$count), 3).'%':round( ($sumJHSTR/$count), 3).':1');;
                 $res['合计'][18] = $global_config['JHSTR']['standard_val'];
                 $res['合计'][19] = '/';
                 $res['合计'][20] = '/';
                 $res['合计'][21] = '合计';
 
-                $res['合计'][22] = $global_config['JSBR']['ratio']=='default'? $sumJSBR.$global_config['JSBR']['unit']:($global_config['JSBR']['ratio']=='percent'?round( ($sumJSBR/$count), 3).'%':round( ($sumJSBR/$count), 3).':1');;
+                $res['合计'][22] = $global_config['JSBR']['ratio']=='default'? round( ($sumJSBR/$count), 3).$global_config['JSBR']['unit']:($global_config['JSBR']['ratio']=='percent'?round( ($sumJSBR/$count), 3).'%':round( ($sumJSBR/$count), 3).':1');;
                 $res['合计'][23] = $global_config['JSBR']['standard_val'];
                 $res['合计'][24] = '/';
                 $res['合计'][25] = '/';
@@ -511,7 +520,7 @@ class RecordService
 
                     //------MNPSTR
                     if ($value->found_ind=='MNPSTR' && ($global_config['MNPSTR']['ratio']=='default' || $global_config['MNPSTR']['ratio']=='percent')) {
-                        $mnpstr = intval($value->found_val);
+                        $mnpstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNPSTR' && $global_config['MNPSTR']['ratio']=='scale') {
                         $mnpstr = explode(':', $value->found_val)[0];
@@ -521,7 +530,7 @@ class RecordService
                     //
                     //MNPTR
                     if ($value->found_ind=='MNPTR' && ($global_config['MNPTR']['ratio']=='default' || $global_config['MNPTR']['ratio']=='percent')) {
-                        $mnptr = intval($value->found_val);
+                        $mnptr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNPTR' && $global_config['MNPTR']['ratio']=='scale') {
                         $mnptr = explode(':', $value->found_val)[0];
@@ -531,7 +540,7 @@ class RecordService
                     
                     //---MNPFCR
                     if ($value->found_ind=='MNPFCR' && ($global_config['MNPFCR']['ratio']=='default' || $global_config['MNPFCR']['ratio']=='percent')) {
-                        $mnpfcr = intval($value->found_val);
+                        $mnpfcr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNPFCR' && $global_config['MNPFCR']['ratio']=='scale') {
                         $mnpfcr = explode(':', $value->found_val)[0];
@@ -541,7 +550,7 @@ class RecordService
 
                     //-------MNPHSTR
                     if ($value->found_ind=='MNPHSTR' && ($global_config['MNPHSTR']['ratio']=='default' || $global_config['MNPHSTR']['ratio']=='percent')) {
-                        $mnphstr = intval($value->found_val);
+                        $mnphstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNPHSTR' && $global_config['MNPHSTR']['ratio']=='scale') {
                         $mnphstr = explode(':', $value->found_val)[0];
@@ -551,7 +560,7 @@ class RecordService
                     
                     //-------MNPSBR
                     if ($value->found_ind=='MNPSBR' && ($global_config['MNPSBR']['ratio']=='default' || $global_config['MNPSBR']['ratio']=='percent')) {
-                        $mnpsbr = intval($value->found_val);
+                        $mnpsbr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNPSBR' && $global_config['MNPSBR']['ratio']=='scale') {
                         $mnpsbr = explode(':', $value->found_val)[0];
@@ -562,7 +571,7 @@ class RecordService
 
                     //------MNJSTR
                     if ($value->found_ind=='MNJSTR' && ($global_config['MNJSTR']['ratio']=='default' || $global_config['MNJSTR']['ratio']=='percent')) {
-                        $mnjstr = intval($value->found_val);
+                        $mnjstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNJSTR' && $global_config['MNJSTR']['ratio']=='scale') {
                         $mnjstr = explode(':', $value->found_val)[0];
@@ -572,7 +581,7 @@ class RecordService
                     //
                     //MNJETR
                     if ($value->found_ind=='MNJETR' && ($global_config['MNJETR']['ratio']=='default' || $global_config['MNJETR']['ratio']=='percent')) {
-                        $mnjetr = intval($value->found_val);
+                        $mnjetr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNJETR' && $global_config['MNJETR']['ratio']=='scale') {
                         $mnjetr = explode(':', $value->found_val)[0];
@@ -582,7 +591,7 @@ class RecordService
                     
                     //---MNJFCR
                     if ($value->found_ind=='MNJFCR' && ($global_config['MNJFCR']['ratio']=='default' || $global_config['MNJFCR']['ratio']=='percent')) {
-                        $mnjfcr = intval($value->found_val);
+                        $mnjfcr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNJFCR' && $global_config['MNJFCR']['ratio']=='scale') {
                         $mnjfcr = explode(':', $value->found_val)[0];
@@ -592,7 +601,7 @@ class RecordService
 
                     //-------MNJHSTR
                     if ($value->found_ind=='MNJHSTR' && ($global_config['MNJHSTR']['ratio']=='default' || $global_config['MNJHSTR']['ratio']=='percent')) {
-                        $mnjhstr = intval($value->found_val);
+                        $mnjhstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNJHSTR' && $global_config['MNJHSTR']['ratio']=='scale') {
                         $mnjhstr = explode(':', $value->found_val)[0];
@@ -602,7 +611,7 @@ class RecordService
                     
                     //-------MNJSBR
                     if ($value->found_ind=='MNJSBR' && ($global_config['MNJSBR']['ratio']=='default' || $global_config['MNJSBR']['ratio']=='percent')) {
-                        $mnjsbr = intval($value->found_val);
+                        $mnjsbr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MNJSBR' && $global_config['MNJSBR']['ratio']=='scale') {
                         $mnjsbr = explode(':', $value->found_val)[0];
@@ -618,60 +627,60 @@ class RecordService
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['MNPSTR']['ratio']=='default'? $sumMNPSTR.$global_config['MNPSTR']['unit']:($global_config['MNPSTR']['ratio']=='percent'?round( ($sumMNPSTR/$count), 3).'%':round( ($sumMNPSTR/$count), 3).':1');
+                $res['合计'][2] = $global_config['MNPSTR']['ratio']=='default'? round( ($sumMNPSTR/$count), 3).$global_config['MNPSTR']['unit']:($global_config['MNPSTR']['ratio']=='percent'?round( ($sumMNPSTR/$count), 3).'%':round( ($sumMNPSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['MNPSTR']['standard_val'];
                 $res['合计'][4] = '/';
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '合计';
 
-                $res['合计'][7] = $global_config['MNPTR']['ratio']=='default'? $sumMNPTR.$global_config['MNPTR']['unit']:($global_config['MNPTR']['ratio']=='percent'?round( ($sumMNPTR/$count), 3).'%':round( ($sumMNPTR/$count), 3).':1');;
+                $res['合计'][7] = $global_config['MNPTR']['ratio']=='default'? round( ($sumMNPTR/$count), 3).$global_config['MNPTR']['unit']:($global_config['MNPTR']['ratio']=='percent'?round( ($sumMNPTR/$count), 3).'%':round( ($sumMNPTR/$count), 3).':1');;
                 $res['合计'][8] = $global_config['MNPTR']['standard_val'];
                 $res['合计'][9] = '/';
                 $res['合计'][10] = '/';
                 $res['合计'][11] = '合计';
 
-                $res['合计'][12] = $global_config['MNPFCR']['ratio']=='default'? $sumMNPFCR.$global_config['MNPFCR']['unit']:($global_config['MNPFCR']['ratio']=='percent'?round( ($sumMNPFCR/$count), 3).'%':round( ($sumMNPFCR/$count), 3).':1');
+                $res['合计'][12] = $global_config['MNPFCR']['ratio']=='default'? round( ($sumMNPFCR/$count), 3).$global_config['MNPFCR']['unit']:($global_config['MNPFCR']['ratio']=='percent'?round( ($sumMNPFCR/$count), 3).'%':round( ($sumMNPFCR/$count), 3).':1');
                 $res['合计'][13] = $global_config['MNPFCR']['standard_val'];
                 $res['合计'][14] = '/';
                 $res['合计'][15] = '/';
                 $res['合计'][16] = '合计';
 
-                $res['合计'][17] = $global_config['MNPHSTR']['ratio']=='default'? $sumMNPHSTR.$global_config['MNPHSTR']['unit']:($global_config['MNPHSTR']['ratio']=='percent'?round( ($sumMNPHSTR/$count), 3).'%':round( ($sumMNPHSTR/$count), 3).':1');;
+                $res['合计'][17] = $global_config['MNPHSTR']['ratio']=='default'? round( ($sumMNPHSTR/$count), 3).$global_config['MNPHSTR']['unit']:($global_config['MNPHSTR']['ratio']=='percent'?round( ($sumMNPHSTR/$count), 3).'%':round( ($sumMNPHSTR/$count), 3).':1');;
                 $res['合计'][18] = $global_config['MNPHSTR']['standard_val'];
                 $res['合计'][19] = '/';
                 $res['合计'][20] = '/';
                 $res['合计'][21] = '合计';
 
-                $res['合计'][22] = $global_config['MNPSBR']['ratio']=='default'? $sumMNPSBR.$global_config['MNPSBR']['unit']:($global_config['MNPSBR']['ratio']=='percent'?round( ($sumMNPSBR/$count), 3).'%':round( ($sumMNPSBR/$count), 3).':1');;
+                $res['合计'][22] = $global_config['MNPSBR']['ratio']=='default'? round( ($sumMNPSBR/$count), 3).$global_config['MNPSBR']['unit']:($global_config['MNPSBR']['ratio']=='percent'?round( ($sumMNPSBR/$count), 3).'%':round( ($sumMNPSBR/$count), 3).':1');;
                 $res['合计'][23] = $global_config['MNPSBR']['standard_val'];
                 $res['合计'][24] = '/';
                 $res['合计'][25] = '/';
                 $res['合计'][26] = '合计';
-                $res['合计'][27] = $global_config['MNJSTR']['ratio']=='default'? $sumMNJSTR.$global_config['MNJSTR']['unit']:($global_config['MNJSTR']['ratio']=='percent'?round( ($sumMNJSTR/$count), 3).'%':round( ($sumMNJSTR/$count), 3).':1');
+                $res['合计'][27] = $global_config['MNJSTR']['ratio']=='default'? round( ($sumMNJSTR/$count), 3).$global_config['MNJSTR']['unit']:($global_config['MNJSTR']['ratio']=='percent'?round( ($sumMNJSTR/$count), 3).'%':round( ($sumMNJSTR/$count), 3).':1');
                 $res['合计'][28] = $global_config['MNJSTR']['standard_val'];
                 $res['合计'][29] = '/';
                 $res['合计'][30] = '/';
                 $res['合计'][31] = '合计';
 
-                $res['合计'][32] = $global_config['MNJETR']['ratio']=='default'? $sumMNJETR.$global_config['MNJETR']['unit']:($global_config['MNJETR']['ratio']=='percent'?round( ($sumMNJETR/$count), 3).'%':round( ($sumMNJETR/$count), 3).':1');;
+                $res['合计'][32] = $global_config['MNJETR']['ratio']=='default'? round( ($sumMNJETR/$count), 3).$global_config['MNJETR']['unit']:($global_config['MNJETR']['ratio']=='percent'?round( ($sumMNJETR/$count), 3).'%':round( ($sumMNJETR/$count), 3).':1');;
                 $res['合计'][33] = $global_config['MNJETR']['standard_val'];
                 $res['合计'][34] = '/';
                 $res['合计'][35] = '/';
                 $res['合计'][36] = '合计';
 
-                $res['合计'][37] = $global_config['MNJFCR']['ratio']=='default'? $sumMNJFCR.$global_config['MNJFCR']['unit']:($global_config['MNJFCR']['ratio']=='percent'?round( ($sumMNJFCR/$count), 3).'%':round( ($sumMNJFCR/$count), 3).':1');;
+                $res['合计'][37] = $global_config['MNJFCR']['ratio']=='default'? round( ($sumMNJFCR/$count), 3).$global_config['MNJFCR']['unit']:($global_config['MNJFCR']['ratio']=='percent'?round( ($sumMNJFCR/$count), 3).'%':round( ($sumMNJFCR/$count), 3).':1');;
                 $res['合计'][38] = $global_config['MNJFCR']['standard_val'];
                 $res['合计'][39] = '/';
                 $res['合计'][40] = '/';
                 $res['合计'][41] = '合计';
 
-                $res['合计'][42] = $global_config['MNJHSTR']['ratio']=='default'? $sumMNJHSTR.$global_config['MNJHSTR']['unit']:($global_config['MNJHSTR']['ratio']=='percent'?round( ($sumMNJHSTR/$count), 3).'%':round( ($sumMNJHSTR/$count), 3).':1');;
+                $res['合计'][42] = $global_config['MNJHSTR']['ratio']=='default'? round( ($sumMNJSBR/$count), 3).$global_config['MNJHSTR']['unit']:($global_config['MNJHSTR']['ratio']=='percent'?round( ($sumMNJHSTR/$count), 3).'%':round( ($sumMNJHSTR/$count), 3).':1');;
                 $res['合计'][43] = $global_config['MNJHSTR']['standard_val'];
                 $res['合计'][44] = '/';
                 $res['合计'][45] = '/';
                 $res['合计'][46] = '合计';
 
-                $res['合计'][47] = $global_config['MNJSBR']['ratio']=='default'? $sumMNJSBR.$global_config['MNJSBR']['unit']:($global_config['MNJSBR']['ratio']=='percent'?round( ($sumMNJSBR/$count), 3).'%':round( ($sumMNJSBR/$count), 3).':1');;
+                $res['合计'][47] = $global_config['MNJSBR']['ratio']=='default'? round( ($sumMNJSBR/$count), 3).$global_config['MNJSBR']['unit']:($global_config['MNJSBR']['ratio']=='percent'?round( ($sumMNJSBR/$count), 3).'%':round( ($sumMNJSBR/$count), 3).':1');;
                 $res['合计'][48] = $global_config['MNJSBR']['standard_val'];
                 $res['合计'][49] = '/';
                 $res['合计'][50] = '/';
@@ -793,7 +802,7 @@ class RecordService
 
                     //------MTPSTR
                     if ($value->found_ind=='MTPSTR' && ($global_config['MTPSTR']['ratio']=='default' || $global_config['MTPSTR']['ratio']=='percent')) {
-                        $mtpstr = intval($value->found_val);
+                        $mtpstr = floatval($value->found_val);
                         Log::info('mtwelveYearCon mtpstr 1'.$mtpstr);
                     }
                     if ($value->found_ind=='MTPSTR' && $global_config['MTPSTR']['ratio']=='scale') {
@@ -805,7 +814,7 @@ class RecordService
                     //
                     //MTPTR
                     if ($value->found_ind=='MTPTR' && ($global_config['MTPTR']['ratio']=='default' || $global_config['MTPTR']['ratio']=='percent')) {
-                        $mtptr = intval($value->found_val);
+                        $mtptr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTPTR' && $global_config['MTPTR']['ratio']=='scale') {
                         $mtptr = explode(':', $value->found_val)[0];
@@ -815,7 +824,7 @@ class RecordService
                     
                     //---MTPFCR
                     if ($value->found_ind=='MTPFCR' && ($global_config['MTPFCR']['ratio']=='default' || $global_config['MTPFCR']['ratio']=='percent')) {
-                        $mtpfcr = intval($value->found_val);
+                        $mtpfcr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTPFCR' && $global_config['MTPFCR']['ratio']=='scale') {
                         $mtpfcr = explode(':', $value->found_val)[0];
@@ -825,7 +834,7 @@ class RecordService
 
                     //-------MTPHSTR
                     if ($value->found_ind=='MTPHSTR' && ($global_config['MTPHSTR']['ratio']=='default' || $global_config['MTPHSTR']['ratio']=='percent')) {
-                        $mtphstr = intval($value->found_val);
+                        $mtphstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTPHSTR' && $global_config['MTPHSTR']['ratio']=='scale') {
                         $mtphstr = explode(':', $value->found_val)[0];
@@ -835,7 +844,7 @@ class RecordService
                     
                     //-------MTPSBR
                     if ($value->found_ind=='MTPSBR' && ($global_config['MTPSBR']['ratio']=='default' || $global_config['MTPSBR']['ratio']=='percent')) {
-                        $mtpsbr = intval($value->found_val);
+                        $mtpsbr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTPSBR' && $global_config['MTPSBR']['ratio']=='scale') {
                         $mtpsbr = explode(':', $value->found_val)[0];
@@ -846,7 +855,7 @@ class RecordService
 
                     //------MTJSTR
                     if ($value->found_ind=='MTJSTR' && ($global_config['MTJSTR']['ratio']=='default' || $global_config['MTJSTR']['ratio']=='percent')) {
-                        $mtjstr = intval($value->found_val);
+                        $mtjstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTJSTR' && $global_config['MTJSTR']['ratio']=='scale') {
                         $mtjstr = explode(':', $value->found_val)[0];
@@ -856,7 +865,7 @@ class RecordService
                     //
                     //MTJETR
                     if ($value->found_ind=='MTJETR' && ($global_config['MTJETR']['ratio']=='default' || $global_config['MTJETR']['ratio']=='percent')) {
-                        $mtjetr = intval($value->found_val);
+                        $mtjetr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTJETR' && $global_config['MTJETR']['ratio']=='scale') {
                         $mtjetr = explode(':', $value->found_val)[0];
@@ -866,7 +875,7 @@ class RecordService
                     
                     //---MTJFCR
                     if ($value->found_ind=='MTJFCR' && ($global_config['MTJFCR']['ratio']=='default' || $global_config['MTJFCR']['ratio']=='percent')) {
-                        $mtjfcr = intval($value->found_val);
+                        $mtjfcr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTJFCR' && $global_config['MTJFCR']['ratio']=='scale') {
                         $mtjfcr = explode(':', $value->found_val)[0];
@@ -876,7 +885,7 @@ class RecordService
 
                     //-------MTJHSTR
                     if ($value->found_ind=='MTJHSTR' && ($global_config['MTJHSTR']['ratio']=='default' || $global_config['MTJHSTR']['ratio']=='percent')) {
-                        $mtjhstr = intval($value->found_val);
+                        $mtjhstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTJHSTR' && $global_config['MTJHSTR']['ratio']=='scale') {
                         $mtjhstr = explode(':', $value->found_val)[0];
@@ -886,7 +895,7 @@ class RecordService
                     
                     //-------MTJSBR
                     if ($value->found_ind=='MTJSBR' && ($global_config['MTJSBR']['ratio']=='default' || $global_config['MTJSBR']['ratio']=='percent')) {
-                        $mtjsbr = intval($value->found_val);
+                        $mtjsbr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTJSBR' && $global_config['MTJSBR']['ratio']=='scale') {
                         $mtjsbr = explode(':', $value->found_val)[0];
@@ -895,7 +904,7 @@ class RecordService
                     //---MTJSBR
                     //------MTHSTR
                     if ($value->found_ind=='MTHSTR' && ($global_config['MTHSTR']['ratio']=='default' || $global_config['MTHSTR']['ratio']=='percent')) {
-                        $mthstr = intval($value->found_val);
+                        $mthstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTHSTR' && $global_config['MTHSTR']['ratio']=='scale') {
                         $mthstr = explode(':', $value->found_val)[0];
@@ -905,7 +914,7 @@ class RecordService
                     //
                     //MTHETR
                     if ($value->found_ind=='MTHETR' && ($global_config['MTHETR']['ratio']=='default' || $global_config['MTHETR']['ratio']=='percent')) {
-                        $mthetr = intval($value->found_val);
+                        $mthetr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTHETR' && $global_config['MTHETR']['ratio']=='scale') {
                         $mthetr = explode(':', $value->found_val)[0];
@@ -915,7 +924,7 @@ class RecordService
                     
                     //---MTHSMR
                     if ($value->found_ind=='MTHSMR' && ($global_config['MTHSMR']['ratio']=='default' || $global_config['MTHSMR']['ratio']=='percent')) {
-                        $mthsmr = intval($value->found_val);
+                        $mthsmr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='MTHSMR' && $global_config['MTHSMR']['ratio']=='scale') {
                         $mthsmr = explode(':', $value->found_val)[0];
@@ -934,78 +943,78 @@ class RecordService
                 //合计
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['MTPSTR']['ratio']=='default'? $sumMTPSTR.$global_config['MTPSTR']['unit']:($global_config['MTPSTR']['ratio']=='percent'?round( ($sumMTPSTR/$count), 3).'%':round( ($sumMTPSTR/$count), 3).':1');
+                $res['合计'][2] = $global_config['MTPSTR']['ratio']=='default'? round( ($sumMTPSTR/$count), 3).$global_config['MTPSTR']['unit']:($global_config['MTPSTR']['ratio']=='percent'?round( ($sumMTPSTR/$count), 3).'%':round( ($sumMTPSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['MTPSTR']['standard_val'];
                 $res['合计'][4] = '/';
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '合计';
 
-                $res['合计'][7] = $global_config['MTPTR']['ratio']=='default'? $sumMTPTR.$global_config['MTPTR']['unit']:($global_config['MTPTR']['ratio']=='percent'?round( ($sumMTPTR/$count), 3).'%':round( ($sumMTPTR/$count), 3).':1');;
+                $res['合计'][7] = $global_config['MTPTR']['ratio']=='default'? round( ($sumMTPTR/$count), 3).$global_config['MTPTR']['unit']:($global_config['MTPTR']['ratio']=='percent'?round( ($sumMTPTR/$count), 3).'%':round( ($sumMTPTR/$count), 3).':1');;
                 $res['合计'][8] = $global_config['MTPTR']['standard_val'];
                 $res['合计'][9] = '/';
                 $res['合计'][10] = '/';
                 $res['合计'][11] = '合计';
 
-                $res['合计'][12] = $global_config['MTPFCR']['ratio']=='default'? $sumMTPFCR.$global_config['MTPFCR']['unit']:($global_config['MTPFCR']['ratio']=='percent'?round( ($sumMTPFCR/$count), 3).'%':round( ($sumMTPFCR/$count), 3).':1');
+                $res['合计'][12] = $global_config['MTPFCR']['ratio']=='default'? round( ($sumMTPFCR/$count), 3).$global_config['MTPFCR']['unit']:($global_config['MTPFCR']['ratio']=='percent'?round( ($sumMTPFCR/$count), 3).'%':round( ($sumMTPFCR/$count), 3).':1');
                 $res['合计'][13] = $global_config['MTPFCR']['standard_val'];
                 $res['合计'][14] = '/';
                 $res['合计'][15] = '/';
                 $res['合计'][16] = '合计';
 
-                $res['合计'][17] = $global_config['MTPHSTR']['ratio']=='default'? $sumMTPHSTR.$global_config['MTPHSTR']['unit']:($global_config['MTPHSTR']['ratio']=='percent'?round( ($sumMTPHSTR/$count), 3).'%':round( ($sumMTPHSTR/$count), 3).':1');;
+                $res['合计'][17] = $global_config['MTPHSTR']['ratio']=='default'? round( ($sumMTPHSTR/$count), 3).$global_config['MTPHSTR']['unit']:($global_config['MTPHSTR']['ratio']=='percent'?round( ($sumMTPHSTR/$count), 3).'%':round( ($sumMTPHSTR/$count), 3).':1');;
                 $res['合计'][18] = $global_config['MTPHSTR']['standard_val'];
                 $res['合计'][19] = '/';
                 $res['合计'][20] = '/';
                 $res['合计'][21] = '合计';
 
-                $res['合计'][22] = $global_config['MTPSBR']['ratio']=='default'? $sumMTPSBR.$global_config['MTPSBR']['unit']:($global_config['MTPSBR']['ratio']=='percent'?round( ($sumMTPSBR/$count), 3).'%':round( ($sumMTPSBR/$count), 3).':1');;
+                $res['合计'][22] = $global_config['MTPSBR']['ratio']=='default'? round( ($sumMTPSBR/$count), 3).$global_config['MTPSBR']['unit']:($global_config['MTPSBR']['ratio']=='percent'?round( ($sumMTPSBR/$count), 3).'%':round( ($sumMTPSBR/$count), 3).':1');;
                 $res['合计'][23] = $global_config['MTPSBR']['standard_val'];
                 $res['合计'][24] = '/';
                 $res['合计'][25] = '/';
                 $res['合计'][26] = '合计';
-                $res['合计'][27] = $global_config['MTJSTR']['ratio']=='default'? $sumMTJSTR.$global_config['MTJSTR']['unit']:($global_config['MTJSTR']['ratio']=='percent'?round( ($sumMTJSTR/$count), 3).'%':round( ($sumMTJSTR/$count), 3).':1');
+                $res['合计'][27] = $global_config['MTJSTR']['ratio']=='default'? round( ($sumMTJSTR/$count), 3).$global_config['MTJSTR']['unit']:($global_config['MTJSTR']['ratio']=='percent'?round( ($sumMTJSTR/$count), 3).'%':round( ($sumMTJSTR/$count), 3).':1');
                 $res['合计'][28] = $global_config['MTJSTR']['standard_val'];
                 $res['合计'][29] = '/';
                 $res['合计'][30] = '/';
                 $res['合计'][31] = '合计';
 
-                $res['合计'][32] = $global_config['MTJETR']['ratio']=='default'? $sumMTJETR.$global_config['MTJETR']['unit']:($global_config['MTJETR']['ratio']=='percent'?round( ($sumMTJETR/$count), 3).'%':round( ($sumMTJETR/$count), 3).':1');;
+                $res['合计'][32] = $global_config['MTJETR']['ratio']=='default'? round( ($sumMTJETR/$count), 3).$global_config['MTJETR']['unit']:($global_config['MTJETR']['ratio']=='percent'?round( ($sumMTJETR/$count), 3).'%':round( ($sumMTJETR/$count), 3).':1');;
                 $res['合计'][33] = $global_config['MTJETR']['standard_val'];
                 $res['合计'][34] = '/';
                 $res['合计'][35] = '/';
                 $res['合计'][36] = '合计';
 
-                $res['合计'][37] = $global_config['MTJFCR']['ratio']=='default'? $sumMTJFCR.$global_config['MTJFCR']['unit']:($global_config['MTJFCR']['ratio']=='percent'?round( ($sumMTJFCR/$count), 3).'%':round( ($sumMTJFCR/$count), 3).':1');;
+                $res['合计'][37] = $global_config['MTJFCR']['ratio']=='default'? round( ($sumMTJFCR/$count), 3).$global_config['MTJFCR']['unit']:($global_config['MTJFCR']['ratio']=='percent'?round( ($sumMTJFCR/$count), 3).'%':round( ($sumMTJFCR/$count), 3).':1');;
                 $res['合计'][38] = $global_config['MTJFCR']['standard_val'];
                 $res['合计'][39] = '/';
                 $res['合计'][40] = '/';
                 $res['合计'][41] = '合计';
 
-                $res['合计'][42] = $global_config['MTJHSTR']['ratio']=='default'? $sumMTJHSTR.$global_config['MTJHSTR']['unit']:($global_config['MTJHSTR']['ratio']=='percent'?round( ($sumMTJHSTR/$count), 3).'%':round( ($sumMTJHSTR/$count), 3).':1');;
+                $res['合计'][42] = $global_config['MTJHSTR']['ratio']=='default'? round( ($sumMTJHSTR/$count), 3).$global_config['MTJHSTR']['unit']:($global_config['MTJHSTR']['ratio']=='percent'?round( ($sumMTJHSTR/$count), 3).'%':round( ($sumMTJHSTR/$count), 3).':1');;
                 $res['合计'][43] = $global_config['MTJHSTR']['standard_val'];
                 $res['合计'][44] = '/';
                 $res['合计'][45] = '/';
                 $res['合计'][46] = '合计';
 
-                $res['合计'][47] = $global_config['MTJSBR']['ratio']=='default'? $sumMTJSBR.$global_config['MTJSBR']['unit']:($global_config['MTJSBR']['ratio']=='percent'?round( ($sumMTJSBR/$count), 3).'%':round( ($sumMTJSBR/$count), 3).':1');;
+                $res['合计'][47] = $global_config['MTJSBR']['ratio']=='default'? round( ($sumMTJSBR/$count), 3).$global_config['MTJSBR']['unit']:($global_config['MTJSBR']['ratio']=='percent'?round( ($sumMTJSBR/$count), 3).'%':round( ($sumMTJSBR/$count), 3).':1');;
                 $res['合计'][48] = $global_config['MTJSBR']['standard_val'];
                 $res['合计'][49] = '/';
                 $res['合计'][50] = '/';
                 $res['合计'][51] = '合计';
 
-                $res['合计'][52] = $global_config['MTHSTR']['ratio']=='default'? $sumMTHSTR.$global_config['MTHSTR']['unit']:($global_config['MTHSTR']['ratio']=='percent'?round( ($sumMTHSTR/$count), 3).'%':round( ($sumMTHSTR/$count), 3).':1');
+                $res['合计'][52] = $global_config['MTHSTR']['ratio']=='default'? round( ($sumMTHSTR/$count), 3).$global_config['MTHSTR']['unit']:($global_config['MTHSTR']['ratio']=='percent'?round( ($sumMTHSTR/$count), 3).'%':round( ($sumMTHSTR/$count), 3).':1');
                 $res['合计'][53] = $global_config['MTHSTR']['standard_val'];
                 $res['合计'][54] = '/';
                 $res['合计'][55] = '/';
                 $res['合计'][56] = '合计';
 
-                $res['合计'][57] = $global_config['MTHETR']['ratio']=='default'? $sumMTHETR.$global_config['MTHETR']['unit']:($global_config['MTHETR']['ratio']=='percent'?round( ($sumMTHETR/$count), 3).'%':round( ($sumMTHETR/$count), 3).':1');;
+                $res['合计'][57] = $global_config['MTHETR']['ratio']=='default'? round( ($sumMTHETR/$count), 3).$global_config['MTHETR']['unit']:($global_config['MTHETR']['ratio']=='percent'?round( ($sumMTHETR/$count), 3).'%':round( ($sumMTHETR/$count), 3).':1');;
                 $res['合计'][58] = $global_config['MTHETR']['standard_val'];
                 $res['合计'][59] = '/';
                 $res['合计'][60] = '/';
                 $res['合计'][61] = '合计';
 
-                $res['合计'][62] = $global_config['MTHSMR']['ratio']=='default'? $sumMTHSMR.$global_config['MTHSMR']['unit']:($global_config['MTHSMR']['ratio']=='percent'?round( ($sumMTHSMR/$count), 3).'%':round( ($sumMTHSMR/$count), 3).':1');;
+                $res['合计'][62] = $global_config['MTHSMR']['ratio']=='default'? round( ($sumMTHSMR/$count), 3).$global_config['MTHSMR']['unit']:($global_config['MTHSMR']['ratio']=='percent'?round( ($sumMTHSMR/$count), 3).'%':round( ($sumMTHSMR/$count), 3).':1');;
                 $res['合计'][63] = $global_config['MTHSMR']['standard_val'];
                 $res['合计'][64] = '/';
                 $res['合计'][65] = '/';
@@ -1051,7 +1060,7 @@ class RecordService
 
                     //------HSTR
                     if ($value->found_ind=='HSTR' && ($global_config['HSTR']['ratio']=='default' || $global_config['HSTR']['ratio']=='percent')) {
-                        $hstr = intval($value->found_val);
+                        $hstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='HSTR' && $global_config['HSTR']['ratio']=='scale') {
                         $hstr = explode(':', $value->found_val)[0];
@@ -1061,7 +1070,7 @@ class RecordService
                     //
                     //HETR
                     if ($value->found_ind=='HETR' && ($global_config['HETR']['ratio']=='default' || $global_config['HETR']['ratio']=='percent')) {
-                        $hetr = intval($value->found_val);
+                        $hetr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='HETR' && $global_config['HETR']['ratio']=='scale') {
                         $hetr = explode(':', $value->found_val)[0];
@@ -1071,7 +1080,7 @@ class RecordService
                     
                     //---HSMR
                     if ($value->found_ind=='HSMR' && ($global_config['HSMR']['ratio']=='default' || $global_config['HSMR']['ratio']=='percent')) {
-                        $hsmr = intval($value->found_val);
+                        $hsmr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='HSMR' && $global_config['HSMR']['ratio']=='scale') {
                         $hsmr = explode(':', $value->found_val)[0];
@@ -1087,19 +1096,19 @@ class RecordService
                 $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['HSTR']['ratio']=='default'? $sumHSTR.$global_config['HSTR']['unit']:($global_config['HSTR']['ratio']=='percent'?round( ($sumHSTR/$count), 3).'%':round( ($sumHSTR/$count), 3).':1');
+                $res['合计'][2] = $global_config['HSTR']['ratio']=='default'? round( ($sumHSTR/$count), 3).$global_config['HSTR']['unit']:($global_config['HSTR']['ratio']=='percent'?round( ($sumHSTR/$count), 3).'%':round( ($sumHSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['HSTR']['standard_val'];
                 $res['合计'][4] = '/';
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '合计';
 
-                $res['合计'][7] = $global_config['HETR']['ratio']=='default'? $sumHETR.$global_config['HETR']['unit']:($global_config['HETR']['ratio']=='percent'?round( ($sumHETR/$count), 3).'%':round( ($sumHETR/$count), 3).':1');;
+                $res['合计'][7] = $global_config['HETR']['ratio']=='default'? round( ($sumHETR/$count), 3).$global_config['HETR']['unit']:($global_config['HETR']['ratio']=='percent'?round( ($sumHETR/$count), 3).'%':round( ($sumHETR/$count), 3).':1');;
                 $res['合计'][8] = $global_config['HETR']['standard_val'];
                 $res['合计'][9] = '/';
                 $res['合计'][10] = '/';
                 $res['合计'][11] = '合计';
 
-                $res['合计'][12] = $global_config['HSMR']['ratio']=='default'? $sumHSMR.$global_config['HSMR']['unit']:($global_config['HSMR']['ratio']=='percent'?round( ($sumHSMR/$count), 3).'%':round( ($sumHSMR/$count), 3).':1');;
+                $res['合计'][12] = $global_config['HSMR']['ratio']=='default'? round( ($sumHSMR/$count), 3).$global_config['HSMR']['unit']:($global_config['HSMR']['ratio']=='percent'?round( ($sumHSMR/$count), 3).'%':round( ($sumHSMR/$count), 3).':1');;
                 $res['合计'][13] = $global_config['HSMR']['standard_val'];
                 $res['合计'][14] = '/';
                 $res['合计'][15] = '/';
@@ -1144,7 +1153,7 @@ class RecordService
 
                     //------VSTR
                     if ($value->found_ind=='VSTR' && ($global_config['VSTR']['ratio']=='default' || $global_config['VSTR']['ratio']=='percent')) {
-                        $vstr = intval($value->found_val);
+                        $vstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='VSTR' && $global_config['VSTR']['ratio']=='scale') {
                         $vstr = explode(':', $value->found_val)[0];
@@ -1154,7 +1163,7 @@ class RecordService
                     //
                     //VETR
                     if ($value->found_ind=='VETR' && ($global_config['VETR']['ratio']=='default' || $global_config['VETR']['ratio']=='percent')) {
-                        $vetr = intval($value->found_val);
+                        $vetr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='VETR' && $global_config['VETR']['ratio']=='scale') {
                         $vetr = explode(':', $value->found_val)[0];
@@ -1164,7 +1173,7 @@ class RecordService
                     
                     //---VSMR
                     if ($value->found_ind=='VSMR' && ($global_config['VSMR']['ratio']=='default' || $global_config['VSMR']['ratio']=='percent')) {
-                        $vsmr = intval($value->found_val);
+                        $vsmr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='VSMR' && $global_config['VSMR']['ratio']=='scale') {
                         $vsmr = explode(':', $value->found_val)[0];
@@ -1180,19 +1189,19 @@ class RecordService
                 $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['VSTR']['ratio']=='default'? $sumVSTR.$global_config['VSTR']['unit']:($global_config['VSTR']['ratio']=='percent'?round( ($sumVSTR/$count), 3).'%':round( ($sumVSTR/$count), 3).':1');
+                $res['合计'][2] = $global_config['VSTR']['ratio']=='default'? round( ($sumVSTR/$count), 3).$global_config['VSTR']['unit']:($global_config['VSTR']['ratio']=='percent'?round( ($sumVSTR/$count), 3).'%':round( ($sumVSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['VSTR']['standard_val'];
                 $res['合计'][4] = '/';
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '合计';
 
-                $res['合计'][7] = $global_config['VETR']['ratio']=='default'? $sumVETR.$global_config['VETR']['unit']:($global_config['VETR']['ratio']=='percent'?round( ($sumVETR/$count), 3).'%':round( ($sumVETR/$count), 3).':1');;
+                $res['合计'][7] = $global_config['VETR']['ratio']=='default'? round( ($sumVETR/$count), 3).$global_config['VETR']['unit']:($global_config['VETR']['ratio']=='percent'?round( ($sumVETR/$count), 3).'%':round( ($sumVETR/$count), 3).':1');;
                 $res['合计'][8] = $global_config['VETR']['standard_val'];
                 $res['合计'][9] = '/';
                 $res['合计'][10] = '/';
                 $res['合计'][11] = '合计';
 
-                $res['合计'][12] = $global_config['VSMR']['ratio']=='default'? $sumVSMR.$global_config['VSMR']['unit']:($global_config['VSMR']['ratio']=='percent'?round( ($sumVSMR/$count), 3).'%':round( ($sumVSMR/$count), 3).':1');;
+                $res['合计'][12] = $global_config['VSMR']['ratio']=='default'? round( ($sumVSMR/$count), 3).$global_config['VSMR']['unit']:($global_config['VSMR']['ratio']=='percent'?round( ($sumVSMR/$count), 3).'%':round( ($sumVSMR/$count), 3).':1');;
                 $res['合计'][13] = $global_config['VSMR']['standard_val'];
                 $res['合计'][14] = '/';
                 $res['合计'][15] = '/';
@@ -1219,7 +1228,7 @@ class RecordService
 
                     //---SSTR
                     if ($value->found_ind=='SSTR' && ($global_config['SSTR']['ratio']=='default' || $global_config['SSTR']['ratio']=='percent')) {
-                        $sstr = intval($value->found_val);
+                        $sstr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='SSTR' && $global_config['SSTR']['ratio']=='scale') {
                         $sstr = explode(':', $value->found_val)[0];
@@ -1234,7 +1243,7 @@ class RecordService
                 $count = count($res);
                 $res['合计'][0] = '';
                 $res['合计'][1] = '合计';
-                $res['合计'][2] = $global_config['SSTR']['ratio']=='default'? $sumSSTR.$global_config['SSTR']['unit']:($global_config['SSTR']['ratio']=='percent'?round( ($sumSSTR/$count), 3).'%':round( ($sumSSTR/$count), 3).':1');
+                $res['合计'][2] = $global_config['SSTR']['ratio']=='default'? round( ($sumSSTR/$count), 3).$global_config['SSTR']['unit']:($global_config['SSTR']['ratio']=='percent'?round( ($sumSSTR/$count), 3).'%':round( ($sumSSTR/$count), 3).':1');
                 $res['合计'][3] = $global_config['SSTR']['standard_val'];
                 $res['合计'][4] = '/';
                 $res['合计'][5] = '/';
@@ -1337,7 +1346,7 @@ class RecordService
                     
                     //---PHETR
                     if ($value->found_ind=='PHETR' && ($global_config['PHETR']['ratio']=='default' || $global_config['PHETR']['ratio']=='percent')) {
-                        $phetr = intval($value->found_val);
+                        $phetr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PHETR' && $global_config['PHETR']['ratio']=='scale') {
                         $phetr = explode(':', $value->found_val)[0];
@@ -1346,7 +1355,7 @@ class RecordService
                     //-----PHETR
                     //---PHBTR
                     if ($value->found_ind=='PHBTR' && ($global_config['PHBTR']['ratio']=='default' || $global_config['PHBTR']['ratio']=='percent')) {
-                        $phbtr = intval($value->found_val);
+                        $phbtr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PHBTR' && $global_config['PHBTR']['ratio']=='scale') {
                         $phbtr = explode(':', $value->found_val)[0];
@@ -1355,7 +1364,7 @@ class RecordService
                     //-----PHBTR
                     //---PHATR
                     if ($value->found_ind=='PHATR' && ($global_config['PHATR']['ratio']=='default' || $global_config['PHATR']['ratio']=='percent')) {
-                        $phatr = intval($value->found_val);
+                        $phatr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PHATR' && $global_config['PHATR']['ratio']=='scale') {
                         $phatr = explode(':', $value->found_val)[0];
@@ -1364,7 +1373,7 @@ class RecordService
                     //-----PHATR
                     //---PSRAR
                     if ($value->found_ind=='PSRAR' && ($global_config['PSRAR']['ratio']=='default' || $global_config['PSRAR']['ratio']=='percent')) {
-                        $psrar = intval($value->found_val);
+                        $psrar = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PSRAR' && $global_config['PSRAR']['ratio']=='scale') {
                         $psrar = explode(':', $value->found_val)[0];
@@ -1373,7 +1382,7 @@ class RecordService
                     //-----PSRAR
                     //---PSMAR
                     if ($value->found_ind=='PSMAR' && ($global_config['PSMAR']['ratio']=='default' || $global_config['PSMAR']['ratio']=='percent')) {
-                        $psmar = intval($value->found_val);
+                        $psmar = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PSMAR' && $global_config['PSMAR']['ratio']=='scale') {
                         $psmar = explode(':', $value->found_val)[0];
@@ -1382,7 +1391,7 @@ class RecordService
                     //-----PSMAR
                     //---PSMR
                     if ($value->found_ind=='PSMR' && ($global_config['PSMR']['ratio']=='default' || $global_config['PSMR']['ratio']=='percent')) {
-                        $psmr = intval($value->found_val);
+                        $psmr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PSMR' && $global_config['PSMR']['ratio']=='scale') {
                         $psmr = explode(':', $value->found_val)[0];
@@ -1391,7 +1400,7 @@ class RecordService
                     //-----PSMR
                     //---PHIR
                     if ($value->found_ind=='PHIR' && ($global_config['PHIR']['ratio']=='default' || $global_config['PHIR']['ratio']=='percent')) {
-                        $phir = intval($value->found_val);
+                        $phir = floatval($value->found_val);
                     }
                     if ($value->found_ind=='PHIR' && $global_config['PHIR']['ratio']=='scale') {
                         $phir = explode(':', $value->found_val)[0];
@@ -1411,49 +1420,49 @@ class RecordService
 
                 $res['合计'][2] = $global_config['PHETR']['basic_val'];
                 $res['合计'][3] = $global_config['PHETR']['standard_val'];
-                $res['合计'][4] = $global_config['PHETR']['ratio']=='default'? $sumPHETR.$global_config['PHETR']['unit']:($global_config['PHETR']['ratio']=='percent'?round( ($sumPHETR/$count), 3).'%':round( ($sumPHETR/$count), 3).':1');
+                $res['合计'][4] = $global_config['PHETR']['ratio']=='default'? round( ($sumPHETR/$count), 3).$global_config['PHETR']['unit']:($global_config['PHETR']['ratio']=='percent'?round( ($sumPHETR/$count), 3).'%':round( ($sumPHETR/$count), 3).':1');
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '/';
                 $res['合计'][7] = '合计';
 
                 $res['合计'][8] = $global_config['PHBTR']['basic_val'];
                 $res['合计'][9] = $global_config['PHBTR']['standard_val'];
-                $res['合计'][10] = $global_config['PHBTR']['ratio']=='default'? $sumPHBTR.$global_config['PHBTR']['unit']:($global_config['PHBTR']['ratio']=='percent'?round( ($sumPHBTR/$count), 3).'%':round( ($sumPHBTR/$count), 3).':1');
+                $res['合计'][10] = $global_config['PHBTR']['ratio']=='default'? round( ($sumPHBTR/$count), 3).$global_config['PHBTR']['unit']:($global_config['PHBTR']['ratio']=='percent'?round( ($sumPHBTR/$count), 3).'%':round( ($sumPHBTR/$count), 3).':1');
                 $res['合计'][11] = '/';
                 $res['合计'][12] = '/';
                 $res['合计'][13] = '合计';
 
                 $res['合计'][14] = $global_config['PHATR']['basic_val'];
                 $res['合计'][15] = $global_config['PHATR']['standard_val'];
-                $res['合计'][16] = $global_config['PHATR']['ratio']=='default'? $sumPHATR.$global_config['PHATR']['unit']:($global_config['PHATR']['ratio']=='percent'?round( ($sumPHATR/$count), 3).'%':round( ($sumPHATR/$count), 3).':1');
+                $res['合计'][16] = $global_config['PHATR']['ratio']=='default'? round( ($sumPHATR/$count), 3).$global_config['PHATR']['unit']:($global_config['PHATR']['ratio']=='percent'?round( ($sumPHATR/$count), 3).'%':round( ($sumPHATR/$count), 3).':1');
                 $res['合计'][17] = '/';
                 $res['合计'][18] = '/';
                 $res['合计'][19] = '合计';
 
                 $res['合计'][20] = $global_config['PSRAR']['basic_val'];
                 $res['合计'][21] = $global_config['PSRAR']['standard_val'];
-                $res['合计'][22] = $global_config['PSRAR']['ratio']=='default'? $sumPSRAR.$global_config['PSRAR']['unit']:($global_config['PSRAR']['ratio']=='percent'?round( ($sumPSRAR/$count), 3).'%':round( ($sumPSRAR/$count), 3).':1');
+                $res['合计'][22] = $global_config['PSRAR']['ratio']=='default'? round( ($sumPSRAR/$count), 3).$global_config['PSRAR']['unit']:($global_config['PSRAR']['ratio']=='percent'?round( ($sumPSRAR/$count), 3).'%':round( ($sumPSRAR/$count), 3).':1');
                 $res['合计'][23] = '/';
                 $res['合计'][24] = '/';
                 $res['合计'][25] = '合计';
 
                 $res['合计'][26] = $global_config['PSMAR']['basic_val'];
                 $res['合计'][27] = $global_config['PSMAR']['standard_val'];
-                $res['合计'][28] = $global_config['PSMAR']['ratio']=='default'? $sumPSMAR.$global_config['PSMAR']['unit']:($global_config['PSMAR']['ratio']=='percent'?round( ($sumPSMAR/$count), 3).'%':round( ($sumPSMAR/$count), 3).':1');
+                $res['合计'][28] = $global_config['PSMAR']['ratio']=='default'? round( ($sumPSMAR/$count), 3).$global_config['PSMAR']['unit']:($global_config['PSMAR']['ratio']=='percent'?round( ($sumPSMAR/$count), 3).'%':round( ($sumPSMAR/$count), 3).':1');
                 $res['合计'][29] = '/';
                 $res['合计'][30] = '/';
                 $res['合计'][31] = '合计';
 
                 $res['合计'][32] = $global_config['PSMR']['basic_val'];
                 $res['合计'][33] = $global_config['PSMR']['standard_val'];
-                $res['合计'][34] = $global_config['PSMR']['ratio']=='default'? $sumPSMR.$global_config['PSMR']['unit']:($global_config['PSMR']['ratio']=='percent'?round( ($sumPSMR/$count), 3).'%':round( ($sumPSMR/$count), 3).':1');
+                $res['合计'][34] = $global_config['PSMR']['ratio']=='default'? round( ($sumPSMR/$count), 3).$global_config['PSMR']['unit']:($global_config['PSMR']['ratio']=='percent'?round( ($sumPSMR/$count), 3).'%':round( ($sumPSMR/$count), 3).':1');
                 $res['合计'][35] = '/';
                 $res['合计'][36] = '/';
                 $res['合计'][37] = '合计';
 
                 $res['合计'][38] = $global_config['PHIR']['basic_val'];
                 $res['合计'][39] = $global_config['PHIR']['standard_val'];
-                $res['合计'][40] = $global_config['PHIR']['ratio']=='default'? $sumPHIR.$global_config['PHIR']['unit']:($global_config['PHIR']['ratio']=='percent'?round( ($sumPHIR/$count), 3).'%':round( ($sumPHIR/$count), 3).':1');
+                $res['合计'][40] = $global_config['PHIR']['ratio']=='default'? round( ($sumPHIR/$count), 3).$global_config['PHIR']['unit']:($global_config['PHIR']['ratio']=='percent'?round( ($sumPHIR/$count), 3).'%':round( ($sumPHIR/$count), 3).':1');
                 $res['合计'][41] = '/';
                 $res['合计'][42] = '/';
                 $res['合计'][43] = '合计';
@@ -1537,7 +1546,7 @@ class RecordService
                     
                     //---JHETR
                     if ($value->found_ind=='JHETR' && ($global_config['JHETR']['ratio']=='default' || $global_config['JHETR']['ratio']=='percent')) {
-                        $jhetr = intval($value->found_val);
+                        $jhetr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JHETR' && $global_config['JHETR']['ratio']=='scale') {
                         $jhetr = explode(':', $value->found_val)[0];
@@ -1546,7 +1555,7 @@ class RecordService
                     //-----JHETR
                     //---JHBTR
                     if ($value->found_ind=='JHBTR' && ($global_config['JHBTR']['ratio']=='default' || $global_config['JHBTR']['ratio']=='percent')) {
-                        $jhbtr = intval($value->found_val);
+                        $jhbtr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JHBTR' && $global_config['JHBTR']['ratio']=='scale') {
                         $jhbtr = explode(':', $value->found_val)[0];
@@ -1555,7 +1564,7 @@ class RecordService
                     //-----JHBTR
                     //---JHATR
                     if ($value->found_ind=='JHATR' && ($global_config['JHATR']['ratio']=='default' || $global_config['JHATR']['ratio']=='percent')) {
-                        $jhatr = intval($value->found_val);
+                        $jhatr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JHATR' && $global_config['JHATR']['ratio']=='scale') {
                         $jhatr = explode(':', $value->found_val)[0];
@@ -1564,7 +1573,7 @@ class RecordService
                     //-----JHATR
                     //---JSRAR
                     if ($value->found_ind=='JSRAR' && ($global_config['JSRAR']['ratio']=='default' || $global_config['JSRAR']['ratio']=='percent')) {
-                        $jsrar = intval($value->found_val);
+                        $jsrar = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JSRAR' && $global_config['JSRAR']['ratio']=='scale') {
                         $jsrar = explode(':', $value->found_val)[0];
@@ -1573,7 +1582,7 @@ class RecordService
                     //-----JSRAR
                     //---JSMAR
                     if ($value->found_ind=='JSMAR' && ($global_config['JSMAR']['ratio']=='default' || $global_config['JSMAR']['ratio']=='percent')) {
-                        $jsmar = intval($value->found_val);
+                        $jsmar = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JSMAR' && $global_config['JSMAR']['ratio']=='scale') {
                         $jsmar = explode(':', $value->found_val)[0];
@@ -1582,7 +1591,7 @@ class RecordService
                     //-----JSMAR
                     //---JSMR
                     if ($value->found_ind=='JSMR' && ($global_config['JSMR']['ratio']=='default' || $global_config['JSMR']['ratio']=='percent')) {
-                        $jsmr = intval($value->found_val);
+                        $jsmr = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JSMR' && $global_config['JSMR']['ratio']=='scale') {
                         $jsmr = explode(':', $value->found_val)[0];
@@ -1591,7 +1600,7 @@ class RecordService
                     //-----JSMR
                     //---JHIR
                     if ($value->found_ind=='JHIR' && ($global_config['JHIR']['ratio']=='default' || $global_config['JHIR']['ratio']=='percent')) {
-                        $jhir = intval($value->found_val);
+                        $jhir = floatval($value->found_val);
                     }
                     if ($value->found_ind=='JHIR' && $global_config['JHIR']['ratio']=='scale') {
                         $jhir = explode(':', $value->found_val)[0];
@@ -1610,49 +1619,49 @@ class RecordService
 
                 $res['合计'][2] = $global_config['JHETR']['basic_val'];
                 $res['合计'][3] = $global_config['JHETR']['standard_val'];
-                $res['合计'][4] = $global_config['JHETR']['ratio']=='default'? $sumJHETR.$global_config['JHETR']['unit']:($global_config['JHETR']['ratio']=='percent'?round( ($sumJHETR/$count), 3).'%':round( ($sumJHETR/$count), 3).':1');
+                $res['合计'][4] = $global_config['JHETR']['ratio']=='default'? round( ($sumJHETR/$count), 3).$global_config['JHETR']['unit']:($global_config['JHETR']['ratio']=='percent'?round( ($sumJHETR/$count), 3).'%':round( ($sumJHETR/$count), 3).':1');
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '/';
                 $res['合计'][7] = '合计';
 
                 $res['合计'][8] = $global_config['JHBTR']['basic_val'];
                 $res['合计'][9] = $global_config['JHBTR']['standard_val'];
-                $res['合计'][10] = $global_config['JHBTR']['ratio']=='default'? $sumJHBTR.$global_config['JHBTR']['unit']:($global_config['JHBTR']['ratio']=='percent'?round( ($sumJHBTR/$count), 3).'%':round( ($sumJHBTR/$count), 3).':1');
+                $res['合计'][10] = $global_config['JHBTR']['ratio']=='default'? round( ($sumJHBTR/$count), 3).$global_config['JHBTR']['unit']:($global_config['JHBTR']['ratio']=='percent'?round( ($sumJHBTR/$count), 3).'%':round( ($sumJHBTR/$count), 3).':1');
                 $res['合计'][11] = '/';
                 $res['合计'][12] = '/';
                 $res['合计'][13] = '合计';
 
                 $res['合计'][14] = $global_config['JHATR']['basic_val'];
                 $res['合计'][15] = $global_config['JHATR']['standard_val'];
-                $res['合计'][16] = $global_config['JHATR']['ratio']=='default'? $sumJHATR.$global_config['JHATR']['unit']:($global_config['JHATR']['ratio']=='percent'?round( ($sumJHATR/$count), 3).'%':round( ($sumJHATR/$count), 3).':1');
+                $res['合计'][16] = $global_config['JHATR']['ratio']=='default'? round( ($sumJHATR/$count), 3).$global_config['JHATR']['unit']:($global_config['JHATR']['ratio']=='percent'?round( ($sumJHATR/$count), 3).'%':round( ($sumJHATR/$count), 3).':1');
                 $res['合计'][17] = '/';
                 $res['合计'][18] = '/';
                 $res['合计'][19] = '合计';
 
                 $res['合计'][20] = $global_config['JSRAR']['basic_val'];
                 $res['合计'][21] = $global_config['JSRAR']['standard_val'];
-                $res['合计'][22] = $global_config['JSRAR']['ratio']=='default'? $sumJSRAR.$global_config['JSRAR']['unit']:($global_config['JSRAR']['ratio']=='percent'?round( ($sumJSRAR/$count), 3).'%':round( ($sumJSRAR/$count), 3).':1');
+                $res['合计'][22] = $global_config['JSRAR']['ratio']=='default'? round( ($sumJSRAR/$count), 3).$global_config['JSRAR']['unit']:($global_config['JSRAR']['ratio']=='percent'?round( ($sumJSRAR/$count), 3).'%':round( ($sumJSRAR/$count), 3).':1');
                 $res['合计'][23] = '/';
                 $res['合计'][24] = '/';
                 $res['合计'][25] = '合计';
 
                 $res['合计'][26] = $global_config['JSMAR']['basic_val'];
                 $res['合计'][27] = $global_config['JSMAR']['standard_val'];
-                $res['合计'][28] = $global_config['JSMAR']['ratio']=='default'? $sumJSMAR.$global_config['JSMAR']['unit']:($global_config['JSMAR']['ratio']=='percent'?round( ($sumJSMAR/$count), 3).'%':round( ($sumJSMAR/$count), 3).':1');
+                $res['合计'][28] = $global_config['JSMAR']['ratio']=='default'? round( ($sumJSMAR/$count), 3).$global_config['JSMAR']['unit']:($global_config['JSMAR']['ratio']=='percent'?round( ($sumJSMAR/$count), 3).'%':round( ($sumJSMAR/$count), 3).':1');
                 $res['合计'][29] = '/';
                 $res['合计'][30] = '/';
                 $res['合计'][31] = '合计';
 
                 $res['合计'][32] = $global_config['JSMR']['basic_val'];
                 $res['合计'][33] = $global_config['JSMR']['standard_val'];
-                $res['合计'][34] = $global_config['JSMR']['ratio']=='default'? $sumJSMR.$global_config['JSMR']['unit']:($global_config['JSMR']['ratio']=='percent'?round( ($sumJSMR/$count), 3).'%':round( ($sumJSMR/$count), 3).':1');
+                $res['合计'][34] = $global_config['JSMR']['ratio']=='default'? round( ($sumJSMR/$count), 3).$global_config['JSMR']['unit']:($global_config['JSMR']['ratio']=='percent'?round( ($sumJSMR/$count), 3).'%':round( ($sumJSMR/$count), 3).':1');
                 $res['合计'][35] = '/';
                 $res['合计'][36] = '/';
                 $res['合计'][37] = '合计';
 
                 $res['合计'][38] = $global_config['JHIR']['basic_val'];
                 $res['合计'][39] = $global_config['JHIR']['standard_val'];
-                $res['合计'][40] = $global_config['JHIR']['ratio']=='default'? $sumJHIR.$global_config['JHIR']['unit']:($global_config['JHIR']['ratio']=='percent'?round( ($sumJHIR/$count), 3).'%':round( ($sumJHIR/$count), 3).':1');
+                $res['合计'][40] = $global_config['JHIR']['ratio']=='default'? round( ($sumJHIR/$count), 3).$global_config['JHIR']['unit']:($global_config['JHIR']['ratio']=='percent'?round( ($sumJHIR/$count), 3).'%':round( ($sumJHIR/$count), 3).':1');
                 $res['合计'][41] = '/';
                 $res['合计'][42] = '/';
                 $res['合计'][43] = '合计';
@@ -1674,6 +1683,9 @@ class RecordService
                 $nsmar = 0;
                 $nsmr = 0;
                 $nhir = 0;
+                Log::info('nineYearCon sheetData----------------');
+                Log::info($sheetData);
+                Log::info('----------------');
                 foreach ($sheetData as $value) {
                     if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $repeat)) {
                         continue;
@@ -1790,7 +1802,7 @@ class RecordService
                     
                     //---NHETR \NJHETR
                     if ( ($value->found_ind=='NHETR'||$value->found_ind=='NJHETR') && ($global_config['NHETR']['ratio']=='default' || $global_config['NHETR']['ratio']=='percent')) {
-                        $nhetr = intval($value->found_val);
+                        $nhetr = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='NHETR'||$value->found_ind=='NJHETR') && $global_config['NHETR']['ratio']=='scale') {
                         $nhetr = explode(':', $value->found_val)[0];
@@ -1799,7 +1811,7 @@ class RecordService
                     //-----NHETR \NJHETR
                     //---NHBTR \NJHBTR
                     if ( ($value->found_ind=='NHBTR'||$value->found_ind=='NJHBTR') && ($global_config['NHBTR']['ratio']=='default' || $global_config['NHBTR']['ratio']=='percent')) {
-                        $nhbtr = intval($value->found_val);
+                        $nhbtr = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='NHBTR'||$value->found_ind=='NJHBTR') && $global_config['NHBTR']['ratio']=='scale') {
                         $nhbtr = explode(':', $value->found_val)[0];
@@ -1808,7 +1820,7 @@ class RecordService
                     //-----NHBTR \NJHBTR
                     //---NHATR \NJHATR
                     if ( ($value->found_ind=='NHATR'||$value->found_ind=='NJHATR') && ($global_config['NHATR']['ratio']=='default' || $global_config['NHATR']['ratio']=='percent')) {
-                        $nhatr = intval($value->found_val);
+                        $nhatr = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='NHATR'||$value->found_ind=='NJHATR') && $global_config['NHATR']['ratio']=='scale') {
                         $nhatr = explode(':', $value->found_val)[0];
@@ -1817,7 +1829,7 @@ class RecordService
                     //-----NHATR \NJHATR
                     //---NSRAR \NJSRAR
                     if ( ($value->found_ind=='NSRAR'||$value->found_ind=='NJSRAR') && ($global_config['NSRAR']['ratio']=='default' || $global_config['NSRAR']['ratio']=='percent')) {
-                        $nsrar = intval($value->found_val);
+                        $nsrar = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='NSRAR'||$value->found_ind=='NJSRAR') && $global_config['NSRAR']['ratio']=='scale') {
                         $nsrar = explode(':', $value->found_val)[0];
@@ -1826,7 +1838,7 @@ class RecordService
                     //-----NSRAR \NJSRAR
                     //---NSMAR \NJSMAR
                     if ( ($value->found_ind=='NSMAR'||$value->found_ind=='NJSMAR') && ($global_config['NSMAR']['ratio']=='default' || $global_config['NSMAR']['ratio']=='percent')) {
-                        $nsmar = intval($value->found_val);
+                        $nsmar = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='NSMAR'||$value->found_ind=='NJSMAR') && $global_config['NSMAR']['ratio']=='scale') {
                         $nsmar = explode(':', $value->found_val)[0];
@@ -1835,7 +1847,7 @@ class RecordService
                     //-----NSMAR \NJSMAR
                     //---NSMR \NJSMR
                     if ( ($value->found_ind=='NSMR'||$value->found_ind=='NJSMR') && ($global_config['NSMR']['ratio']=='default' || $global_config['NSMR']['ratio']=='percent')) {
-                        $nsmr = intval($value->found_val);
+                        $nsmr = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='NSMR'||$value->found_ind=='NJSMR') && $global_config['NSMR']['ratio']=='scale') {
                         $nsmr = explode(':', $value->found_val)[0];
@@ -1844,7 +1856,7 @@ class RecordService
                     //-----NSMR \NJSMR
                     //---NHIR\NJHIR
                     if ( ($value->found_ind=='NHIR'||$value->found_ind=='NJHIR') && ($global_config['NHIR']['ratio']=='default' || $global_config['NHIR']['ratio']=='percent')) {
-                        $nhir = intval($value->found_val);
+                        $nhir = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='NHIR'||$value->found_ind=='NJHIR') && $global_config['NHIR']['ratio']=='scale') {
                         $nhir = explode(':', $value->found_val)[0];
@@ -1862,49 +1874,49 @@ class RecordService
 
                 $res['合计'][2] = $global_config['NHETR']['basic_val'];
                 $res['合计'][3] = $global_config['NHETR']['standard_val'];
-                $res['合计'][4] = $global_config['NHETR']['ratio']=='default'? $sumNHETR.$global_config['NHETR']['unit']:($global_config['NHETR']['ratio']=='percent'?round( ($sumNHETR/$count), 3).'%':round( ($sumNHETR/$count), 3).':1');
+                $res['合计'][4] = $global_config['NHETR']['ratio']=='default'? round( ($sumNHETR/$count), 3).$global_config['NHETR']['unit']:($global_config['NHETR']['ratio']=='percent'?round( ($sumNHETR/$count), 3).'%':round( ($sumNHETR/$count), 3).':1');
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '/';
                 $res['合计'][7] = '合计';
 
                 $res['合计'][8] = $global_config['NHBTR']['basic_val'];
                 $res['合计'][9] = $global_config['NHBTR']['standard_val'];
-                $res['合计'][10] = $global_config['NHBTR']['ratio']=='default'? $sumNHBTR.$global_config['NHBTR']['unit']:($global_config['NHBTR']['ratio']=='percent'?round( ($sumNHBTR/$count), 3).'%':round( ($sumNHBTR/$count), 3).':1');
+                $res['合计'][10] = $global_config['NHBTR']['ratio']=='default'? round( ($sumNHBTR/$count), 3).$global_config['NHBTR']['unit']:($global_config['NHBTR']['ratio']=='percent'?round( ($sumNHBTR/$count), 3).'%':round( ($sumNHBTR/$count), 3).':1');
                 $res['合计'][11] = '/';
                 $res['合计'][12] = '/';
                 $res['合计'][13] = '合计';
 
                 $res['合计'][14] = $global_config['NHATR']['basic_val'];
                 $res['合计'][15] = $global_config['NHATR']['standard_val'];
-                $res['合计'][16] = $global_config['NHATR']['ratio']=='default'? $sumNHATR.$global_config['NHATR']['unit']:($global_config['NHATR']['ratio']=='percent'?round( ($sumNHATR/$count), 3).'%':round( ($sumNHATR/$count), 3).':1');
+                $res['合计'][16] = $global_config['NHATR']['ratio']=='default'? round( ($sumNHATR/$count), 3).$global_config['NHATR']['unit']:($global_config['NHATR']['ratio']=='percent'?round( ($sumNHATR/$count), 3).'%':round( ($sumNHATR/$count), 3).':1');
                 $res['合计'][17] = '/';
                 $res['合计'][18] = '/';
                 $res['合计'][19] = '合计';
 
                 $res['合计'][20] = $global_config['NSRAR']['basic_val'];
                 $res['合计'][21] = $global_config['NSRAR']['standard_val'];
-                $res['合计'][22] = $global_config['NSRAR']['ratio']=='default'? $sumNSRAR.$global_config['NSRAR']['unit']:($global_config['NSRAR']['ratio']=='percent'?round( ($sumNSRAR/$count), 3).'%':round( ($sumNSRAR/$count), 3).':1');
+                $res['合计'][22] = $global_config['NSRAR']['ratio']=='default'? round( ($sumNSRAR/$count), 3).$global_config['NSRAR']['unit']:($global_config['NSRAR']['ratio']=='percent'?round( ($sumNSRAR/$count), 3).'%':round( ($sumNSRAR/$count), 3).':1');
                 $res['合计'][23] = '/';
                 $res['合计'][24] = '/';
                 $res['合计'][25] = '合计';
 
                 $res['合计'][26] = $global_config['NSMAR']['basic_val'];
                 $res['合计'][27] = $global_config['NSMAR']['standard_val'];
-                $res['合计'][28] = $global_config['NSMAR']['ratio']=='default'? $sumNSMAR.$global_config['NSMAR']['unit']:($global_config['NSMAR']['ratio']=='percent'?round( ($sumNSMAR/$count), 3).'%':round( ($sumNSMAR/$count), 3).':1');
+                $res['合计'][28] = $global_config['NSMAR']['ratio']=='default'? round( ($sumNSMAR/$count), 3).$global_config['NSMAR']['unit']:($global_config['NSMAR']['ratio']=='percent'?round( ($sumNSMAR/$count), 3).'%':round( ($sumNSMAR/$count), 3).':1');
                 $res['合计'][29] = '/';
                 $res['合计'][30] = '/';
                 $res['合计'][31] = '合计';
 
                 $res['合计'][32] = $global_config['NSMR']['basic_val'];
                 $res['合计'][33] = $global_config['NSMR']['standard_val'];
-                $res['合计'][34] = $global_config['NSMR']['ratio']=='default'? $sumNSMR.$global_config['NSMR']['unit']:($global_config['NSMR']['ratio']=='percent'?round( ($sumNSMR/$count), 3).'%':round( ($sumNSMR/$count), 3).':1');
+                $res['合计'][34] = $global_config['NSMR']['ratio']=='default'? round( ($sumNSMR/$count), 3).$global_config['NSMR']['unit']:($global_config['NSMR']['ratio']=='percent'?round( ($sumNSMR/$count), 3).'%':round( ($sumNSMR/$count), 3).':1');
                 $res['合计'][35] = '/';
                 $res['合计'][36] = '/';
                 $res['合计'][37] = '合计';
 
                 $res['合计'][38] = $global_config['NHIR']['basic_val'];
                 $res['合计'][39] = $global_config['NHIR']['standard_val'];
-                $res['合计'][40] = $global_config['NHIR']['ratio']=='default'? $sumNHIR.$global_config['NHIR']['unit']:($global_config['NHIR']['ratio']=='percent'?round( ($sumNHIR/$count), 3).'%':round( ($sumNHIR/$count), 3).':1');
+                $res['合计'][40] = $global_config['NHIR']['ratio']=='default'? round( ($sumNHIR/$count), 3).$global_config['NHIR']['unit']:($global_config['NHIR']['ratio']=='percent'?round( ($sumNHIR/$count), 3).'%':round( ($sumNHIR/$count), 3).':1');
                 $res['合计'][41] = '/';
                 $res['合计'][42] = '/';
                 $res['合计'][43] = '合计';
@@ -2046,7 +2058,7 @@ class RecordService
                     
                     //---TNHETR \TNJHETR
                     if ( ($value->found_ind=='TNHETR'||$value->found_ind=='TNJHETR') && ($global_config['TNHETR']['ratio']=='default' || $global_config['TNHETR']['ratio']=='percent')) {
-                        $tnhetr = intval($value->found_val);
+                        $tnhetr = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='TNHETR'||$value->found_ind=='TNJHETR') && $global_config['TNHETR']['ratio']=='scale') {
                         $tnhetr = explode(':', $value->found_val)[0];
@@ -2055,7 +2067,7 @@ class RecordService
                     //-----TNHETR \TNJHETR
                     //---TNHBTR \TNJHBTR
                     if ( ($value->found_ind=='TNHBTR'||$value->found_ind=='TNJHBTR') && ($global_config['TNHBTR']['ratio']=='default' || $global_config['TNHBTR']['ratio']=='percent')) {
-                        $tnhbtr = intval($value->found_val);
+                        $tnhbtr = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='TNHBTR'||$value->found_ind=='TNJHBTR') && $global_config['TNHBTR']['ratio']=='scale') {
                         $tnhbtr = explode(':', $value->found_val)[0];
@@ -2064,7 +2076,7 @@ class RecordService
                     //-----TNHBTR \TNJHBTR
                     //---TNHATR \TNJHATR
                     if ( ($value->found_ind=='TNHATR'||$value->found_ind=='TNJHATR') && ($global_config['TNHATR']['ratio']=='default' || $global_config['TNHATR']['ratio']=='percent')) {
-                        $tnhatr = intval($value->found_val);
+                        $tnhatr = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='TNHATR'||$value->found_ind=='TNJHATR') && $global_config['TNHATR']['ratio']=='scale') {
                         $tnhatr = explode(':', $value->found_val)[0];
@@ -2073,7 +2085,7 @@ class RecordService
                     //-----TNHATR \TNJHATR
                     //---TNSRAR \TNJSRAR
                     if ( ($value->found_ind=='TNSRAR'||$value->found_ind=='TNJSRAR') && ($global_config['TNSRAR']['ratio']=='default' || $global_config['TNSRAR']['ratio']=='percent')) {
-                        $tnsrar = intval($value->found_val);
+                        $tnsrar = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='TNSRAR'||$value->found_ind=='TNJSRAR') && $global_config['TNSRAR']['ratio']=='scale') {
                         $tnsrar = explode(':', $value->found_val)[0];
@@ -2082,7 +2094,7 @@ class RecordService
                     //-----TNSRAR \TNJSRAR
                     //---TNSMAR \TNJSMAR
                     if ( ($value->found_ind=='TNSMAR'||$value->found_ind=='TNJSMAR') && ($global_config['TNSMAR']['ratio']=='default' || $global_config['TNSMAR']['ratio']=='percent')) {
-                        $tnsmar = intval($value->found_val);
+                        $tnsmar = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='TNSMAR'||$value->found_ind=='TNJSMAR') && $global_config['TNSMAR']['ratio']=='scale') {
                         $tnsmar = explode(':', $value->found_val)[0];
@@ -2091,7 +2103,7 @@ class RecordService
                     //-----TNSMAR \TNJSMAR
                     //---TNSMR \TNJSMR
                     if ( ($value->found_ind=='TNSMR'||$value->found_ind=='TNJSMR') && ($global_config['TNSMR']['ratio']=='default' || $global_config['TNSMR']['ratio']=='percent')) {
-                        $tnsmr = intval($value->found_val);
+                        $tnsmr = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='TNSMR'||$value->found_ind=='TNJSMR') && $global_config['TNSMR']['ratio']=='scale') {
                         $tnsmr = explode(':', $value->found_val)[0];
@@ -2100,7 +2112,7 @@ class RecordService
                     //-----TNSMR \TNJSMR
                     //---TNHIR\TNJHIR
                     if ( ($value->found_ind=='TNHIR'||$value->found_ind=='TNJHIR') && ($global_config['TNHIR']['ratio']=='default' || $global_config['TNHIR']['ratio']=='percent')) {
-                        $tnhir = intval($value->found_val);
+                        $tnhir = floatval($value->found_val);
                     }
                     if ( ($value->found_ind=='TNHIR'||$value->found_ind=='TNJHIR') && $global_config['TNHIR']['ratio']=='scale') {
                         $tnhir = explode(':', $value->found_val)[0];
@@ -2118,49 +2130,49 @@ class RecordService
 
                 $res['合计'][2] = $global_config['TNHETR']['basic_val'];
                 $res['合计'][3] = $global_config['TNHETR']['standard_val'];
-                $res['合计'][4] = $global_config['TNHETR']['ratio']=='default'? $sumTNHETR.$global_config['TNHETR']['unit']:($global_config['TNHETR']['ratio']=='percent'?round( ($sumTNHETR/$count), 3).'%':round( ($sumTNHETR/$count), 3).':1');
+                $res['合计'][4] = $global_config['TNHETR']['ratio']=='default'? round( ($sumTNHETR/$count), 3).$global_config['TNHETR']['unit']:($global_config['TNHETR']['ratio']=='percent'?round( ($sumTNHETR/$count), 3).'%':round( ($sumTNHETR/$count), 3).':1');
                 $res['合计'][5] = '/';
                 $res['合计'][6] = '/';
                 $res['合计'][7] = '合计';
 
                 $res['合计'][8] = $global_config['TNHBTR']['basic_val'];
                 $res['合计'][9] = $global_config['TNHBTR']['standard_val'];
-                $res['合计'][10] = $global_config['TNHBTR']['ratio']=='default'? $sumTNHBTR.$global_config['TNHBTR']['unit']:($global_config['TNHBTR']['ratio']=='percent'?round( ($sumTNHBTR/$count), 3).'%':round( ($sumTNHBTR/$count), 3).':1');
+                $res['合计'][10] = $global_config['TNHBTR']['ratio']=='default'? round( ($sumTNHBTR/$count), 3).$global_config['TNHBTR']['unit']:($global_config['TNHBTR']['ratio']=='percent'?round( ($sumTNHBTR/$count), 3).'%':round( ($sumTNHBTR/$count), 3).':1');
                 $res['合计'][11] = '/';
                 $res['合计'][12] = '/';
                 $res['合计'][13] = '合计';
 
                 $res['合计'][14] = $global_config['TNHATR']['basic_val'];
                 $res['合计'][15] = $global_config['TNHATR']['standard_val'];
-                $res['合计'][16] = $global_config['TNHATR']['ratio']=='default'? $sumTNHATR.$global_config['TNHATR']['unit']:($global_config['TNHATR']['ratio']=='percent'?round( ($sumTNHATR/$count), 3).'%':round( ($sumTNHATR/$count), 3).':1');
+                $res['合计'][16] = $global_config['TNHATR']['ratio']=='default'? round( ($sumTNHATR/$count), 3).$global_config['TNHATR']['unit']:($global_config['TNHATR']['ratio']=='percent'?round( ($sumTNHATR/$count), 3).'%':round( ($sumTNHATR/$count), 3).':1');
                 $res['合计'][17] = '/';
                 $res['合计'][18] = '/';
                 $res['合计'][19] = '合计';
 
                 $res['合计'][20] = $global_config['TNSRAR']['basic_val'];
                 $res['合计'][21] = $global_config['TNSRAR']['standard_val'];
-                $res['合计'][22] = $global_config['TNSRAR']['ratio']=='default'? $sumTNSRAR.$global_config['TNSRAR']['unit']:($global_config['TNSRAR']['ratio']=='percent'?round( ($sumTNSRAR/$count), 3).'%':round( ($sumTNSRAR/$count), 3).':1');
+                $res['合计'][22] = $global_config['TNSRAR']['ratio']=='default'? round( ($sumTNSRAR/$count), 3).$global_config['TNSRAR']['unit']:($global_config['TNSRAR']['ratio']=='percent'?round( ($sumTNSRAR/$count), 3).'%':round( ($sumTNSRAR/$count), 3).':1');
                 $res['合计'][23] = '/';
                 $res['合计'][24] = '/';
                 $res['合计'][25] = '合计';
 
                 $res['合计'][26] = $global_config['TNSMAR']['basic_val'];
                 $res['合计'][27] = $global_config['TNSMAR']['standard_val'];
-                $res['合计'][28] = $global_config['TNSMAR']['ratio']=='default'? $sumTNSMAR.$global_config['TNSMAR']['unit']:($global_config['TNSMAR']['ratio']=='percent'?round( ($sumTNSMAR/$count), 3).'%':round( ($sumTNSMAR/$count), 3).':1');
+                $res['合计'][28] = $global_config['TNSMAR']['ratio']=='default'? round( ($sumTNSMAR/$count), 3).$global_config['TNSMAR']['unit']:($global_config['TNSMAR']['ratio']=='percent'?round( ($sumTNSMAR/$count), 3).'%':round( ($sumTNSMAR/$count), 3).':1');
                 $res['合计'][29] = '/';
                 $res['合计'][30] = '/';
                 $res['合计'][31] = '合计';
 
                 $res['合计'][32] = $global_config['TNSMR']['basic_val'];
                 $res['合计'][33] = $global_config['TNSMR']['standard_val'];
-                $res['合计'][34] = $global_config['TNSMR']['ratio']=='default'? $sumTNSMR.$global_config['TNSMR']['unit']:($global_config['TNSMR']['ratio']=='percent'?round( ($sumTNSMR/$count), 3).'%':round( ($sumTNSMR/$count), 3).':1');
+                $res['合计'][34] = $global_config['TNSMR']['ratio']=='default'? round( ($sumTNSMR/$count), 3).$global_config['TNSMR']['unit']:($global_config['TNSMR']['ratio']=='percent'?round( ($sumTNSMR/$count), 3).'%':round( ($sumTNSMR/$count), 3).':1');
                 $res['合计'][35] = '/';
                 $res['合计'][36] = '/';
                 $res['合计'][37] = '合计';
 
                 $res['合计'][38] = $global_config['TNHIR']['basic_val'];
                 $res['合计'][39] = $global_config['TNHIR']['standard_val'];
-                $res['合计'][40] = $global_config['TNHIR']['ratio']=='default'? $sumTNHIR.$global_config['TNHIR']['unit']:($global_config['TNHIR']['ratio']=='percent'?round( ($sumTNHIR/$count), 3).'%':round( ($sumTNHIR/$count), 3).':1');
+                $res['合计'][40] = $global_config['TNHIR']['ratio']=='default'? round( ($sumTNHIR/$count), 3).$global_config['TNHIR']['unit']:($global_config['TNHIR']['ratio']=='percent'?round( ($sumTNHIR/$count), 3).'%':round( ($sumTNHIR/$count), 3).':1');
                 $res['合计'][41] = '/';
                 $res['合计'][42] = '/';
                 $res['合计'][43] = '合计';
@@ -2182,4 +2194,274 @@ class RecordService
         return $res;
     }
 
+    //处理全国义务教育优质均衡县校际均衡情况
+    /**
+     * 求：平均值 x_ (sum_found_ind/students_sum)*100 / (sum_found_ind/students_sum)  指标
+     * 列：∑(xi-x)2*Pi  （x-x_）*（x-x_）* 学生数 学校
+     * 系数 = sqrt(sum ( ∑(xi-x)2*Pi )) / (x_*sqrt(students_sum)); 指标
+     * @param  [type] $sheetData [description]
+     * @return [type]            [description]
+     */
+    public function __getSituationQuery($sheetData)
+    {
+        if (!$sheetData) {
+            return [];
+        }
+        $global_config = config('ixport.SCHOOL_IMPORT_FOUND_INDEX');
+        $primarySchoolArr = [];
+        $juniorMiddleSchoolArr = [];
+        foreach ($sheetData as $key => $value) {
+            if ($value->school_type == 'primarySchool') {
+                $primarySchoolArr[] = $value;
+            }
+            if ($value->school_type == 'juniorMiddleSchool') {
+                $juniorMiddleSchoolArr[] = $value;
+            }
+        }
+        $res = [];
+        //小学七项 平均值 、 系数
+        if ($primarySchoolArr) {
+
+            $prepeat = [];
+            $pres = [];
+            $sumPHETR = $sumPHBTR = $sumPHATR = $sumPSRAR = $sumPSMAR = $sumPSMR = $sumPHIR = $sumStudents = 0;
+
+            foreach ($primarySchoolArr as $pk => $value) {
+                if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $prepeat)) {
+                    continue;
+                }
+                //并发重复数据处理
+                $prepeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
+
+                $pres[$pk] = $value;
+
+                ($value->found_ind=='PHETR' && $value->found_divider) &&  $sumStudents += $value->found_ind=='PHETR' ? $value->found_divider : 0;//取每个学校的学生数
+
+                //---PHETR
+                ($value->found_ind=='PHETR' && $value->found_divisor) && $sumPHETR += $value->found_ind=='PHETR' ? $value->found_divisor : 0;
+                //-----PHETR
+                //---PHBTR
+                ($value->found_ind=='PHBTR' && $value->found_divisor) && $sumPHBTR += $value->found_ind=='PHBTR' ? $value->found_divisor : 0;
+                //-----PHBTR
+                //---PHATR
+                ($value->found_ind=='PHATR' && $value->found_divisor) && $sumPHATR += $value->found_ind=='PHATR' ? $value->found_divisor : 0;
+                //-----PHATR
+                //---PSRAR
+                ($value->found_ind=='PSRAR' && $value->found_divisor) && $sumPSRAR += $value->found_ind=='PSRAR' ? $value->found_divisor : 0;
+                //-----PSRAR
+                //---PSMAR
+                ($value->found_ind=='PSMAR' && $value->found_divisor) && $sumPSMAR += $value->found_ind=='PSMAR' ? $value->found_divisor : 0;
+                //-----PSMAR
+                //---PSMR
+                ($value->found_ind=='PSMR' && $value->found_divisor) && $sumPSMR += $value->found_ind=='PSMR' ? $value->found_divisor : 0;
+                //-----PSMR
+                //---PHIR
+                ($value->found_ind=='PHIR' && $value->found_divisor) && $sumPHIR += $value->found_ind=='PHIR' ? $value->found_divisor : 0;
+                //-----PHIR
+            }
+            
+            $averagePHETR =  $sumPHETR == 0 ? 0:round( ($sumPHETR/$sumStudents), 3);//每百生高于规定学历教师数 * 100
+            $averagePHBTR =  $sumPHBTR == 0 ? 0:round( ($sumPHBTR/$sumStudents), 3);//每百生骨干教师数 * 100
+            $averagePHATR =  $sumPHATR == 0 ? 0:round( ($sumPHATR/$sumStudents), 3);//每百生体育、艺术专任教师数 * 100
+            $averagePSRAR =  $sumPSRAR == 0 ? 0:round( ($sumPSRAR/$sumStudents), 3);//生均教学及辅助用房面积
+            $averagePSMAR =  $sumPSMAR == 0 ? 0:round( ($sumPSMAR/$sumStudents), 3);//生均体育运动场馆面积
+            $averagePSMR  =  $sumPSMR == 0 ? 0:round( ($sumPSMR/$sumStudents), 3);//生均教学仪器设备值
+            $averagePHIR  =  $sumPHIR == 0 ? 0:round( ($sumPHIR/$sumStudents), 3);//每百名学生拥有网络多媒体教室数 * 100
+            //小学 ∑(xi-x)2*Pi  （x-x_）*（x-x_）* 学生数 
+            $avSumPHETR = $avSumPHBTR = $avSumPHATR = $avSumPSRAR = $avSumPSMAR = $avSumPSMR = $avSumPHIR = 0;
+            foreach ($pres as $prk => $value) {
+                //---PHETR
+                if ($value->found_ind=='PHETR') {
+                    $avSumPHETR += ( floatval($value->found_val) - $averagePHETR ) * ( floatval($value->found_val) - $averagePHETR) * $value->found_divider;
+                    Log::info('avSumPHETR row'. ( floatval($value->found_val) - $averagePHETR )  . 'averagePHETR'.$averagePHETR );
+                }
+                //-----PHETR
+                //---PHBTR
+                if ($value->found_ind=='PHBTR') {
+                    $avSumPHBTR += ( floatval($value->found_val) - $averagePHBTR) * ( floatval($value->found_val) - $averagePHBTR) * $value->found_divider;
+                }
+                //-----PHBTR
+                //---PHATR
+                if ($value->found_ind=='PHATR') {
+                    $avSumPHATR += ( floatval($value->found_val) - $averagePHATR) * ( floatval($value->found_val) - $averagePHATR) * $value->found_divider;
+                }
+                //-----PHATR
+                //---PSRAR
+                if ($value->found_ind=='PSRAR') {
+                    $avSumPSRAR += ( floatval($value->found_val) - $averagePSRAR) * ( floatval($value->found_val) - $averagePSRAR) * $value->found_divider;
+                }
+                //-----PSRAR
+                //---PSMAR
+                if ($value->found_ind=='PSMAR') {
+                    $avSumPSMAR += ( floatval($value->found_val) - $averagePSMAR) * ( floatval($value->found_val) - $averagePSMAR) * $value->found_divider;
+                }
+                //-----PSMAR
+                //---PSMR
+                if ($value->found_ind=='PSMR') {
+                    $avSumPSMR += ( floatval($value->found_val) - $averagePSMR) * ( floatval($value->found_val) - $averagePSMR) * $value->found_divider;
+                }
+                //-----PSMR
+                //---PHIR
+                if ($value->found_ind=='PHIR') {
+                    $avSumPHIR += ( floatval($value->found_val) - $averagePHIR) * ( floatval($value->found_val) - $averagePHIR) * $value->found_divider;
+                }
+                //-----PHIR
+            }
+            Log::info('----------------------------');
+            Log::info('avSumPHETR'.$avSumPHETR);
+            Log::info('sumStudents'.$sumStudents);
+            Log::info('averagePHETR'.sqrt($avSumPHETR));
+            Log::info('quotientPHETR'.round( sqrt($avSumPHETR) / ( $averagePHETR*sqrt($sumStudents) ) , 3));
+            Log::info('----------------------------');
+            //sqrt(sum ( ∑(xi-x)2*Pi )) / (x_*sqrt(students_sum)); 
+            $quotientPHETR = round( sqrt($avSumPHETR) / ( $averagePHETR*sqrt($sumStudents) ) , 5)?:'0.0';
+            $quotientPHBTR = round( sqrt($avSumPHBTR) / ( $averagePHBTR*sqrt($sumStudents) ) , 5)?:'0.0';
+            $quotientPHATR = round( sqrt($avSumPHATR) / ( $averagePHATR*sqrt($sumStudents) ) , 5)?:'0.0';
+            $quotientPSRAR = round( sqrt($avSumPSRAR) / ( $averagePSRAR*sqrt($sumStudents) ) , 5)?:'0.0';
+            $quotientPSMAR = round( sqrt($avSumPSMAR) / ( $averagePSMAR*sqrt($sumStudents) ) , 5)?:'0.0';
+            $quotientPSMR = round( sqrt($avSumPSMR) / ( $averagePSMR*sqrt($sumStudents) ) , 5)?:'0.0';
+            $quotientPHIR = round( sqrt($avSumPHIR) / ( $averagePHIR*sqrt($sumStudents) ) , 5)?:'0.0';
+            $comPaverage = round( ($quotientPHETR+$quotientPHBTR+$quotientPHATR+$quotientPSRAR+$quotientPSMAR+$quotientPSMR+$quotientPHIR)/7,3 )? :'0.0';
+
+            Log::info('----------------------------');
+            Log::info('quotientPHETR'.$quotientPHETR);
+            Log::info('comPaverage'.$comPaverage);
+            Log::info('----------------------------');
+            $res = [
+                ['宁波市','小学平均值',$averagePHETR,$averagePHBTR,$averagePHATR,$averagePSRAR,$averagePSMAR,$averagePSMR,$averagePHIR,'---'],
+                ['','小学差异系数',$quotientPHETR,$quotientPHBTR,$quotientPHATR,$quotientPSRAR,$quotientPSMAR,$quotientPSMR,$quotientPHIR,$comPaverage]
+            ];
+        }
+        
+        if ($juniorMiddleSchoolArr) {
+
+            //初中七项 平均值 、 系数
+            $jrepeat = [];
+            $jres = [];
+            $sumJHETR = $sumJHBTR = $sumJHATR = $sumJSRAR = $sumJSMAR = $sumJSMR = $sumJHIR = $sumjStudents = 0;
+            
+            foreach ($juniorMiddleSchoolArr as $pk => $value) {
+                if (in_array($value->user_id.$value->school.$value->school_type.$value->found_ind, $jrepeat)) {
+                    continue;
+                }
+                //并发重复数据处理
+                $jrepeat[] = $value->user_id.$value->school.$value->school_type.$value->found_ind;
+
+                $jres[$pk] = $value;
+
+                ($value->found_ind=='JHETR' && $value->found_divider) &&  $sumjStudents += $value->found_ind=='JHETR' ? $value->found_divider : 0;//取每个学校的学生数
+
+                //---JHETR
+                ($value->found_ind=='JHETR' && $value->found_divisor) && $sumJHETR += $value->found_ind=='JHETR' ? $value->found_divisor : 0;
+                //-----JHETR
+                //---JHBTR
+                ($value->found_ind=='JHBTR' && $value->found_divisor) && $sumJHBTR += $value->found_ind=='JHBTR' ? $value->found_divisor : 0;
+                //-----JHBTR
+                //---JHATR
+                ($value->found_ind=='JHATR' && $value->found_divisor) && $sumJHATR += $value->found_ind=='JHATR' ? $value->found_divisor : 0;
+                //-----JHATR
+                //---JSRAR
+                ($value->found_ind=='JSRAR' && $value->found_divisor) && $sumJSRAR += $value->found_ind=='JSRAR' ? $value->found_divisor : 0;
+                //-----JSRAR
+                //---JSMAR
+                ($value->found_ind=='JSMAR' && $value->found_divisor) && $sumJSMAR += $value->found_ind=='JSMAR' ? $value->found_divisor : 0;
+                //-----JSMAR
+                //---JSMR
+                ($value->found_ind=='JSMR' && $value->found_divisor) && $sumJSMR += $value->found_ind=='JSMR' ? $value->found_divisor : 0;
+                //-----JSMR
+                //---JHIR
+                ($value->found_ind=='JHIR' && $value->found_divisor) && $sumJHIR += $value->found_ind=='JHIR' ? $value->found_divisor : 0;
+                //-----JHIR
+            }
+            
+            $averageJHETR =  $sumJHETR == 0 ? 0:round( ($sumJHETR/$sumjStudents), 3);//每百生高于规定学历教师数 * 100
+            $averageJHBTR =  $sumJHBTR == 0 ? 0:round( ($sumJHBTR/$sumjStudents), 3);//每百生骨干教师数 * 100
+            $averageJHATR =  $sumJHATR == 0 ? 0:round( ($sumJHATR/$sumjStudents), 3);//每百生体育、艺术专任教师数 * 100
+            $averageJSRAR =  $sumJSRAR == 0 ? 0:round( ($sumJSRAR/$sumjStudents), 3);//生均教学及辅助用房面积
+            $averageJSMAR =  $sumJSMAR == 0 ? 0:round( ($sumJSMAR/$sumjStudents), 3);//生均体育运动场馆面积
+            $averageJSMR  =  $sumJSMR == 0 ? 0:round( ($sumJSMR/$sumjStudents), 3);//生均教学仪器设备值
+            $averageJHIR  =  $sumJHIR == 0 ? 0:round( ($sumJHIR/$sumjStudents), 3);//每百名学生拥有网络多媒体教室数 * 100
+            //初中 ∑(xi-x)2*Pi  （x-x_）*（x-x_）* 学生数 
+            $avSumJHETR = $avSumJHBTR = $avSumJHATR = $avSumJSRAR = $avSumJSMAR = $avSumJSMR = $avSumJHIR = 0;
+            foreach ($jres as $prk => $value) {
+                //---JHETR
+                if ($value->found_ind=='JHETR') {
+                    $avSumJHETR += ( floatval($value->found_val) - $averageJHETR) * ( floatval($value->found_val) - $averageJHETR) * $value->found_divider;
+                }
+                //-----JHETR
+                //---JHBTR
+                if ($value->found_ind=='JHBTR') {
+                    $avSumJHBTR += ( floatval($value->found_val) - $averageJHBTR) * ( floatval($value->found_val) - $averageJHBTR) * $value->found_divider;
+                }
+                //-----JHBTR
+                //---JHATR
+                if ($value->found_ind=='JHATR') {
+                    $avSumJHATR += ( floatval($value->found_val) - $averageJHATR) * ( floatval($value->found_val) - $averageJHATR) * $value->found_divider;
+                }
+                //-----JHATR
+                //---JSRAR
+                if ($value->found_ind=='JSRAR') {
+                    $avSumJSRAR += ( floatval($value->found_val) - $averageJSRAR) * ( floatval($value->found_val) - $averageJSRAR) * $value->found_divider;
+                }
+                //-----JSRAR
+                //---JSMAR
+                if ($value->found_ind=='JSMAR') {
+                    $avSumJSMAR += ( floatval($value->found_val) - $averageJSMAR) * ( floatval($value->found_val) - $averageJSMAR) * $value->found_divider;
+                }
+                //-----JSMAR
+                //---JSMR
+                if ($value->found_ind=='JSMR') {
+                    $avSumJSMR += ( floatval($value->found_val) - $averageJSMR) * ( floatval($value->found_val) - $averageJSMR) * $value->found_divider;
+                }
+                //-----JSMR
+                //---JHIR
+                if ($value->found_ind=='JHIR') {
+                    $avSumJHIR += ( floatval($value->found_val) - $averageJHIR) * ( floatval($value->found_val) - $averageJHIR) * $value->found_divider;
+                }
+                //-----JHIR
+            }
+            Log::info('----------------------------');
+            Log::info('avSumJHETR'.$avSumJHETR);
+            Log::info('sumjStudents'.$sumjStudents);
+            Log::info('quotientJHETR'.round( sqrt($avSumJHETR) / ( $averageJHETR*sqrt($sumjStudents) ) , 3));
+            Log::info('----------------------------');
+            //sqrt(sum ( ∑(xi-x)2*Pi )) / (x_*sqrt(students_sum)); 
+            $quotientJHETR = round( sqrt($avSumJHETR) / ( $averageJHETR*sqrt($sumjStudents) ) , 5)?:'0.0';
+            $quotientJHBTR = round( sqrt($avSumJHBTR) / ( $averageJHBTR*sqrt($sumjStudents) ) , 5)?:'0.0';
+            $quotientJHATR = round( sqrt($avSumJHATR) / ( $averageJHATR*sqrt($sumjStudents) ) , 5)?:'0.0';
+            $quotientJSRAR = round( sqrt($avSumJSRAR) / ( $averageJSRAR*sqrt($sumjStudents) ) , 5)?:'0.0';
+            $quotientJSMAR = round( sqrt($avSumJSMAR) / ( $averageJSMAR*sqrt($sumjStudents) ) , 5)?:'0.0';
+            $quotientJSMR = round( sqrt($avSumJSMR) / ( $averageJSMR*sqrt($sumjStudents) ) , 5)?:'0.0';
+            $quotientJHIR = round( sqrt($avSumJHIR) / ( $averageJHIR*sqrt($sumjStudents) ) , 5)?:'0.0';
+            $comJPaverage = round( ($quotientJHETR+$quotientJHBTR+$quotientJHATR+$quotientJSRAR+$quotientJSMAR+$quotientJSMR+$quotientJHIR)/7,3 )? :'0.0';
+
+            Log::info('----------------------------');
+            Log::info('quotientJHIR'.$quotientJHIR);
+            Log::info('avSumJHIR'.$avSumJHIR);
+            Log::info('averageJHIR'.$averageJHIR);
+            Log::info('----------------------------');
+
+            $res[2] = ['宁波市','初中平均值',$averageJHETR,$averageJHBTR,$averageJHATR,$averageJSRAR,$averageJSMAR,$averageJSMR,$averageJHIR,'---'];
+            $res[3] = ['','初中差异系数',$quotientJHETR,$quotientJHBTR,$quotientJHATR,$quotientJSRAR,$quotientJSMAR,$quotientJSMR,$quotientJHIR,$comJPaverage];
+        }
+        //处理只有其一的情况
+        $res = array_values($res);
+        
+        Log::info($res);
+        return $res;
+    }
+
+    private function Object2Array($object) { 
+        if (is_object($object) || is_array($object)) {
+            $array = array();
+            foreach ($object as $key => $value) {
+                if ($value == null) continue;
+                $array[$key] = self::Object2Array($value);
+            }
+            return $array;
+        }
+        else {
+            return $object;
+        }
+    }
 }

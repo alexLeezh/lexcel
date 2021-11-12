@@ -28,9 +28,9 @@ class EsImport implements WithEvents
     
     public static function afterSheet(AfterSheet $event) 
     {
-    	$school = $event->sheet->getCell("D7")->getValue();
+    	$school = $event->sheet->getCell("C4")->getValue();
     	app('session')->put('school',$school);
-    	$school_type = $event->sheet->getCell("D14")->getValue();
+    	$school_type = $event->sheet->getCell("C27")->getValue();
     	$school_type_code = '';
     	switch ($school_type) {
     		case '幼儿园':
@@ -57,6 +57,9 @@ class EsImport implements WithEvents
     		case '九年一贯制学校':
     			$school_type_code = 'nineYearCon';
     			break;
+            case '十二年一贯制学校':
+                $school_type_code = 'twelveYearCon';
+                break;
     		
     		default:
     			# code...

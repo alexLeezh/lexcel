@@ -101,6 +101,23 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             'AX' => 20,
             'AY' => 20,
             'AZ' => 20,
+
+            'BA' => 20,
+            'BB' => 20,
+            'BC' => 20,
+            'BD' => 20,
+            'BE' => 20,
+            'BF' => 20,
+            'BG' => 20,
+            'BH' => 20,
+            'BI' => 20,
+            'BJ' => 20,
+            'BK' => 20,
+            'BL' => 20,
+            'BM' => 20,
+            'BN' => 20,
+            'BO' => 20,
+
         ];
     }
 
@@ -296,7 +313,7 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             case 'mnineYearCon':
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:AZ1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3','M2:Q2','M3:Q3','R2:V2','R3:V3','W2:AA2','W3:AA3','AB2:AF2','AB3:AF3','AG2:AK2','AG3:AK3','AL2:AP2','AL3:AP3','AQ2:AU2','AQ3:AU3','AV2:AZ2','AV3:AZ3',];
+                        $cells = ['A1:AZ1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3','M2:Q2','M3:Q3','R2:V2','R3:V3','W2:AA2','W3:AA3','AB2:AF2','AB3:AF3','AG2:AK2','AG3:AK3','AL2:AP2','AL3:AP3','AQ2:AU2','AQ3:AU3','AV2:AZ2','AV3:AZ3'];
 
                         $event->sheet->getDelegate()->getStyle('A1:AZ1')->getFont()->setSize(15);
                         $event->sheet->getDelegate()->getStyle('A2:AZ4')->getFont()->setSize(12);
@@ -312,10 +329,10 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
             case 'mtwelveYearCon':
                 return [
                     AfterSheet::class  => function(AfterSheet $event) {
-                        $cells = ['A1:AZ1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3','M2:Q2','M3:Q3','R2:V2','R3:V3','W2:AA2','W3:AA3','AB2:AF2','AB3:AF3','AG2:AK2','AG3:AK3','AL2:AP2','AL3:AP3','AQ2:AU2','AQ3:AU3','AV2:AZ2','AV3:AZ3',];
+                        $cells = ['A1:BO1','A2:A4','B2:B4','C2:G2','C3:G3','H2:L2','H3:L3','M2:Q2','M3:Q3','R2:V2','R3:V3','W2:AA2','W3:AA3','AB2:AF2','AB3:AF3','AG2:AK2','AG3:AK3','AL2:AP2','AL3:AP3','AQ2:AU2','AQ3:AU3','AV2:AZ2','AV3:AZ3','BA2:BE2','BA3:BE3','BF2:BJ2','BF3:BJ3','BK2:BO2','BK3:BO3'];
 
-                        $event->sheet->getDelegate()->getStyle('A1:AZ1')->getFont()->setSize(15);
-                        $event->sheet->getDelegate()->getStyle('A2:AZ4')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getStyle('A1:BO1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:BO4')->getFont()->setSize(12);
                         $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
 
                         foreach ($cells as $k=>$v) {
@@ -325,7 +342,36 @@ class SchoolePerIndexSheet implements FromCollection, WithTitle , WithHeadings, 
                     }
                 ];
                 break;
-            
+            case 'summary':
+                return [
+                    AfterSheet::class  => function(AfterSheet $event) {
+                        $cells = ['A1:J1','A2:B3','A4:A7'];
+                        Log::info('SchoolePerIndexSheet summary');
+                        Log::info($event->sheet->getDelegate()->getRowDimensions());
+                        $event->sheet->getDelegate()->getStyle('A1:J1')->getFont()->setSize(15);
+                        $event->sheet->getDelegate()->getStyle('A2:J3')->getFont()->setSize(12);
+                        $event->sheet->getDelegate()->getRowDimension(1)->setRowHeight(20);
+                        $event->sheet->getDelegate()->getStyle('A2:J2')->getAlignment()->setWrapText(true);
+                        $event->sheet->getDelegate()->getStyle('A2:J7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+                        $event->sheet->getDelegate()->getStyle('A4:A7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                        $styleArray = [
+                            'borders' => [
+                                'allBorders' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                    'color' => ['argb' => '#7E7676'],
+                                ],
+                            ],
+                        ];
+
+                        $event->sheet->getStyle('A1:J7')->applyFromArray($styleArray);
+                        foreach ($cells as $k=>$v) {
+                            $event->sheet->getDelegate()->getStyle($v)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getDelegate()->mergeCells($v);
+                        }
+                    }
+                ];
+                break;
             default:
                 return [];
                 break;
