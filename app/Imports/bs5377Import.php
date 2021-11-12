@@ -20,7 +20,7 @@ class bs5377Import implements  WithEvents
     
     public function registerEvents(): array
     {
-
+        Log::info('bs5377Import secondaryVocationalSchool');
     	return [
         	AfterSheet::class => [self::class, 'afterSheet'],
         ];

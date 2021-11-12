@@ -20,7 +20,7 @@ class bs3221Import implements  WithEvents
     
     public function registerEvents(): array
     {
-
+        Log::info('bs3221Import');
     	return [
         	AfterSheet::class => [self::class, 'afterSheet'],
         ];
