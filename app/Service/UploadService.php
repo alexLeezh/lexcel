@@ -262,7 +262,7 @@ class UploadService
 
                 //特殊处理【PSTR小学生师比、JSTR初中生师比、HSTR高中生师比、VSTR中职生师比、SSTR特殊生师比】
                 if ($found_ind == 'PSTR'||$found_ind == 'JSTR'||$found_ind == 'HSTR'||$found_ind == 'VSTR'||$found_ind == 'SSTR'||$found_ind == 'MNPSTR'||$found_ind == 'MNJSTR'||$found_ind == 'MTPSTR'||$found_ind == 'MTJSTR'||$found_ind == 'MTHSTR' ) {
-                    $is_standard = 1 ? 0:1;
+                    $is_standard == 1 ? 0:1;
                 }
                 break;
 

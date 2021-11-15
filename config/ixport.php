@@ -154,7 +154,7 @@ return [
         'PSBR'=>['found_name'=>'生均图书比','standard_val'=>'30','basic_val'=>'','ratio'=>'default', 'unit'=>'册'],
         //初中
         'JSTR'=>['found_name'=>'生师比','standard_val'=>'13.5:1','basic_val'=>'','ratio'=>'scale', 'unit'=>''],
-        'JETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'90%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'JETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'8%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
         'JFCR'=>['found_name'=>'四十五人及一下班级占比','standard_val'=>'90%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
         'JHSTR'=>['found_name'=>'每百名学生与中高级以上职称教师比','standard_val'=>'6','basic_val'=>'','ratio'=>'default', 'unit'=>''],
         'JSBR'=>['found_name'=>'生均图书比','standard_val'=>'40','basic_val'=>'','ratio'=>'default', 'unit'=>'册'],
