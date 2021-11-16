@@ -167,7 +167,7 @@ return [
         'MNPSBR'=>['found_name'=>'生均图书比','standard_val'=>'30','basic_val'=>'','ratio'=>'default', 'unit'=>'册'],
         //九年初中
         'MNJSTR'=>['found_name'=>'生师比','standard_val'=>'13.5:1','basic_val'=>'','ratio'=>'scale', 'unit'=>''],
-        'MNJETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'90%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'MNJETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'8%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
         'MNJFCR'=>['found_name'=>'四十五人及一下班级占比','standard_val'=>'90%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
         'MNJHSTR'=>['found_name'=>'每百名学生与中高级以上职称教师比','standard_val'=>'6','basic_val'=>'','ratio'=>'default', 'unit'=>''],
         'MNJSBR'=>['found_name'=>'生均图书比','standard_val'=>'40','basic_val'=>'','ratio'=>'default', 'unit'=>'册'],
@@ -180,19 +180,19 @@ return [
         'MTPSBR'=>['found_name'=>'生均图书比','standard_val'=>'30','basic_val'=>'','ratio'=>'default', 'unit'=>'册'],
         //十二初中
         'MTJSTR'=>['found_name'=>'生师比','standard_val'=>'13.5:1','basic_val'=>'','ratio'=>'scale', 'unit'=>''],
-        'MTJETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'90%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'MTJETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'8%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
         'MTJFCR'=>['found_name'=>'四十五人及一下班级占比','standard_val'=>'90%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
         'MTJHSTR'=>['found_name'=>'每百名学生与中高级以上职称教师比','standard_val'=>'6','basic_val'=>'','ratio'=>'default', 'unit'=>''],
         'MTJSBR'=>['found_name'=>'生均图书比','standard_val'=>'40','basic_val'=>'','ratio'=>'default', 'unit'=>'册'],
         //十二高中
         'MTHSTR'=>['found_name'=>'生师比','standard_val'=>'12.5:1','basic_val'=>'','ratio'=>'scale', 'unit'=>''],
-        'MTHETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'90%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'MTHETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'20%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
         'MTHSMR'=>['found_name'=>'生均仪器设备比','standard_val'=>'6500','basic_val'=>'','ratio'=>'default', 'unit'=>'元'],
 
 
         //高中
         'HSTR'=>['found_name'=>'生师比','standard_val'=>'12.5:1','basic_val'=>'','ratio'=>'scale', 'unit'=>''],
-        'HETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'90%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
+        'HETR'=>['found_name'=>'专科以上老师占比','standard_val'=>'20%','basic_val'=>'','ratio'=>'percent', 'unit'=>''],
         'HSMR'=>['found_name'=>'生均仪器设备比','standard_val'=>'6500','basic_val'=>'','ratio'=>'default', 'unit'=>'元'],
         //中职
         'VSTR'=>['found_name'=>'生师比','standard_val'=>'12:1','basic_val'=>'','ratio'=>'scale', 'unit'=>''],

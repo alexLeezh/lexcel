@@ -259,10 +259,12 @@ class UploadService
                 if (round( ($found_divisor/$found_divider), 5) >= round( ($scale[0]/$scale[1]), 5) ) {
                     $is_standard = 1;
                 }
-
+                Log::info('valFormat $found_ind'.$found_ind);
                 //特殊处理【PSTR小学生师比、JSTR初中生师比、HSTR高中生师比、VSTR中职生师比、SSTR特殊生师比】
                 if ($found_ind == 'PSTR'||$found_ind == 'JSTR'||$found_ind == 'HSTR'||$found_ind == 'VSTR'||$found_ind == 'SSTR'||$found_ind == 'MNPSTR'||$found_ind == 'MNJSTR'||$found_ind == 'MTPSTR'||$found_ind == 'MTJSTR'||$found_ind == 'MTHSTR' ) {
-                    $is_standard == 1 ? 0:1;
+                    Log::info('valFormat $found_ind'.$found_ind.'| is_standard'.$is_standard);
+                    if ($is_standard == 1){$is_standard = 0;}else{$is_standard = 1;}
+                    Log::info('is_standard---'.$is_standard);
                 }
                 break;
 
@@ -270,7 +272,7 @@ class UploadService
                 # code...
                 break;
         }
-
+        // Log::info('valFormat $found_ind'.$found_ind.'| is_standard'.$is_standard);
         return $res ?? 0;
     }
 
