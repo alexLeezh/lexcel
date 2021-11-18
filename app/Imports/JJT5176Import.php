@@ -55,7 +55,7 @@ class JJT5176Import implements  WithEvents
 
             ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTPSBR','found_divisor'=>$areaD12,'found_divider'=>0,'report_hash'=>$report_hash],
             ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTJSBR','found_divisor'=>$areaD12,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTHSMR','found_divisor'=>$areaD19*100,'found_divider'=>0,'report_hash'=>$report_hash],            
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTHSMR','found_divisor'=>$areaD19*10000,'found_divider'=>0,'report_hash'=>$report_hash],            
 
         ];
         foreach ($arr as $key => $value) {

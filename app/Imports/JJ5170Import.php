@@ -43,7 +43,7 @@ class JJ5170Import implements  WithEvents
         $arr = [
 
             ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSRAR','found_divisor'=>$areas,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSMR','found_divisor'=>$areaC17,'found_divider'=>0,'report_hash'=>$report_hash],
+            ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSMAR','found_divisor'=>$areaC17,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
         ];

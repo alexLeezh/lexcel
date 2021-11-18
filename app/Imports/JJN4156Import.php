@@ -60,6 +60,8 @@ class JJN4156Import implements  WithEvents
             ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNJETR','found_divisor'=>0,'found_divider'=>$teacherC6,'report_hash'=>$report_hash],
             ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNJETR','found_divisor'=>$teacherMNJETR,'found_divider'=>0,'report_hash'=>$report_hash],
 
+            ['school_type'=>'mnineYearCon','school'=>$school,'report_type'=>'modern','found_ind'=>'MNJSTR','found_divisor'=>0,'found_divider'=>$teacherC6,'report_hash'=>$report_hash],
+
 
         ];
         foreach ($arr as $key => $value) {

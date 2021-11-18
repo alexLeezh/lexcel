@@ -50,6 +50,9 @@ class JJT4156Import implements  WithEvents
         $teacherX6 = $event->sheet->getCell("X6")->getValue();
 
         $teacherNJHATR = $teacherU6 + $teacherV6 + $teacherW6 + $teacherX6;
+
+        $teacherC7 = $event->sheet->getCell("C7")->getValue();
+        $teacherC16 = $event->sheet->getCell("C16")->getValue();
         $arr = [
 
             ['school_type'=>'twelveYearCon','school'=>$school.'_初中','report_type'=>'balance','found_ind'=>'TNJHETR','found_divisor'=>$teacherNJHETR*100,'found_divider'=>0,'report_hash'=>$report_hash],
@@ -58,7 +61,11 @@ class JJT4156Import implements  WithEvents
 
             ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTJETR','found_divisor'=>$teacherMTJETR,'found_divider'=>0,'report_hash'=>$report_hash],
             ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTHETR','found_divisor'=>$teacherMTJETR,'found_divider'=>0,'report_hash'=>$report_hash],
-            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTJETR','found_divisor'=>0,'found_divider'=>$teacherC6,'report_hash'=>$report_hash],
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTJETR','found_divisor'=>0,'found_divider'=>$teacherC7,'report_hash'=>$report_hash],
+
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTJSTR','found_divisor'=>0,'found_divider'=>$teacherC7,'report_hash'=>$report_hash],
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTHSTR','found_divisor'=>0,'found_divider'=>$teacherC16,'report_hash'=>$report_hash],
+            ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTHETR','found_divisor'=>0,'found_divider'=>$teacherC16,'report_hash'=>$report_hash],
 
 
         ];

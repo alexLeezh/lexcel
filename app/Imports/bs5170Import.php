@@ -20,7 +20,6 @@ class bs5170Import implements  WithEvents
     
     public function registerEvents(): array
     {
-
     	return [
         	AfterSheet::class => [self::class, 'afterSheet'],
         ];
@@ -28,6 +27,7 @@ class bs5170Import implements  WithEvents
 
     public static function afterSheet(AfterSheet $event) 
     {
+        Log::info('bs5170Import');
         $school_type = app('session')->get('school_type');
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
@@ -39,11 +39,11 @@ class bs5170Import implements  WithEvents
                 $areaC10 = $event->sheet->getCell("C10")->getValue();
                 $areaC17 = $event->sheet->getCell("C17")->getValue();
                 $areas = $areaC10 - $areaC17;
-
+                Log::info('bs5176Import areaC17'.$areaC17);
                 $arr = [
 
                     ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSRAR','found_divisor'=>$areas,'found_divider'=>0,'report_hash'=>$report_hash],
-                    ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSMR','found_divisor'=>$areaC17,'found_divider'=>0,'report_hash'=>$report_hash],
+                    ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PSMAR','found_divisor'=>$areaC17,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
                 ];
@@ -71,6 +71,7 @@ class bs5170Import implements  WithEvents
 
                     ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JSRAR','found_divisor'=>$areas,'found_divider'=>0,'report_hash'=>$report_hash],
                     ['school_type'=>'juniorMiddleSchool','school'=>$school,'report_type'=>'balance','found_ind'=>'JSMAR','found_divisor'=>$areaC17,'found_divider'=>0,'report_hash'=>$report_hash],
+
 
 
                 ];

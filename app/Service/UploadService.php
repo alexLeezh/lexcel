@@ -90,6 +90,7 @@ class UploadService
 
         //执行数据清理
         dispatch(new UploadFileDataJob($data));
+
         
     }
 
@@ -135,12 +136,14 @@ class UploadService
             !$value->found_divider && $value->found_divider = 0;
             $foundArr[$value->found_ind][] = $value;
         }
-
+        Log::info('handleUploadDataPerBatch');
+        // Log::info( $this->Object2Array($foundArr) );return [];
         //有需处理的数据
         $insert_row = [];
         $global_config = config('ixport.SCHOOL_IMPORT_FOUND_INDEX');
         $is_standard = 0;
         if ($foundArr) {
+            $uploadArr = $this->Object2Array($foundArr);
             foreach ($foundArr as $key => $value) {
                 $foundval = [];
                 $ind_config = [];
@@ -160,11 +163,11 @@ class UploadService
 
                     if (isset($foundval[0]['found_divisor']) && $foundval[0]['found_divisor'] > 0) {
                         if (isset($foundval[1]['found_divider']) &&  $foundval[1]['found_divider'] > 0) {
-                           $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[0]['found_divisor'],$foundval[1]['found_divider'],$ind_config['standard_val'],$is_standard,$insert_row['found_ind']);
+                           $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[0]['found_divisor'],$foundval[1]['found_divider'],$ind_config['standard_val'],$is_standard,$insert_row['found_ind'], $uploadArr);
                             $insert_row['found_divisor'] = $foundval[0]['found_divisor'];
                             $insert_row['found_divider'] = $foundval[1]['found_divider'];
                         }else{
-                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard,$insert_row['found_ind']);
+                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard,$insert_row['found_ind'], $uploadArr);
                             $insert_row['found_divisor'] = 0;
                             $insert_row['found_divider'] = 0;
                         }
@@ -172,17 +175,17 @@ class UploadService
                     }else{
                         if (isset($foundval[0]['found_divider']) && $foundval[0]['found_divider'] > 0 ) {
                             if (isset($foundval[1]['found_divisor']) &&  $foundval[1]['found_divisor'] > 0) {
-                               $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[1]['found_divisor'],$foundval[0]['found_divider'],$ind_config['standard_val'],$is_standard,$insert_row['found_ind']);
+                               $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],$foundval[1]['found_divisor'],$foundval[0]['found_divider'],$ind_config['standard_val'],$is_standard,$insert_row['found_ind'], $uploadArr);
                                 $insert_row['found_divisor'] = $foundval[1]['found_divisor'];
                                 $insert_row['found_divider'] = $foundval[0]['found_divider'];
                             }else{
-                                $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard,$insert_row['found_ind']);
+                                $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard,$insert_row['found_ind'], $uploadArr);
                                 $insert_row['found_divisor'] = 0;
                                 $insert_row['found_divider'] = 0;
                             }
 
                         }else{
-                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard,$insert_row['found_ind']);
+                            $insert_row['found_val'] = $this->valFormat($ind_config['ratio'],$ind_config['unit'],0,0,$ind_config['standard_val'],$is_standard,$insert_row['found_ind'], $uploadArr);
                             $insert_row['found_divisor'] = 0;
                             $insert_row['found_divider'] = 0;
                         }                        
@@ -232,8 +235,9 @@ class UploadService
         return $insert_row;
     }
     //格式化输出
-    private function valFormat($format, $unit, $found_divisor, $found_divider, $standard_val,&$is_standard, $found_ind)
+    private function valFormat($format, $unit, $found_divisor, $found_divider, $standard_val,&$is_standard, $found_ind, $data = [])
     {
+
         $res = 0;
         $is_standard = 0;
         if (!$found_divisor || !$found_divider) {
@@ -271,6 +275,97 @@ class UploadService
             default:
                 # code...
                 break;
+        }
+
+        //（ ( 高中数*1.32/(小学数+初中数*1.1+高中*1.32) ) * 设备总值 ）/高中数 user_id，school, 设备总值|图书比
+        //计算特殊值 【MTHSMR  MTJSBR MTPSBR mtwelveYearCon】 【  MNJSBR MNPSBR mnineYearCon】【  NSMR NJSMR nineYearCon】【  TNSMR TNJSMR twelveYearCon】
+        if ($data) {
+            switch ($found_ind) {
+                case 'MTHSMR':
+                    $jj = array_sum(array_column($data['MTJSTR'], 'found_divisor'));
+                    $pj = array_sum(array_column($data['MTPSTR'], 'found_divisor'));
+                    $res = round((($found_divider*1.32/($pj+$jj*1.1+$found_divider*1.32)) * $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider*1.32/($pj+$jj*1.1+$found_divider*1.32)) * $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    // Log::info('valFormat MTHSMR jj'.$jj.'|pj'.$pj.'|found_divider'.$found_divider.'|found_divisor'.$found_divisor);
+                    // Log::info($res);
+                    break;
+                case 'MTJSBR':
+                    $hj = array_sum(array_column($data['MTHSTR'], 'found_divisor'));
+                    $pj = array_sum(array_column($data['MTPSTR'], 'found_divisor'));
+                    $res = round((($found_divider*1.1/($pj+$hj*1.32+$found_divider*1.1)) * $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider*1.1/($pj+$hj*1.32+$found_divider*1.1)) * $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    // Log::info('valFormat MTJSBR hj'.$hj.'|pj'.$pj.'|found_divider'.$found_divider.'|found_divisor'.$found_divisor);
+                    // Log::info($res);
+                    break;
+                case 'MTPSBR':
+                    $hj = array_sum(array_column($data['MTHSTR'], 'found_divisor'));
+                    $jj = array_sum(array_column($data['MTJSTR'], 'found_divisor'));
+                    $res = round((($found_divider/($found_divider+$jj*1.1+$hj*1.32)) * $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider/($found_divider+$jj*1.1+$hj*1.32)) * $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    break;
+                case 'MNJSBR':
+                    $pj = array_sum(array_column($data['MNPSTR'], 'found_divisor'));
+                    $res = round((($found_divider*1.1/($pj+$found_divider*1.1)) * $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider*1.1/($pj+$found_divider*1.1)) * $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    break;
+                case 'MNPSBR':
+                    $jj = array_sum(array_column($data['MNJSTR'], 'found_divisor'));
+                    $res = round((($found_divider/($found_divider+$jj*1.1)) * $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider/($found_divider+$jj*1.1)) * $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    break;
+
+                case 'NSMR':
+                    $jj = array_sum(array_column($data['NJHETR'], 'found_divider'));
+                    $res = round((($found_divider/($found_divider+$jj*1.1))* $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider/($found_divider+$jj*1.1))* $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    break;
+                case 'NJSMR':
+                    $pj = array_sum(array_column($data['NHETR'], 'found_divider'));
+                    $res = round((($found_divider*1.1/($pj+$found_divider*1.1))* $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider*1.1/($pj+$found_divider*1.1))* $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    break;
+                case 'TNSMR':
+                    $jj = array_sum(array_column($data['TNJHETR'], 'found_divider'));
+                    $res = round((($found_divider/($found_divider+$jj*1.1)) * $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider/($found_divider+$jj*1.1)) * $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    break;
+                case 'TNJSMR':
+                    $pj = array_sum(array_column($data['TNHETR'], 'found_divider'));
+                    $res = round((($found_divider*1.1/($pj+$found_divider*1.1)) * $found_divisor)/$found_divider ,5). $unit; 
+
+                    if ( round((($found_divider*1.1/($pj+$found_divider*1.1)) * $found_divisor)/$found_divider ,5) >= $standard_val) {
+                        $is_standard = 1;
+                    }
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
         }
         // Log::info('valFormat $found_ind'.$found_ind.'| is_standard'.$is_standard);
         return $res ?? 0;

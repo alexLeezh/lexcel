@@ -20,7 +20,6 @@ class bs5176Import implements  WithEvents
     
     public function registerEvents(): array
     {
-        Log::info('bs5176Import registerEvents');
     	return [
         	AfterSheet::class => [self::class, 'afterSheet'],
         ];
@@ -28,6 +27,7 @@ class bs5176Import implements  WithEvents
 
     public static function afterSheet(AfterSheet $event) 
     {
+        Log::info('bs5176Import');
         $school_type = app('session')->get('school_type');
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
@@ -40,7 +40,7 @@ class bs5176Import implements  WithEvents
                 $PSMAR = $event->sheet->getCell("D7")->getValue();
                 $PSMR = $event->sheet->getCell("D19")->getValue();
                 $PHIR = $event->sheet->getCell("D17")->getValue();
-
+                Log::info('bs5176Import PSMR'.$PSMR);
                 $arr = [
                     ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PSBR','found_divisor'=>$books,'found_divider'=>0,'report_hash'=>$report_hash],
 
@@ -171,7 +171,7 @@ class bs5176Import implements  WithEvents
 
                     ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTPSBR','found_divisor'=>$areaD12,'found_divider'=>0,'report_hash'=>$report_hash],
                     ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTJSBR','found_divisor'=>$areaD12,'found_divider'=>0,'report_hash'=>$report_hash],
-                    ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTHSMR','found_divisor'=>$areaD19*100,'found_divider'=>0,'report_hash'=>$report_hash],            
+                    ['school_type'=>'mtwelveYearCon','school'=>$school.'_十二年一贯','report_type'=>'modern','found_ind'=>'MTHSMR','found_divisor'=>$areaD19*10000,'found_divider'=>0,'report_hash'=>$report_hash],            
 
                 ];
                 foreach ($arr as $key => $value) {

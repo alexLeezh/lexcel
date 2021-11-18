@@ -41,8 +41,7 @@ class JJJ4156Import implements  WithEvents
         $teachersJETR = $teachersC11 +$teachersC10;
 
         $teachersC12 = $event->sheet->getCell("C12")->getValue();
-        $teachersC13 = $event->sheet->getCell("C13")->getValue();
-        $teachersJHETR = $teachersC12 +$teachersC12;
+        $teachersJHETR = $teachersC10 +$teachersC11+$teachersC12;
 
 
         $teachersU6 = $event->sheet->getCell("U6")->getValue();
