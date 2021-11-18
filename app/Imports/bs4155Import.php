@@ -41,7 +41,10 @@ class bs4155Import implements  WithEvents
                 $teachersC9 = $event->sheet->getCell("C9")->getValue();
                 $teachersC10 = $event->sheet->getCell("C10")->getValue();
                 $teachersC11 = $event->sheet->getCell("C11")->getValue();
+                $teachersC12 = $event->sheet->getCell("C12")->getValue();
                 $teachersPTR = $teachersC9 + $teachersC10 + $teachersC11;
+
+                $teachersPHETR = $teachersC9 + $teachersC10 + $teachersC11 + $teachersC12;
 
                 $teachersL6 = $event->sheet->getCell("L6")->getValue();
                 $teachersN6 = $event->sheet->getCell("N6")->getValue();
@@ -56,7 +59,7 @@ class bs4155Import implements  WithEvents
                     ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'modern','found_ind'=>'PTR','found_divisor'=>$teachersPTR,'found_divider'=>0,'report_hash'=>$report_hash],
 
 
-                    ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHETR','found_divisor'=>$teachersPTR*100,'found_divider'=>0,'report_hash'=>$report_hash],
+                    ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHETR','found_divisor'=>$teachersPHETR*100,'found_divider'=>0,'report_hash'=>$report_hash],
                     ['school_type'=>'primarySchool','school'=>$school,'report_type'=>'balance','found_ind'=>'PHATR','found_divisor'=>$teachersPHATR*100,'found_divider'=>0,'report_hash'=>$report_hash],
 
                 ];
