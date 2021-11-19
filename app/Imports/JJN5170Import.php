@@ -34,9 +34,9 @@ class JJN5170Import implements  WithEvents
         $school = app('session')->get('school');
         $report_hash = app('session')->get('report_hash');
 
-        $areaC10 = $event->sheet->getCell("C10")->getValue();
+        $areaC10 = $event->sheet->getCell("F10")->getValue();
 
-        $areaC17 = $event->sheet->getCell("C17")->getValue();
+        $areaC17 = $event->sheet->getCell("F17")->getValue();
 
         $areas = $areaC10 - $areaC17;
 

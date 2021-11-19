@@ -36,8 +36,8 @@ class bs5170Import implements  WithEvents
                 
                 break;
             case 'primarySchool':
-                $areaC10 = $event->sheet->getCell("C10")->getValue();
-                $areaC17 = $event->sheet->getCell("C17")->getValue();
+                $areaC10 = $event->sheet->getCell("F10")->getValue();
+                $areaC17 = $event->sheet->getCell("F17")->getValue();
                 $areas = $areaC10 - $areaC17;
                 Log::info('bs5176Import areaC17'.$areaC17);
                 $arr = [
@@ -63,8 +63,8 @@ class bs5170Import implements  WithEvents
                 }
                 break;
             case 'juniorMiddleSchool':
-                $areaC10 = $event->sheet->getCell("C10")->getValue();
-                $areaC17 = $event->sheet->getCell("C17")->getValue();
+                $areaC10 = $event->sheet->getCell("F10")->getValue();
+                $areaC17 = $event->sheet->getCell("F17")->getValue();
                 $areas = $areaC10 - $areaC17;
 
                 $arr = [
@@ -97,8 +97,8 @@ class bs5170Import implements  WithEvents
                 
                 break;
             case 'nineYearCon':
-                $areaC10 = $event->sheet->getCell("C10")->getValue();
-                $areaC17 = $event->sheet->getCell("C17")->getValue();
+                $areaC10 = $event->sheet->getCell("F10")->getValue();
+                $areaC17 = $event->sheet->getCell("F17")->getValue();
                 $areas = $areaC10 - $areaC17;
 
                 $arr = [
@@ -129,8 +129,8 @@ class bs5170Import implements  WithEvents
                 break;
             case 'twelveYearCon':
 
-                $areaC10 = $event->sheet->getCell("C10")->getValue();
-                $areaC17 = $event->sheet->getCell("C17")->getValue();
+                $areaC10 = $event->sheet->getCell("F10")->getValue();
+                $areaC17 = $event->sheet->getCell("F17")->getValue();
                 $areas = $areaC10 - $areaC17;
 
                 $arr = [
